@@ -1,0 +1,104 @@
+#titulo{
+    color: aliceblue;
+    padding-top: 15px;
+}
+.contenido_primer_vista{
+    padding-top: 15px;
+}
+.tamanio_minimo{
+    min-height: 500px!important;
+}
+.text_folder{
+    color: rgb(192, 192, 70);
+}
+.color_xls{
+    color: #006B36;
+}
+.color_doc{
+    color: #005094;
+}
+.color_pdf{
+    color: #AA0A00;
+}
+.color_ppt{
+    color: #E5411B;
+}
+.color_txt{
+    color: #797979;
+}
+.color_fondo{
+    background-color: #E5411B!important;
+}
+#recuadro_arbol{
+    max-width: 450px; 
+    min-height: 300px;
+    max-height: 350px;
+    overflow: scroll;
+    
+}
+.letra_peso{
+    margin-left: 5px!important;
+    font-size: 9px!important;
+}
+.cell_rojo{
+    background-color: rgba(255, 0, 0, 0.2)!important;
+}
+.cell_amarillo{
+    background-color: rgba(255, 255, 0, 0.2)!important;
+}
+.cell_azul{
+    background-color: rgba(0, 0, 255, 0.2)!important;
+}
+.cell_verde{
+    background-color: rgba(0, 255, 0, 0.2)!important;
+}
+.area_comentarios{
+    margin:10px;
+}
+.info-auditoria{
+    border: solid;
+    border-color: #efefef;
+    border-width: 2px;
+    border-radius: 12px;
+    line-height: 36px;
+    background: #474d56;
+    color: white;
+}
+.texto_chiquito{
+    font-size: 11px;;
+}
+.recuadro_azul{-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:#3688fc;color:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;font-weight:600;height:100%;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%}
+.recuadro_verde{-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:#36d384;color:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;font-weight:600;height:100%;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%}
+.recuadro_gris{-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:#c0c2c1;color:rgb(68, 67, 67);display:-webkit-box;display:-ms-flexbox;display:flex;font-weight:600;height:100%;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%}
+.recuadro_morado{-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:#b8bdff;color:rgb(68, 67, 67);display:-webkit-box;display:-ms-flexbox;display:flex;font-weight:600;height:100%;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%}
+.recuadro_rojo{-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:#eb2720;color:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;font-weight:600;height:100%;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%}
+.recuadro_comentarios_1{
+    padding: 10px;
+    margin: 10px 50px 10px 10px;
+    background-color:rgba(0, 156, 247, 0.116)!important;
+    color:rgb(68, 67, 67) !important;
+    border-radius: 25px;  
+}
+.recuadro_comentarios_2{
+    padding: 10px;
+    margin: 10px 10px 10px 50px;
+    background-color:rgba(228, 165, 222, 0.247)!important;
+    color:rgb(68, 67, 67) !important;
+    border-radius: 25px;
+}
+
+/*.table tbody tr:hover td, .table tbody tr:hover th {
+    
+    background-color:rgba(0, 0, 0, 0.1)!important;
+  }*/
+  .manita{
+    cursor: pointer;
+  }
+  #scroll_comentarios{    
+    min-height: 100px;
+    max-height: 350px;
+    overflow: scroll;    
+  }  
+  .color_gris{
+    color: #c0c2c1;
+  }

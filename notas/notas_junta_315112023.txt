@@ -1,0 +1,36 @@
+
+
+
+cat asuntos 
+audiencias
+Felicitacion,queja o sugerencia
+informacion de auditorias
+informativo
+inciativas de ley: en este caso se da respuesta de conocimiento al finalizar el procedimiento;
+invitaciones 
+peticiones coudadanas
+peticiones ordinarias y/o de emergencia;
+reportes ciudadanos 
+solicitud 
+{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}
+conocimiento cambia por informativo
+representacion cambia por solicitud
+quejas 
+{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}
+
+INVITACION	
+INFORMACION	
+CONOCIMIENTO	conocimiento cambia por informativo
+SOLICITUD	
+OTROS	
+RESPUESTA	
+REPRESENTACION	representacion cambia por solicitud
+ANALISIS	
+QUEJAS	quejas se junta con felicitaciones
+AUDIENCIA	
+DERECHO DE PETICIÓN
+REPORTE CIUDADANO	
+REPORTE INSABI	
+FELICITACIONES	se junta con quejas
+
+
