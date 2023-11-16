@@ -215,6 +215,10 @@
                     </section>
                 </div>
             </div>
+            <div class="d-grid mb-0 text-center">
+                <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i> Guardar </button>
+                <button class="btn btn-primary" type="button"><i class="mdi mdi-login"></i> Cancelar </button>
+            </div>
         </form>    
     </div>
 <script>
