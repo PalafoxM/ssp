@@ -2,10 +2,8 @@ var st = window.ssa || {};
 
 st.agregar = (function () {
     return {
-        hola: function(){
-            alert("si llego el script");
-        },
-        agregar: function(){
+        
+        agregarTurno: function(){
             $("#login").submit(function (e) {
                 e.preventDefault();                
                 $.ajax({
@@ -30,6 +28,24 @@ st.agregar = (function () {
                     }
                 });
             });
+        },
+        cancelarTurno: function(){
+            Swal.fire({
+                title: "¿Está seguro de que desea cancelar?",
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: "Si",
+                
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#formAgregarTurno")[0].reset();
+                    window.location.href = base_url + "index.php/Inicio";
+                } else if (result.isDenied) {
+                  Swal.fire("Ok", "", "info");
+                }
+              });
+               
+           
         }
         
     }

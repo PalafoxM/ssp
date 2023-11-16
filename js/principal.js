@@ -45,7 +45,7 @@ saeg.principal = (function () {
                     success: function (response) {
                         console.log(response);
                         if(response == 'correcto'){
-                            Swal.fire("Usuario correcto!", "eso es tokio", "success");
+                            Swal.fire("Bienvenido!", "ingresando...", "success");
                             window.location.href = base_url + "index.php/Inicio";
                                                        
                         }else{

@@ -37,6 +37,22 @@ class Agregar extends BaseController {
     {        
         $session = \Config\Services::session();   
         $data = array();
+        $catalogos = new Mglobal;
+        try {
+            // Intentar obtener datos de la tabla
+            $dataDB = array('tabla' => 'cat_asuntos', 'where' => 'visible = 1');
+            $response = $catalogos->getTabla($dataDB);
+            if (isset($response) && isset($response->data)) {
+                $data['cat_asunto'] = $response->data;
+            } else {
+                $data['cat_asunto'] = array(); 
+            }
+        } catch (\Exception $e) {
+            log_message('error', "Se produjo una excepción: " . $e->getMessage());
+            // echo "Se produjo una excepción: " . $e->getMessage();
+        }
+        // var_dump($response->data);
+        // die();
         $data['scripts'] = array('principal','agregar');
         $data['edita'] = 0;
         $data['nombre_completo'] = $session->nombre_completo; 
