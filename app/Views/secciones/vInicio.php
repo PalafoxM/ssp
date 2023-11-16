@@ -6,7 +6,7 @@
     <title>Turnos 2.0</title>
 </head>
 <body>
-    <h1>Hola <?php echo $nombre_completo; ?></h1>    
+    <h1>Hola <?php echo $nombre_completo; ?></h1>   
 
 </body>
 </html>

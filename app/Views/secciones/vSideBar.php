@@ -69,7 +69,7 @@
                     <div class="collapse" id="turnos">
                         <ul class="side-nav-second-level">
                             <li>
-                                <a href="#"><i class="dripicons-plus"></i>  Agregar</a>
+                                <a href="<?= base_url("/index.php/Agregar")?>"><i class="dripicons-plus"></i>  Agregar</a>
                             </li>
                             <li>
                                 <a href="#"><i class="dripicons-search"></i>  Buscar</a>

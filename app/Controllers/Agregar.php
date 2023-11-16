@@ -8,7 +8,7 @@ use App\Models\Mglobal;
 use stdClass;
 use CodeIgniter\API\ResponseTrait;
 
-class Inicio extends BaseController {
+class Agregar extends BaseController {
 
     use ResponseTrait;
     private $defaultData = array(
@@ -33,10 +33,10 @@ class Inicio extends BaseController {
     {        
         $session = \Config\Services::session();   
         $data = array();
-        $data['scripts'] = array('principal');
+        $data['scripts'] = array('principal','agregar');
         $data['edita'] = 0;
         $data['nombre_completo'] = $session->nombre_completo; 
-        $data['contentView'] = 'secciones/vInicio';                
+        $data['contentView'] = 'formularios/vFormAgregar';                
         $this->_renderView($data);
         
     }
