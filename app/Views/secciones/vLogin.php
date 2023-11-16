@@ -1,22 +1,21 @@
 <div class="auth-fluid">
             <!--Auth fluid left content -->
-            <div class="auth-fluid-form-box">
+            <div class="auth-fluid-form-box" >
                 <div class="align-items-center d-flex h-100">
                     <div class="card-body">
 
                         <!-- Logo -->
-                        <div class="auth-brand text-center text-lg-start">
-                            <a href="index.html" class="logo-dark">
-                                <span><img src="<?php echo base_url();?>/assets/images/SASS.png" alt="" height="18"></span>
+                        <div class="auth-brand text-center text-lg-start ">
+                            <a href="#" class="logo-dark">
+                                <span><img src="<?php echo base_url();?>/assets/images/st4.png" alt="Logo" height="230"></span>
                             </a>
-                            <a href="index.html" class="logo-light">
-                          
-                                <span><img src="<?php echo base_url();?>/assets/images/SASS.png" alt="" height="70"></span>
+                            <a href="#" class="logo-light text-center">
+                                <span><img src="<?php echo base_url();?>/assets/images/st4.png" alt="Logo" height="230"></span>
                             </a>
                         </div>
 
                         <!-- title-->
-                        <h2 class="mt-0" style="color: #069">Turnos 2.0</h2>
+                        <h2 class="mt-0" style="color: #069">Sistema de Turnos 2.0</h2>
                         <p class="text-muted mb-4">Ingrese usuario y contraseña</p>
 
                         <!-- form -->

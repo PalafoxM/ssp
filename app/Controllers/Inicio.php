@@ -8,7 +8,7 @@ use App\Models\Mglobal;
 use stdClass;
 use CodeIgniter\API\ResponseTrait;
 
-class Principal extends BaseController {
+class Inicio extends BaseController {
 
     use ResponseTrait;
     private $defaultData = array(
@@ -28,15 +28,17 @@ class Principal extends BaseController {
         $data = array_merge($this->defaultData, $data);
         echo view($data['layout'], $data);               
     }
-   
+
     public function index()
-    {  
-       
-        $session = \Config\Services::session();
+    {        
+        $session = \Config\Services::session();   
         $data = array();
         $data['scripts'] = array('principal');
         $data['edita'] = 0;
-        $data['contentView'] = 'secciones/vVacio';                
+        $data['nombre_completo'] = $session->nombre_completo; 
+        // var_dump($data);
+        // die();
+        $data['contentView'] = 'secciones/vInicio';                
         $this->_renderView($data);
         
     }

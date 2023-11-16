@@ -1,6 +1,6 @@
 <?php namespace App\Controllers;
 use CodeIgniter\Controller;
-use App\Libraries\Curps;
+
 use App\Libraries\Fechas;
 use App\Models\Mglobal;
 //use App\Libraries\Validasesion;
@@ -38,7 +38,7 @@ class Login extends BaseController {
         $session = \Config\Services::session();
         $data = array();
         if ($session->get('logueado')==1) {
-            header('Location:' . base_url() . '/index.php/Principal');
+            header('Location:' . base_url() . 'index.php/Inicio');
             die();
         }
         //$data['scripts'] = array('principal','somatometria');        
@@ -49,80 +49,29 @@ class Login extends BaseController {
     }
     public function validar_usuario(){
         $session = \Config\Services::session();
-        $Mglobal = new Mglobal;
+        $catalogos = new Mglobal;
         
         $usuario = $this->request->getPost('usuario');
         $contrasenia = $this->request->getPost('contrasenia');
 
         $data = array();
-        $dataDB = array('tabla' => 'usuarios', 'where' => 'usuario ="'.$usuario.'" and contrasenia = "'.md5($contrasenia).'" and visible = 1');  
+        $dataDB = array('tabla' => 'seg_usuarios', 'where' => 'usuario ="'.$usuario.'" and contrasenia like "'.md5($contrasenia).'" and visible = 1');  
         
         if($usuario && $contrasenia){
-            $response = $Mglobal->getTabla($dataDB);
-            if(sizeof($response->data) >= 1) {
-                // obtener perfil del usuario
-                $perfil = $Mglobal->getTabla(['tabla' => 'usuario_perfil', 'where' => ['id_usuario' => $response->data[0]->id_usuario, 'visible' => 1]]);
-                if(!$perfil->data) die("error");
-
-                
-                // $sistemaActivo = $Mglobal->getTabla(['tabla'=>'configuracion', 'where'=>['dsc_configuracion'=>"sistemaActivo"] ])->data;
-                // if ($perfil->data[0]->id_perfil != 1 && $sistemaActivo[0]->valor != 1){
-                //     die("error");
-                // }
-                
-                // Registrar login en bitacora de accesos
-                // $dataInsert= [
-                //     'usuario' => $usuario,
-                //     'contrasena' => '',
-                //     'logokerror' => '1',
-                //     'hora' => date('Y-m-d H:i:s'),
-                //     'ip' => $this->ServerVar("REMOTE_ADDR"),
-                //     'browser' => $this->get_browser_name($this->ServerVar("HTTP_USER_AGENT"))
-                // ];
-
-                // $dataConfig = [
-                //     "tabla" => "bitacora_accesos",
-                //     "editar"=> false,
-                // ];
-                // $bitacora = $Mglobal->saveTabla($dataInsert,$dataConfig,['script'=>'Login.validarUsuario']);
-
-                $session->set('id_perfil', $perfil->data[0]->id_perfil);
+            $response = $catalogos->getTabla($dataDB);
+            //die(print_r($response));
+            if(sizeof($response->data) >= 1){
                 $session->set('logueado', 1);
                 $session->set('id_usuario',$response->data[0]->id_usuario);
                 $session->set('usuario',$response->data[0]->usuario);
                 $session->set('nombre_completo',$response->data[0]->nombre." ".$response->data[0]->primer_apellido." ".$response->data[0]->segundo_apellido);
-                //$session->set('id_perfil',$response->data[0]->id_perfil);
-                $session->set('id_unidad_responsable',$response->data[0]->id_unidad_responsable);
-                //$session->set('dsc_unidad',$response->data[0]->id_perfil);
-                //$session->set('foto_perfil',$response->data[0]->ruta_foto);
-                //$session->set('dsc_perfil',$response->data[0]->dsc_perfil);
-                
+                $session->set('id_perfil',$response->data[0]->id_perfil);
                 die("correcto");
             }else{
-                // Registrar login en bitacora de accesos
-                // $dataInsert= [
-                //     'usuario' => $usuario,
-                //     'contrasena' => $contrasenia,
-                //     'logokerror' => '0',
-                //     'hora' => date('Y-m-d H:i:s'),
-                //     'ip' => $this->ServerVar("REMOTE_ADDR"),
-                //     'browser' => $this->get_browser_name($this->ServerVar("HTTP_USER_AGENT"))
-                // ];
-
-                // $dataConfig = [
-                //     "tabla" => "bitacora_accesos",
-                //     "editar"=> false,
-                // ];
-                // $bitacora = $Mglobal->saveTabla($dataInsert,$dataConfig,['script'=>'Login.validarUsuario']);
-                // die("error");
+                die("error");
             }            
         }        
-        //Solicitar a la base de datos
-
-        /*$session->set('logueado', 1);
-        $session->set('id_usuario',$response->id_usuario);
-        $session->set('id_persona',$response->id_persona);
-        $session->set('usuario',$response->usuario);        */
+      
         die("error");
 
     }
@@ -131,7 +80,6 @@ class Login extends BaseController {
         $session->destroy();
         $session->set('logueado', 0);        
         header('Location:'.base_url());
-        //header('Location:' . base_url());
         die();
     }
     

@@ -37,24 +37,24 @@ saeg.principal = (function () {
         login: function(){
             $("#login").submit(function (e) {
                 e.preventDefault();                
-                //document.getElementById("submit_login").style.display = "none";
-                //document.getElementById("loading").style.display = "block";
                 $.ajax({
                     type: "POST",
-                    url: base_url + "/index.php/Login/validar_usuario",
+                    url: base_url + "index.php/Login/validar_usuario",
                     data: $(this).serialize(),
                     dataType: "html",
                     success: function (response) {
                         console.log(response);
                         if(response == 'correcto'){
-                            window.location.href = base_url + "/index.php/Junta/index/IjIi";
+                            Swal.fire("Usuario correcto!", "eso es tokio", "success");
+                            window.location.href = base_url + "index.php/Inicio";
+                                                       
                         }else{
                             Swal.fire("Usuario incorrecto!", "Favor de verificar sus credenciales de acceso", "error");                            
                             return false;
                         } 
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Error');
+                        Swal.fire("Error!", textStatus, errorThrown, "error");  
                         console.log('error:' + textStatus, errorThrown);
                     }
                 });

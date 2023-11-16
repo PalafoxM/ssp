@@ -29,7 +29,7 @@ class Database extends Config
         'hostname'     => '10.0.72.21',
         'username'     => 'userTurnos2',
         'password'     => 'y3>u0292WcP*',
-        'database'     => '',
+        'database'     => 'turnos2',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
