@@ -215,9 +215,11 @@
                     </section>
                 </div>
             </div>
-            <div class="d-grid mb-0 text-center">
-                <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i> Guardar </button>
-                <button class="btn btn-primary" type="button"><i class="mdi mdi-login"></i> Cancelar </button>
+            <div class="row text-right justify-content-center mt-3 mb-3">   
+                <div class="col-md-2">
+                    <button class="btn btn-primary d-inline " type="submit"><i class="mdi mdi-content-save"></i> Guardar </button>
+                    <button class="btn btn-danger d-inline " type="button"><i class="mdi mdi-content-save-off-outline"></i> Cancelar </button>
+                </div>
             </div>
         </form>    
     </div>
