@@ -22,6 +22,10 @@ class Agregar extends BaseController {
         setlocale(LC_TIME, 'es_ES.utf8', 'es_MX.UTF-8', 'es_MX', 'esp_esp', 'Spanish'); // usar solo LC_TIME para evitar que los decimales los separe con coma en lugar de punto y fallen los inserts de peso y talla
         date_default_timezone_set('America/Mexico_City');  
         $session = \Config\Services::session();
+        if($session->get('logueado')!= 1){
+            header('Location:'.base_url().'index.php/Login/cerrar?inactividad=1');            
+            die();
+        }
     }
 
     private function _renderView($data = array()) {     

@@ -206,3 +206,49 @@ INFO - 2023-11-16 14:17:08 --> Session: Class initialized using 'CodeIgniter\Ses
 INFO - 2023-11-16 14:19:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 INFO - 2023-11-16 14:19:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 INFO - 2023-11-16 14:20:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:24:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:24:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:24:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:24:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:25:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:26:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:28:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-11-16 14:28:34 --> Undefined property: App\Controllers\Agregar::$session
+in APPPATH\Controllers\Agregar.php on line 25.
+ 1 APPPATH\Controllers\Agregar.php(25): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Agregar::$session', 'C:\\wamp\\www\\turnos2\\app\\Controllers\\Agregar.php', 25)
+ 2 SYSTEMPATH\CodeIgniter.php(914): App\Controllers\Agregar->__construct()
+ 3 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-11-16 14:29:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:29:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-11-16 14:29:37 --> [DEPRECATED] Creation of dynamic property App\Models\Mglobal::$session is deprecated in APPPATH\Models\Mglobal.php on line 18.
+ 1 APPPATH\Controllers\Login.php(52): App\Models\Mglobal->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Login->validar_usuario()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-11-16 14:29:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2023-11-16 14:29:38 --> Undefined property: App\Controllers\Inicio::$session
+in APPPATH\Controllers\Inicio.php on line 25.
+ 1 APPPATH\Controllers\Inicio.php(25): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: App\\Controllers\\Inicio::$session', 'C:\\wamp\\www\\turnos2\\app\\Controllers\\Inicio.php', 25)
+ 2 SYSTEMPATH\CodeIgniter.php(914): App\Controllers\Inicio->__construct()
+ 3 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-11-16 14:29:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:30:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:30:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:30:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:30:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:30:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:30:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2023-11-16 14:44:09 --> [DEPRECATED] Creation of dynamic property App\Models\Mglobal::$session is deprecated in APPPATH\Models\Mglobal.php on line 18.
+ 1 APPPATH\Controllers\Login.php(52): App\Models\Mglobal->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Login->validar_usuario()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2023-11-16 14:44:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2023-11-16 14:44:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
