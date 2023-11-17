@@ -5,6 +5,7 @@ use App\Libraries\Fechas;
 use App\Libraries\Funciones;
 use App\Models\Mglobal;
 
+
 use stdClass;
 use CodeIgniter\API\ResponseTrait;
 
@@ -35,12 +36,13 @@ class Agregar extends BaseController {
 
     public function index()
     {        
+
         $session = \Config\Services::session();   
         $data = array();
         $catalogos = new Mglobal;
+      
         try {
-            // Intentar obtener datos de la tabla
-            $dataDB = array('tabla' => 'cat_asuntos', 'where' => 'visible = 1');
+            $dataDB = array('select'=> 'id_asunto, dsc_asunto', 'tabla' => 'cat_asuntos', 'where' => 'visible = 1');
             $response = $catalogos->getTabla($dataDB);
             if (isset($response) && isset($response->data)) {
                 $data['cat_asunto'] = $response->data;
@@ -49,10 +51,69 @@ class Agregar extends BaseController {
             }
         } catch (\Exception $e) {
             log_message('error', "Se produjo una excepción: " . $e->getMessage());
-            // echo "Se produjo una excepción: " . $e->getMessage();
         }
-        // var_dump($response->data);
-        // die();
+        try {
+            $dataDB = array( 'select'=> 'id, nombre, cargo, orden',  'tabla' => 'turnado', 'where' => 'visible = 1');
+            $response = $catalogos->getTabla($dataDB);
+            if (isset($response) && isset($response->data)) {
+                $data['turnado'] = $response->data;
+                $resultadoFiltrado = array_filter($response->data, function($elemento) {
+                    return $elemento->orden == '2';
+                });
+                $data['cppNombre']= $resultadoFiltrado;
+
+            } else {
+                $data['turnado'] = array(); 
+            }
+        } catch (\Exception $e) {
+            log_message('error', "Se produjo una excepción: " . $e->getMessage());
+        }
+        try {
+            $dataDB = array( 'select'=> 'id_indicacion, dsc_indicacion',  'tabla' => 'indicaciones', 'where' => 'visible = 1');
+            $response = $catalogos->getTabla($dataDB);
+            if (isset($response) && isset($response->data)) {
+                $data['indicacion'] = $response->data;
+            } else {
+                $data['indicacion'] = array(); 
+            }
+        } catch (\Exception $e) {
+            log_message('error', "Se produjo una excepción: " . $e->getMessage());
+        }
+        try {
+            $dataDB = array( 'select'=> 'id_personal, alias',  'tabla' => 'personal', 'where' => 'visible = 1');
+            $response = $catalogos->getTabla($dataDB);
+            if (isset($response) && isset($response->data)) {
+                $data['tramito'] = $response->data;
+            } else {
+                $data['tramito'] = array(); 
+            }
+        } catch (\Exception $e) {
+            log_message('error', "Se produjo una excepción: " . $e->getMessage());
+        }
+        try {
+            $dataDB = array( 'select'=> 'id, nombre',  'tabla' => 'personal_llamadas', 'where' => 'orden > 1  AND mostrar = 1');
+            $response = $catalogos->getTabla($dataDB);
+            if (isset($response) && isset($response->data)) {
+                $data['firmaTurno'] = $response->data;
+            } else {
+                $data['firmaTurno'] = array(); 
+            }
+        } catch (\Exception $e) {
+            log_message('error', "Se produjo una excepción: " . $e->getMessage());
+        }
+        try {
+            $dataDB = array( 'select'=> 'id_estatus, dsc_status',  'tabla' => 'cat_estatus', 'where' => 'visible = 1');
+            $response = $catalogos->getTabla($dataDB);
+            if (isset($response) && isset($response->data)) {
+                $data['status'] = $response->data;
+            } else {
+                $data['status'] = array(); 
+            }
+        } catch (\Exception $e) {
+            log_message('error', "Se produjo una excepción: " . $e->getMessage());
+        }
+        //  var_dump($data['firmaTurno']);
+        //  die();
         $data['scripts'] = array('principal','agregar');
         $data['edita'] = 0;
         $data['nombre_completo'] = $session->nombre_completo; 
@@ -60,5 +121,28 @@ class Agregar extends BaseController {
         $this->_renderView($data);
         
     }
+    public function guardaTurno(){
+        $response = new \stdClass();
+        $response->error = true;
+        $data = $this->request->getPost();
+         $dataInsert = [
+            'id_actividad'          => $idActividad,
+            'id_estatus_respuesta'  => 0,
+            'usuario_registro'      => $this->session->id_usuario,
+        ];
+
+        $dataConfig = [
+            "tabla" => "actividad_respuesta",
+            "editar"=> false,
+        ];
+        $respuesta = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Auditoria.saveRespuestaEspecifica"]);
+
+        if ($respuesta->error){
+            $response->respuesta = $respuesta->respuesta;
+            $this->respond($response);
+        }
+        return $this->respond($response);
+    }
+
   
 }
