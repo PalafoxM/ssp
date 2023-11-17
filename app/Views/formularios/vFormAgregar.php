@@ -28,56 +28,77 @@
         <form id="formAgregarTurno" name="formAgregarTurno" >
             <div class="row">
                 <!-- seccion izquierdo incio -->
-                <div class="col-md-6 ">
+                <div class="col-md-12 ">
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <h3>DATOS DE LA INVITACIÓN</h3>
-                            <div class="mb-3">
-                                <label for="asunto" class="form-label">ASUNTO</label>
-                                <select class="form-select form-control-sm " id="asunto" name="asunto"  >
-                                        <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($cat_asunto as $opcion) : ?>
-                                        <option value="<?= $opcion->id_asunto ?>"><?= strtoupper($opcion->dsc_asunto) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="enLiniea">
-                                <div class="mb-3 item">
-                                    <label for="fecha_peticion" class="form-label ">FECHA PETICIÓN</label>
-                                    <input class="form-control form-control-sm" id="fecha_peticion" name="fecha_peticion" type="date" >
-                                </div>
-                                <div class="mb-3 item">
-                                    <label for="fecha_recepcion" class="form-label">FECHA RECEPCIÓN</label>
-                                    <input class="form-control form-control-sm" id="fecha_recepcion" type="date" name="fecha_recepcion">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="asunto" class="form-label">ASUNTO</label>
+                                    <select class="form-select form-control-sm " id="asunto" name="asunto"  >
+                                            <option value="">SELECCCIONE..</option>
+                                        <?php foreach ($cat_asunto as $opcion) : ?>
+                                            <option value="<?= $opcion->id_asunto ?>"><?= strtoupper($opcion->dsc_asunto) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label for="titulo_inv" class="form-label">TITULO</label>
-                                <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm">
+                            <div class="col-md-6">
+                                <div class="enLiniea">
+                                    <div class="mb-3 item">
+                                        <label for="fecha_peticion" class="form-label ">FECHA PETICIÓN</label>
+                                        <input class="form-control form-control-sm" id="fecha_peticion" name="fecha_peticion" type="date" >
+                                    </div>
+                                    <div class="mb-3 item">
+                                        <label for="fecha_recepcion" class="form-label">FECHA RECEPCIÓN</label>
+                                        <input class="form-control form-control-sm" id="fecha_recepcion" type="date" name="fecha_recepcion">
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="nombre_t" class="form-label">NOMBRE</label>
-                                <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm" placeholder="NOMBRE">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                               
+                                    <div class="mb-3">
+                                        <label for="titulo_inv" class="form-label">TITULO</label>
+                                        <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm">
+                                    </div>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="primer_apellido" class="form-label">PRIMER APELLIDO</label>
-                                <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm" placeholder="PRIMER APELLIDO">
+                            <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="nombre_t" class="form-label">NOMBRE</label>
+                                        <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm" placeholder="NOMBRE">
+                                    </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="segundo_apellido" class="form-label">SEGUNDO APELLIDO</label>
-                                <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control form-control-sm" placeholder="SEGUNDO APELLIDO">
+                            <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="primer_apellido" class="form-label">PRIMER APELLIDO</label>
+                                        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm" placeholder="PRIMER APELLIDO">
+                                    </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="cargo_inv" class="form-label">CARGO</label>
-                                <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO">
+                            <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="segundo_apellido" class="form-label">SEGUNDO APELLIDO</label>
+                                        <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control form-control-sm" placeholder="SEGUNDO APELLIDO">
+                                    </div>
+                                  
                             </div>
-                            <div class="mb-3">
-                                <label for="razon_social_inv" class="form-label">RAZON SOCIAL</label>
-                                <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cargo_inv" class="form-label">CARGO</label>
+                                    <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO">
+                                </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="razon_social_inv" class="form-label">RAZON SOCIAL</label>
+                                    <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL">
+                                </div>
+                            </div>
+                        </div>
                             <div class="mb-3">
                                 <label class="form-label">SINTESIS ASUNTO</label>
                                 <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
@@ -88,30 +109,37 @@
                 </div>
                 <!-- seccion izquierdo fin-->
                 <!-- seccion derecha incio -->
-                <div class="col-md-6">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <h3>TURNAR A:</h3>
-                            <div class="mb-3">
-                                <label for="nombre_turno" class="form-label">NOMBRE</label>
-                                <select class="select2 form-select form-control-sm" id="nombre_turno" name="nombre_turno">
-                                <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($turnado as $opcion) : ?>
-                                        <option value="<?= $opcion->id ?>"><?= strtoupper($opcion->nombre ." ". $opcion->cargo) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                            <div class="row">
+                            <div class="col-md-5">
+                                <div class="mb-3">
+                                    <label for="nombre_turno" class="form-label">NOMBRE</label>
+                                    <select class="select2 form-select form-control-sm" id="nombre_turno" name="nombre_turno">
+                                    <option value="">SELECCCIONE..</option>
+                                        <?php foreach ($turnado as $opcion) : ?>
+                                            <option value="<?= $opcion->id ?>"><?= strtoupper($opcion->nombre ." ". $opcion->cargo) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="dependencia" class="form-label">DEPENDENCIA</label>
-                                <input type="text" id="dependencia" name="dependencia" class="form-control form-control-sm">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="dependencia" class="form-label">DEPENDENCIA</label>
+                                    <input type="text" id="dependencia" name="dependencia" class="form-control form-control-sm">
+                                </div>
                             </div>
-
-                            <div class="form-check form-checkbox-success mb-2">
-                                <input type="checkbox" class="form-check-input" id="confirmacion" name ="confirmacion">
-                                <label class="form-check-label" for="confirmacion">CONFIRMACIÓN</label>
-                            </div>
-                        </div><!--END CARD -->
+                            <div class="col-md-1">
+                                <div class="form-check form-checkbox-success mt-4">
+                                    <input type="checkbox" class="form-check-input" id = "confirmacion" name = "confirmacion">
+                                    <label class="form-check-label" for="confirmacion">CONFIRMACIÓN</label>
+                                </div>
+                            </div><!--END CARD -->
+                        </div>
                     </div>
                     <div class="card"><!--init card -->
                         <div class="card-body">
@@ -193,9 +221,9 @@
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <div class="mb-3">
-                                <label for="example-textarea" class="form-label">RESULTADO DEL TURNO</label>
+                                <label for="resultado_turno" class="form-label">RESULTADO DEL TURNO</label>
                                 <textarea data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
-                                    placeholder="Tiene un limite 225 caracteres."></textarea>
+                                    placeholder="Tiene un limite 225 caracteres." id="resultado_turno" name="resultado_turno"></textarea>
                             </div>
                         </div>
                     </div><!--END CARD -->
@@ -252,7 +280,16 @@
         $('#tramito').select2();
         $('#firma_turno').select2();
         $('#status').select2();
-        
+        // $('#resultado_turno').maxlength({
+        //     showMaxLength: false,
+        //     alwaysShow: true,
+        //     threshold: 10,
+        //     warningClass: "label label-info",
+        //     limitReachedClass: "label label-warning",
+        //     placement: 'bottom',
+        //     message: 'usados %charsTyped% de %charsTotal% caractares.'
+            
+        // });
     });
 </script>
 </body>
