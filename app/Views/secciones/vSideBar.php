@@ -27,6 +27,13 @@
         <!--- Sidemenu -->
         <ul class="side-nav mt-5">
                 <li class="side-nav-title side-nav-item">MENÚ DEL SISTEMA</li>
+               
+                    <a data-bs-toggle="collapse" href="#" aria-expanded="false" aria-controls="gestion" class="side-nav-link">
+                        <i class="dripicons-clock"></i>
+                        <span> Turnos </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
                 <?php if((int)$session->id_perfil == 1): ?>
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#configuracion" aria-expanded="false" aria-controls="configuracion" class="side-nav-link">

@@ -387,12 +387,14 @@
                     </div><!--END CARD -->
                 </div>
             </div>
-            <div class="row text-right justify-content-center mt-3 mb-3">   
-                <div class="col-md-2">
-                    <button class="btn btn-primary d-inline " type="submit"><i class="mdi mdi-content-save"></i> Guardar </button>
-                    <button class="btn btn-danger d-inline " type="button" onclick="st.agregar.cancelarTurno();"><i class="mdi mdi-content-save-off-outline" id="cancelarTurno" ></i> Cancelar </button>
+            <!-- <div class="row text-right justify-content-center mt-3 mb-3">    -->
+                <div class="row mb-5 ">
+                    <div class="col-md-12 text-center ">
+                        <button class="btn btn-primary" type="submit"><i class="mdi mdi-content-save"></i> Guardar </button>
+                        <button class="btn btn-danger" type="button" onclick="st.agregar.cancelarTurno();"><i class="mdi mdi-content-save-off-outline" id="cancelarTurno" ></i> Cancelar </button>
+                    </div>
                 </div>
-            </div>
+            <!-- </div> -->
         </form>    
     </div>
 <script>
