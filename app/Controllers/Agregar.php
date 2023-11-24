@@ -186,23 +186,50 @@ class Agregar extends BaseController {
     public function guardaTurno(){
         $response = new \stdClass();
         $response->error = true;
+        $save = new Mglobal;
         $data = $this->request->getPost();
-         $dataInsert = [
-            'id_actividad'          => $idActividad,
-            'id_estatus_respuesta'  => 0,
-            'usuario_registro'      => $this->session->id_usuario,
+        $dataInsert = [
+            
+            `anio`                         =>  "2023",
+            `id_asunto`                    => $data['asunto'],     
+            `fecha_peticion`               => $data[''],             
+            `fecha_recepcion`              => $data[''],             
+            `solicitante_titulo`           => $data[''],                 
+            `solicitante_nombre`           => $data[''],                 
+            `solicitante_primer_apellido`  => $data[''],                         
+            `solicitante_segundo_apellido` => $data[''],                         
+            `solicitante_cargo`            => $data[''],             
+            `solicitante_razon_social`     => $data[''],                     
+            `resumen`                      => $data[''],     
+            `id_estatus`                   => $data[''],         
+            `id_destinatario`              => $data[''],             
+            `cargo_turno`                  => $data[''],         
+            `unidad`                       => $data[''],     
+            `confirmacion`                 => $data[''],         
+            `fecha_confirmacion`           => $data[''],                 
+            `fecha_terminado`              => $data[''],             
+            `resultado_turno`              => $data[''],             
+            `firma_turno`                  => $data[''],         
+            `usuario_registro`             => $data[''],             
+            `fecha_registro`               => $data[''],             
+            `usuario_actualiza`            => $data[''],             
+            `fecha_actualiza`              => $data[''],             
+            
         ];
 
         $dataConfig = [
             "tabla" => "actividad_respuesta",
             "editar"=> false,
         ];
-        $respuesta = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Auditoria.saveRespuestaEspecifica"]);
+
+        $respuesta =  $save->updateInsertTabla($dataInsert, $dataConfig, $dataBitacora);
+        // $respuesta = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Auditoria.saveRespuestaEspecifica"]);
 
         if ($respuesta->error){
             $response->respuesta = $respuesta->respuesta;
             $this->respond($response);
         }
+
         return $this->respond($response);
     }
 

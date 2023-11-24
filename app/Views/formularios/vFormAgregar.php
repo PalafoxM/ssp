@@ -401,6 +401,7 @@
     $(document).ready(function(){
         st.agregar.saveTempccp();
         st.agregar.saveTempIndicacion();
+        st.agregar.agregarTurno();
         $('#nombre_turno').select2();
         $('#indicacion1').select2();
         $('#indicacion2').select2();
