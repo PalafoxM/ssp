@@ -3,9 +3,10 @@ var ini = window.ssa || {};
 ini.inicio = (function () {
     return {
         
-        tablaPrincipal: function(){
-           
-        },
+        descripcionFormatter: function(value, row) {
+            
+            return value.substring(0, 50) + "...";
+        }
         
         
         

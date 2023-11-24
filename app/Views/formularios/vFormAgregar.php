@@ -1,3 +1,4 @@
+<?php  $session = \Config\Services::session();    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,31 @@
     <title>Agregar</title>
     
 <style>
+    .neon {
+        display: inline-block;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        border: none;
+        font: normal 20px/normal "Warnes", Helvetica, sans-serif;
+        color: rgba(255,255,255,1);
+        text-decoration: normal;
+        text-align: center;
+        -o-text-overflow: clip;
+        text-overflow: clip;
+        white-space: pre;
+        text-shadow: 0 0 10px rgba(255,255,255,1) , 0 0 20px rgba(255,255,255,1) , 0 0 30px rgba(255,255,255,1) , 0 0 40px #ff00de , 0 0 70px #ff00de , 0 0 80px #ff00de , 0 0 100px #ff00de ;
+        -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+        -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+        -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+        transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+       
+    }
+
+    .neon:hover {
+    text-shadow: 0 0 10px rgba(255,255,255,1) , 0 0 20px rgba(255,255,255,1) , 0 0 30px rgba(255,255,255,1) , 0 0 40px #00ffff , 0 0 70px #00ffff , 0 0 80px #00ffff , 0 0 100px #00ffff ;
+    }
     body{
         background-color: #d1d7d9;
     }
@@ -25,11 +51,30 @@
             border-collapse: collapse;
             width: 100%;
         }
-        th, td {
+    th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
+    /* Estilo para todas las opciones */
+    .opciones {
+        font-weight: bold;
+        color:black ;
+    }
+
+    /* Estilo para las dos primeras opciones en el select */
+    .primeras2 {
+        font-weight: bold;
+        color: blue;
+    }
+    .primeras2:hover{
+        color:#d1d7d9;
+    }
+    .icono{
+        font-weight: bold;
+        color:yellow;
+    }
 </style>
 <body>
     <div class=" mt-3">
@@ -39,14 +84,14 @@
                 <div class="col-md-12 ">
                     <div class="card"><!--init card -->
                         <div class="card-body">
-                            <h3>DATOS DE LA INVITACIÓN</h3>
+                            <h3>DATOS GENERALES</h3>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="asunto" class="form-label">ASUNTO</label>
                                     <select class="form-select form-control-sm " id="asunto" name="asunto"  >
                                             <option value="">SELECCCIONE..</option>
-                                        <?php foreach ($cat_asunto as $opcion) : ?>
+                                        <?php foreach ($cat_asuntos as $opcion) : ?>
                                             <option value="<?= $opcion->id_asunto ?>"><?= strtoupper($opcion->dsc_asunto) ?></option>
                                         <?php endforeach; ?>
                                     </select>
@@ -133,7 +178,7 @@
                                     <select class="select2 form-select form-control-sm" id="nombre_turno" name="nombre_turno">
                                     <option value="">SELECCCIONE..</option>
                                         <?php foreach ($turnado as $opcion) : ?>
-                                            <option value="<?= $opcion->id ?>"><?= strtoupper($opcion->nombre ." ". $opcion->cargo) ?></option>
+                                            <option value="<?= $opcion->id_destinatario ?>"><?= strtoupper($opcion->nombre_destinatario ." ". $opcion->cargo) ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -154,9 +199,13 @@
                     </div>
                     <div class="card"><!--init card -->
                         <div class="card-body">
-                            <h3>CON COPIA PARA:</h3>
+                            <!-- <h3>CON COPIA PARA:</h3>
                             <!-- Info Header Modal -->
-                                <button  type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_cpp">AGREGAR</button>
+                                <!--<button  type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_cpp">AGREGAR</button> -->
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3>CON COPIA PARA:</h3>
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_cpp"> <i class="dripicons-plus icono"></i> AGREGAR</button>
+                                </div>
                                 <div id="modal_cpp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
                                     <div class="modal-dialog  modal-full-width">
                                         <div class="modal-content">
@@ -166,14 +215,20 @@
                                             </div>
                                             <div class="modal-body">
                                                <div class="mb-3">
-                                                    <label for="cpp" class="form-label">NOMBRE 1</label>
+                                                    <label for="cpp" class="form-label">NOMBRES</label> <small class=""><strong>Nota:</strong> puedes seleccionar todos los nombres que necesites:</small>
                                                     <select class="form-select form-control-sm select2" id="cpp" name="cpp[]" multiple="multiple">
-                                                    <option value="">SELECCCIONE..</option>
-                                                        <?php foreach ($cppNombre as $opcion) : ?>
-                                                            <option value="<?= $opcion->id ?>"><?= strtoupper($opcion->nombre ." ". $opcion->cargo) ?></option>
+                                                    <option ></option>
+                                                    <?php $count = 0; ?>
+                                                        <?php foreach ($turnado as $opcion) : ?>
+                                                            <option value="<?= $opcion->id_destinatario ?>" <?php echo ($count < 2) ? 'class="primeras2"' :'class="opciones"' ?>>
+                                                                <?= strtoupper($opcion->nombre_destinatario ." ". $opcion->cargo) ?>
+                                                            </option>
+                                                            <?php $count++; ?>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div> 
+                                                        
+
                                                 <div class="container">
                                                     <table id="selectedValuesTable">
                                                         <thead>
@@ -205,39 +260,16 @@
                                     <tbody></tbody>
                                 </table>
                                 </div>
-                            <!-- <div class="mb-3">
-                                <label for="cpp1" class="form-label">NOMBRE 1</label>
-                                <select class="form-select form-control-sm" id="cpp1" name="cpp1">
-                                <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($cppNombre as $opcion) : ?>
-                                        <option value="<?= $opcion->id ?>"><?= strtoupper($opcion->nombre ." ". $opcion->cargo) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div> -->
-                            <!-- <div class="mb-3">
-                                <label for="cpp2" class="form-label">NOMBRE 2</label>
-                                <select class="form-select form-control-sm" id="cpp2" name="cpp2">
-                                <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($cppNombre as $opcion) : ?>
-                                        <option value="<?= $opcion->id ?>"><?= strtoupper($opcion->nombre ." ". $opcion->cargo) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="simpleinput" class="form-label">NOMBRE 3</label>
-                                <input type="text" id="cpp3" name="cpp3" class="form-control form-control-sm">
-                            </div>
-                            <div class="mb-3">
-                                <label for="simpleinput" class="form-label">NOMBRE 4</label>
-                                <input type="text" id="cpp4" name="cpp4" class="form-control form-control-sm">
-                            </div> -->
+                            
                         </div>
                     </div><!--END CARD -->
                     <div class="card"><!--init card -->
                         <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
                             <h3>INDICACIONES:</h3>
                             <!-- Full width modal -->
-                            <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_indicacion">INDICACIONES:</button>
+                            <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_indicacion"><i class="dripicons-plus icono"></i> AGREGAR</button>
+                        </div>    
                             <div id="modal_indicacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-full-width">
                                     <div class="modal-content">
@@ -250,7 +282,7 @@
                                                 <label for="indicacion1" class="form-label">SELECCIONE</label>
                                                 <select class="form-select form-control-sm select2" id="indicacion" name="indicacion[]" multiple="multiple">
                                                 <option value="">SELECCCIONE..</option>
-                                                    <?php foreach ($indicacion as $opcion) : ?>
+                                                    <?php foreach ($cat_indicaciones as $opcion) : ?>
                                                         <option value="<?= $opcion->id_indicacion ?>"><?= strtoupper($opcion->dsc_indicacion) ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -285,42 +317,7 @@
                                     <tbody></tbody>
                                 </table>
                                 </div>
-                            <!-- <div class="mb-3">
-                                <label for="indicacion1" class="form-label">SELECCIONE</label>
-                                <select class="form-select form-control-sm select2" id="indicacion1" name="indicacion1">
-                                <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($indicacion as $opcion) : ?>
-                                        <option value="<?= $opcion->id_indicacion ?>"><?= strtoupper($opcion->dsc_indicacion) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="indicacion2" class="form-label">SELECCIONE</label>
-                                <select class="form-select form-control-sm select2" id="indicacion2" name="indicacion2">
-                                <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($indicacion as $opcion) : ?>
-                                        <option value="<?= $opcion->id_indicacion ?>"><?= strtoupper($opcion->dsc_indicacion) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="indicacion3" class="form-label">SELECCIONE</label>
-                                <select class="form-select form-control-sm select2" id="indicacion3" name="indicacion3">
-                                <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($indicacion as $opcion) : ?>
-                                        <option value="<?= $opcion->id_indicacion ?>"><?= strtoupper($opcion->dsc_indicacion) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="indicacion4" class="form-label">SELECCIONE</label>
-                                <select class="form-select form-control-sm select2" id="indicacion4" name="indicacion4">
-                                <option value="">SELECCCIONE..</option>
-                                    <?php foreach ($indicacion as $opcion) : ?>
-                                        <option value="<?= $opcion->id_indicacion ?>"><?= strtoupper($opcion->dsc_indicacion) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div> -->
+                        
                         </div>
                     </div><!--END CARD -->
                     </div>    
@@ -336,21 +333,17 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="tramito" class="form-label">TRAMITÓ</label>
-                                        <select class="form-select form-control-sm select2" id="tramito" name="tramito">
-                                        <option value="">SELECCCIONE..</option>
-                                            <?php foreach ($tramito as $opcion) : ?>
-                                                <option value="<?= $opcion->id_personal ?>"><?=  strtoupper($opcion->alias) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <span class="form-control form-control-sm" ><?php echo strtoupper(htmlspecialchars($nombre_completo)); ?></span>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="firma_turno" class="form-label">FIRMA DEL TURNO</label>
-                                        <select class="form-select form-control-sm select2" id="firma_turno" name = "firma_turno">
-                                        <option value="">SELECCCIONE..</option>
+                                        <select class="form-select form-control-sm select2" id="firma_turno" name = "firma_turno" >
+                                        <!-- <option value="">SELECCCIONE..</option> -->
+                                            <option></option>
                                             <?php foreach ($firmaTurno as $opcion) : ?>
-                                                <option value="<?= $opcion->id ?>"><?=  strtoupper($opcion->nombre) ?></option>
+                                                <option value="<?= $opcion->id_destinatario ?>"><?=  strtoupper($opcion->nombre_destinatario) ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -359,8 +352,9 @@
                                     <div class="mb-3">
                                         <label for="status" class="form-label">ESTATUS</label>
                                         <select class="form-select form-control-sm " id="status" name="status">
-                                                <option value="">SELECCCIONE..</option>
-                                            <?php foreach ($status as $opcion) : ?>
+                                                <!-- <option value="">SELECCCIONE..</option> -->
+                                            <option></option>
+                                            <?php foreach ($cat_estatus as $opcion) : ?>
                                                 <?php
                                                     $selected = ($opcion->id_estatus == 1) ? 'selected' : '';
                                                 ?>
@@ -411,21 +405,31 @@
         $('#indicacion3').select2();
         $('#indicacion4').select2();
         $('#tramito').select2();
-        $('#firma_turno').select2();
-        $('#status').select2();
-        // $('#cpp').select2();
-        // $('#resultado_turno').maxlength({
-        //     showMaxLength: false,
-        //     alwaysShow: true,
-        //     threshold: 10,
-        //     warningClass: "label label-info",
-        //     limitReachedClass: "label label-warning",
-        //     placement: 'bottom',
-        //     message: 'usados %charsTyped% de %charsTotal% caractares.'
-            
-        // });
-        $('#cpp').select2({dropdownParent: $("#modal_cpp") });
+        $('#firma_turno').select2({
+            placeholder: "SELECCCIONE..",
+        });
+        $('#status').select2({
+            placeholder: "SELECCCIONE..",
+        });
+        $('#cpp').select2({
+            dropdownParent: $("#modal_cpp") ,
+            placeholder: "SELECCCIONE..",
+            templateResult: function (data) {    
+                if (!data.element) {
+                return data.text;
+                }
+                var $element = $(data.element);
+                var $wrapper = $('<span></span>');
+                $wrapper.addClass($element[0].className);
+                $wrapper.text(data.text);
+                return $wrapper;
+            }
+        });
         $('#indicacion').select2({dropdownParent: $("#modal_indicacion") });
+
+        
+       
+       
     });
 </script>
 </body>

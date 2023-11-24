@@ -33,94 +33,156 @@ class Agregar extends BaseController {
         $data = array_merge($this->defaultData, $data);
         echo view($data['layout'], $data);               
     }
+    
+    public function obtenerOpcionesSelect($select, $tabla, $where = null)
+    {
+        $catalogos = new Mglobal;
+        try {
+            $dataDB = array('select' => $select, 'tabla' => $tabla, 'where' => $where);
+            $response = $catalogos->getTabla($dataDB);
 
+            if (isset($response) && isset($response->data)) {
+                return $response->data;
+            } else {
+                return array();
+            }
+        } catch (\Exception $e) {
+            log_message('error', "Se produjo una excepción: " . $e->getMessage());
+            return array();
+        }
+    }
+
+// Ejemplo de uso
+// $opcionesAsunto = obtenerOpcionesSelect('id_asunto, dsc_asunto', 'cat_asuntos', 'visible = 1');
+
+
+    // public function index()
+    // {        
+       
+    //     $session = \Config\Services::session();   
+    //     $data = array();
+    //     $catalogos = new Mglobal;
+      
+    //     try {
+    //         $dataDB = array('select'=> 'id_asunto, dsc_asunto', 'tabla' => 'cat_asuntos', 'where' => 'visible = 1');
+    //         $response = $catalogos->getTabla($dataDB);
+    //         if (isset($response) && isset($response->data)) {
+    //             $data['cat_asunto'] = $response->data;
+    //         } else {
+    //             $data['cat_asunto'] = array(); 
+    //         }
+    //     } catch (\Exception $e) {
+    //         log_message('error', "Se produjo una excepción: " . $e->getMessage());
+    //     }
+    //     try {
+    //         $dataDB = array( 'select'=> 'id_destinatario, nombre_destinatario, cargo, id_tipo_cargo',  'tabla' => 'cat_destinatario', 'where' => 'visible = 1');
+    //         $response = $catalogos->getTabla($dataDB);
+    //         if (isset($response) && isset($response->data)) {
+    //             $data['turnado'] = $response->data;
+    //             $resultadoFiltrado = array_filter($response->data, function($elemento) {
+    //                 return $elemento->id_tipo_cargo == '2';
+    //             });
+    //             $data['cppNombre']= $resultadoFiltrado;
+    //             $personaFirma = array_filter($response->data, function($elemento) {
+    //                 return $elemento->id_tipo_cargo == '9';
+    //             });
+    //             $data['firmaTurno']= $personaFirma;
+
+    //         } else {
+    //             $data['turnado'] = array(); 
+    //         }
+    //     } catch (\Exception $e) {
+    //         log_message('error', "Se produjo una excepción: " . $e->getMessage());
+    //     }
+    //     try {
+    //         $dataDB = array( 'select'=> 'id_indicacion, dsc_indicacion',  'tabla' => 'cat_indicaciones', 'where' => 'visible = 1');
+    //         $response = $catalogos->getTabla($dataDB);
+    //         if (isset($response) && isset($response->data)) {
+    //             $data['indicacion'] = $response->data;
+    //         } else {
+    //             $data['indicacion'] = array(); 
+    //         }
+    //     } catch (\Exception $e) {
+    //         log_message('error', "Se produjo una excepción: " . $e->getMessage());
+    //     }
+    //     try {
+    //         $dataDB = array( 'select'=> 'id_estatus, dsc_status',  'tabla' => 'cat_estatus', 'where' => 'visible = 1');
+    //         $response = $catalogos->getTabla($dataDB);
+    //         if (isset($response) && isset($response->data)) {
+    //             $data['status'] = $response->data;
+    //         } else {
+    //             $data['status'] = array(); 
+    //         }
+    //     } catch (\Exception $e) {
+    //         log_message('error', "Se produjo una excepción: " . $e->getMessage());
+    //     }
+    //     //  var_dump($data['firmaTurno']);
+    //     //  die();
+    //     $data['scripts'] = array('principal','agregar');
+    //     $data['edita'] = 0;
+    //     $data['nombre_completo'] = $session->nombre_completo; 
+    //     $data['contentView'] = 'formularios/vFormAgregar';                
+    //     $this->_renderView($data);
+        
+    // }
     public function index()
-    {        
-
-        $session = \Config\Services::session();   
+    {
+        $session = \Config\Services::session();
         $data = array();
         $catalogos = new Mglobal;
-      
-        try {
-            $dataDB = array('select'=> 'id_asunto, dsc_asunto', 'tabla' => 'cat_asuntos', 'where' => 'visible = 1');
-            $response = $catalogos->getTabla($dataDB);
-            if (isset($response) && isset($response->data)) {
-                $data['cat_asunto'] = $response->data;
-            } else {
-                $data['cat_asunto'] = array(); 
-            }
-        } catch (\Exception $e) {
-            log_message('error', "Se produjo una excepción: " . $e->getMessage());
-        }
-        try {
-            $dataDB = array( 'select'=> 'id, nombre, cargo, orden',  'tabla' => 'turnado', 'where' => 'visible = 1');
-            $response = $catalogos->getTabla($dataDB);
-            if (isset($response) && isset($response->data)) {
-                $data['turnado'] = $response->data;
-                $resultadoFiltrado = array_filter($response->data, function($elemento) {
-                    return $elemento->orden == '2';
-                });
-                $data['cppNombre']= $resultadoFiltrado;
 
-            } else {
-                $data['turnado'] = array(); 
+        $tables = array(
+            'cat_asuntos' => 'id_asunto, dsc_asunto',
+            'cat_destinatario' => 'id_destinatario, nombre_destinatario, cargo, id_tipo_cargo',
+            'cat_indicaciones' => 'id_indicacion, dsc_indicacion',
+            'cat_estatus' => 'id_estatus, dsc_status'
+        );
+
+        foreach ($tables as $table => $select ) {
+            try {
+                if ($table == 'cat_destinatario'){
+                    $dataDB = array('select' => $select, 'tabla' => $table, 'where' => 'visible = 1 ORDER BY id_tipo_cargo ASC');
+                    $response = $catalogos->getTabla($dataDB); 
+                }
+                $dataDB = array('select' => $select, 'tabla' => $table, 'where' => 'visible = 1');
+                $response = $catalogos->getTabla($dataDB);
+
+                if (isset($response) && isset($response->data)) {
+                    $data[$table] = $response->data;
+
+                    // Filtrar datos según criterios
+                    switch ($table) {
+                        case 'cat_destinatario':
+                            $data['turnado'] = $response->data; //tambien se ocupa esta variable para llenar el select con copia
+                            // $data['cppNombre']
+                            // $data['cppNombre'] = array_filter($response->data, function($elemento) {
+                            //     return $elemento->id_tipo_cargo == '1';
+                            // });
+                            $data['firmaTurno'] = array_filter($response->data, function($elemento) {
+                                return $elemento->id_tipo_cargo == '9';
+                            });
+                            break;
+                    }
+                } else {
+                    $data[$table] = array();
+                }
+            } catch (\Exception $e) {
+                $this->handleException($e);
             }
-        } catch (\Exception $e) {
-            log_message('error', "Se produjo una excepción: " . $e->getMessage());
         }
-        try {
-            $dataDB = array( 'select'=> 'id_indicacion, dsc_indicacion',  'tabla' => 'indicaciones', 'where' => 'visible = 1');
-            $response = $catalogos->getTabla($dataDB);
-            if (isset($response) && isset($response->data)) {
-                $data['indicacion'] = $response->data;
-            } else {
-                $data['indicacion'] = array(); 
-            }
-        } catch (\Exception $e) {
-            log_message('error', "Se produjo una excepción: " . $e->getMessage());
-        }
-        try {
-            $dataDB = array( 'select'=> 'id_personal, alias',  'tabla' => 'personal', 'where' => 'visible = 1');
-            $response = $catalogos->getTabla($dataDB);
-            if (isset($response) && isset($response->data)) {
-                $data['tramito'] = $response->data;
-            } else {
-                $data['tramito'] = array(); 
-            }
-        } catch (\Exception $e) {
-            log_message('error', "Se produjo una excepción: " . $e->getMessage());
-        }
-        try {
-            $dataDB = array( 'select'=> 'id, nombre',  'tabla' => 'personal_llamadas', 'where' => 'orden > 1  AND mostrar = 1');
-            $response = $catalogos->getTabla($dataDB);
-            if (isset($response) && isset($response->data)) {
-                $data['firmaTurno'] = $response->data;
-            } else {
-                $data['firmaTurno'] = array(); 
-            }
-        } catch (\Exception $e) {
-            log_message('error', "Se produjo una excepción: " . $e->getMessage());
-        }
-        try {
-            $dataDB = array( 'select'=> 'id_estatus, dsc_status',  'tabla' => 'cat_estatus', 'where' => 'visible = 1');
-            $response = $catalogos->getTabla($dataDB);
-            if (isset($response) && isset($response->data)) {
-                $data['status'] = $response->data;
-            } else {
-                $data['status'] = array(); 
-            }
-        } catch (\Exception $e) {
-            log_message('error', "Se produjo una excepción: " . $e->getMessage());
-        }
-        //  var_dump($data['firmaTurno']);
-        //  die();
-        $data['scripts'] = array('principal','agregar');
-        $data['edita'] = 0;
-        $data['nombre_completo'] = $session->nombre_completo; 
-        $data['contentView'] = 'formularios/vFormAgregar';                
-        $this->_renderView($data);
-        
+
+            $data['scripts'] = array('principal','agregar');
+            $data['edita'] = 0;
+            $data['nombre_completo'] = $session->nombre_completo; 
+            $data['contentView'] = 'formularios/vFormAgregar';                
+            $this->_renderView($data);
     }
+
+    private function handleException($e)
+    {
+        log_message('error', "Se produjo una excepción: " . $e->getMessage());
+    }
+
     public function guardaTurno(){
         $response = new \stdClass();
         $response->error = true;

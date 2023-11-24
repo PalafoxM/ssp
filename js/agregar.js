@@ -88,8 +88,8 @@ st.agregar = (function () {
                         $('#selectedValuesTable1 tbody').append('<tr><td>' + values[i] + '</td><td>' + texts[i] + '</td></tr>');
                     }
                 } else {
-                    $('#selectedValuesTable tbody').append('<tr><td colspan="2">No values selected</td></tr>');
-                    $('#selectedValuesTable1 tbody').append('<tr><td colspan="2">No values selected</td></tr>');
+                    $('#selectedValuesTable tbody').append('<tr><td colspan="2">No hay elementos seleccionados</td></tr>');
+                    $('#selectedValuesTable1 tbody').append('<tr><td colspan="2">No hay elementos seleccionados</td></tr>');
                 }
             }
         },
@@ -116,8 +116,8 @@ st.agregar = (function () {
                         $('#selectedValuesIndicacion1 tbody').append('<tr><td>' + values[i] + '</td><td>' + texts[i] + '</td></tr>');
                     }
                 } else {
-                    $('#selectedValuesIndicacion tbody').append('<tr><td colspan="2">No values selected</td></tr>');
-                    $('#selectedValuesIndicacion1 tbody').append('<tr><td colspan="2">No values selected</td></tr>');
+                    $('#selectedValuesIndicacion tbody').append('<tr><td colspan="2">No hay elementos seleccionados</td></tr>');
+                    $('#selectedValuesIndicacion1 tbody').append('<tr><td colspan="2">No hay elementos seleccionados</td></tr>');
                 }
             }
         }
