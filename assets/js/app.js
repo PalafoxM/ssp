@@ -900,9 +900,9 @@ function ($) {
                 var defaultOptions = {
                     warningClass: "badge bg-success",
                     limitReachedClass: "badge bg-danger",
-                    separator: ' out of ',
-                    preText: 'You typed ',
-                    postText: ' chars available.',
+                    separator: ' de un total de ',
+                    preText: 'Usted ha escrito ',
+                    postText: ' caracteres disponibles.',
                     placement: 'bottom',
                 };
 
