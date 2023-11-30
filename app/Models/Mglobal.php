@@ -436,4 +436,223 @@ class Mglobal extends Model {
         }
         return $response;
     }
+    
+    /**
+     * Apartado de funcionamiento en local de globals para api
+     */
+    /**
+     * Funcion que realiza el guardado, actualización y manejop de errores en el manejo de tablas
+     * 
+     * @param object:db                     La instancia de base de datos que estas manejando. [$this->db]
+     * @param object:response               Objeto stdClass para manejo de respuesta
+     * @param array:dataInsert
+     * @param array:dataBitacora
+     * @param string:tabla
+     * @param array:bitacora
+     * @param string:variableReferencia     (opcional) Nombre de la variable que manejará el id insertado, RECOMENDABLE PARA TABLAS PRINCIPALES
+     * @param array:editar                  (opcional) Llave primaria para editar ["idCampoTablaName",idTabla]
+     * @param array:adicionales             Variable utilizada para el caso en que se requiera cambiar parte de la estructura de la función
+     */
+    public function localSaveTabla(&$db, &$response, $dataInsert, $dataBitacora, $tabla, &$bitacora, $variableReferencia = false, $editar = false, $adicionales=false)
+    {
+        try {
+            if ($editar){
+                (isset($adicionales["usuario_ultima_actualizacion"]))? $dataInsert['usuario_ultima_actualizacion'] = $dataBitacora['id_user'] : $adicionales["usuario_actualiza"] = $dataBitacora['id_user'];
+                $db->table($tabla)->update($dataInsert,[$editar[0]=>$editar[1]]);
+            }else {
+                $dataInsert['usuario_registro'] = $dataBitacora['id_user'];
+                $db->table($tabla)->insert($dataInsert);
+            }
+
+            $error = $db->error();
+            if($error["code"] > 0){
+                $db->transRollback();
+                $response->errorDB = $error['message'];
+                $response->lastQuery = $db->getLastQuery()->getQuery();
+                log_message('critical','lastQuery: '.$db->getLastQuery()->getQuery());
+                log_message('critical','errorDB: '.json_encode($db->error()));
+                return false;
+            }    
+
+            $auxID = ($editar)? $editar[1] : $db->insertID();
+            if ($variableReferencia)  
+            $response->$variableReferencia = $auxID;
+
+        } catch (\Throwable $th) {
+            log_message('critical','lastQuery: '.$db->getLastQuery()->getQuery());
+            log_message('critical','errorDB: '.json_encode($db->error()));
+            log_message('critical','errorTH: '.json_encode($th));
+            $db->transRollback();
+            $response->respuesta = json_encode($db->error());
+            $response->errorTh = json_encode($th);
+            return false;
+        }
+
+        $bitacora[] = [
+            'data'    => $dataInsert,
+            'id'      => $auxID,
+            'tabla'   => $tabla
+        ];
+        return true;
+    }
+
+    /**
+     * Funcion que realiza las acciones necesarias para actualizar una tabla de muchos a muchos:
+     * Agrega registros nuevos
+     * Realiza borrado lógico de la tabla
+     * Respeta los registros que sigan vigentes de una tabla
+     * 
+     * @param array:dataInsert          arreglo doble de información a insertar en la tabla
+     * @param array:dataConfig          arreglo de configuración de tabla para actualizar
+     * @param array:dataBitacora        arreglo de información para la bitacora
+     * @param string:nombreElemento     nombre de refencia para retornar los elementos activos
+     * @param object:db                 instancia de base de datos
+     * @param object:response           variable de respuesta
+     * @param array:bitacora            Arreglo de cambios de base de datos
+     * 
+     * dataInsert = [[].[]]  Nota: es importante agregar el valor adecuado de borrado lógico inactivo
+     * 
+     *  dataConfig = [
+     *   tabla        (string) nombre de la tabla a editar
+     *   paramIdTabla (string) nombre de la llave primaria de la tabla
+     *   paramDelete  (array) ["NombreBorradoLogico"=>value]
+     *   whereDelete  (array) ["nombreVariable"=>ValueDelete]
+     *   llave        (array) ["llave_1","llave_2"]
+     *  ]
+     */
+    public function localUpdateInsertTabla($dataInsert = array(), $dataConfig = array(), $dataBitacora = array(), $nombreElemento = false, &$db = '', &$response = array(), &$bitacora = array() )
+    {
+        /** 
+        $dataConfig = [
+            "tabla"         => "cima_auxiliares.lab_solicitud_estudios",
+            "paramIdTabla"  => "id_lab_solicitud_estudios",
+            "paramDelete"   => ["visible"=>0],
+            "whereDelete"   => ["id_lab_solicitud"=>$response->idLaboratorio, "visible"=>1],
+            "llave"         => ["id_lab_solicitud","id_lab_estudio"],
+        ];
+        */
+        //step 1: delete all
+        $elementos = $db->table($dataConfig['tabla'])->where($dataConfig['whereDelete'])->get()->getResult();
+        
+        if ($elementos){
+
+            try {
+                $db->table($dataConfig['tabla'])->where($dataConfig['whereDelete'])->update($dataConfig['paramDelete']);
+        
+                $error = $db->error();
+                if($error["code"] > 0){
+                    $db->transRollback();
+                    $response->errorDB = $error['message'];
+                    $response->lastQuery = $db->getLastQuery()->getQuery();
+                    log_message('critical','lastQuery: '.$db->getLastQuery()->getQuery());
+                    log_message('critical','errorDB: '.json_encode($db->error()));
+                    return false;
+                }
+
+                foreach ($elementos as $item) {
+                    $bitacora[] = [
+                        'data'    => $dataConfig['paramDelete'],
+                        'id'      => $item->{$dataConfig['paramIdTabla']},
+                        'tabla'   => $dataConfig['tabla']
+                    ];
+                }
+            } catch (\Throwable $th) {
+                log_message('critical','lastQuery: '.$db->getLastQuery()->getQuery());
+                log_message('critical','errorDB: '.json_encode($db->error()));
+                log_message('critical','errorTH1: '.json_encode($th));
+                $db->transRollback();
+                $response->respuesta = json_encode($db->error());
+                $response->errorTh1 = json_encode($th);
+                return false;
+            }
+        }
+
+        if (!$dataInsert) return true;
+        
+        try {
+            // Validar las llaves denttro del dataInsert
+            foreach ($dataInsert as $item) {
+                foreach ($dataConfig['llave'] as $itemLlave) {
+                    if (!isset($item[$itemLlave]) || is_null($item[$itemLlave]) || empty($item[$itemLlave])){
+                        $response->respuesta = "La llave primaria {$itemLlave} no se encuentra dentro del arreglo de inserción";
+                        return false;
+                    }
+                }
+            }
+            
+            //Step 2: activar en insertar los registros vigentes
+            if($nombreElemento) $response->{$nombreElemento} = [];
+            foreach ($dataInsert as $item) {
+                $where = [];
+                foreach ($dataConfig['llave'] as $itemLlave) {
+                    $where[$itemLlave] = $item[$itemLlave];
+                }
+                $query = $db->table($dataConfig['tabla'])->where($where)->get()->getRow();
+                $edit = ($query)? true:false;
+                if ($edit){
+                    $dataInsert['usuario_actualiza'] = $dataBitacora['id_user'];
+                    $db->table($dataConfig['tabla'])->where([$dataConfig['paramIdTabla'] => $query->{$dataConfig['paramIdTabla']}])->update($item);
+                }
+                else{
+                    $dataInsert['usuario_registro'] = $dataBitacora['id_user'];
+                    $db->table($dataConfig['tabla'])->insert($item);
+                }
+
+                $error = $db->error();
+                if($error["code"] > 0){
+                    $db->transRollback();
+                    $response->errorDB = $error['message'];
+                    $response->lastQuery = $db->getLastQuery()->getQuery();
+                    log_message('critical','lastQuery: '.$db->getLastQuery()->getQuery());
+                    log_message('critical','errorDB: '.json_encode($db->error()));
+                    return false;
+                }    
+
+                $auxID = ($edit)? $query->{$dataConfig['paramIdTabla']} : $db->insertID();
+                if($nombreElemento) $response->{$nombreElemento}[] = $auxID;
+                $bitacora[] = [
+                    'data'    => $item,
+                    'id'      => $auxID,
+                    'tabla'   => $dataConfig['tabla']
+                ];
+            }
+        } catch (\Throwable $th) {
+            log_message('critical','lastQuery: '.$db->getLastQuery()->getQuery());
+            log_message('critical','errorDB: '.json_encode($db->error()));
+            log_message('critical','errorTH2: '.json_encode($th));
+            $db->transRollback();
+            $response->respuesta = json_encode($db->error());
+            $response->errorTh2 = json_encode($th);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * función que realiza el guardado de la bitacora de una transacción completa
+     * Se reomiuenda usar esta funcion hasta el final de la transacción
+     * 
+     * @param bitacora:array        Arreglo con información del arreglo de información
+     * @param dataBitacora:array    Información de dataBitacora
+     * @param response:object       variable de respuesta
+     */
+    public function localSaveBitacora(&$bitacora, $dataBitacora, &$response)
+    {
+        $Bitacoracontrol = new Bitacoracontrol();
+        $errorDB = false;
+        if(!empty($bitacora)){
+            log_message('critical','-- Registro de bitacora');            
+            foreach ($bitacora as $item) {
+                log_message('critical','Bitacora: '.json_encode($item));
+                if (!$bitacoraInsert = $Bitacoracontrol->RegistraInsert($item['data'], $dataBitacora['script'], $dataBitacora['id_user'], $item['tabla'], $item['id'])){
+                    $errorDB = true;
+                    log_message('critical','Error|Registro de bitacora saveConfiguracionHorario|'.json_encode($item));
+                    $response->respuesta = json_encode($bitacoraInsert);
+                    return $errorDB;
+                }
+            }
+        }
+
+        return $errorDB;
+    }
 }

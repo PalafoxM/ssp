@@ -38,7 +38,9 @@
         <script src="<?php echo base_url('/assets/bootstrap-table-master/dist_/extensions/export/bootstrap-table-export.min.js');?>"></script>
         <script src="<?php echo base_url('/assets/js/vendor/drag_select.min.js');?>"></script>
         <script src='<?php echo base_url();?>/assets/js/dragula.min.js'></script>
-        
+        <!-- datepicker -->
+        <script src="<?php echo base_url('/assets/bootstrap-datepicker-master/js/bootstrap-datepicker.js');?>"></script>
+        <script src="<?php echo base_url('/assets/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.es.min.js');?>"></script>
         <!-- Parsley -->
         <script src="<?= base_url("/assets/parsley_2_9/dist/parsley.js")?>"></script>
         <script src="<?= base_url("/assets/parsley_2_9/dist/i18n/es.js")?>"></script>

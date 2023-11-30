@@ -23,7 +23,7 @@ class Principal extends BaseController {
         date_default_timezone_set('America/Mexico_City');  
         $session = \Config\Services::session();
         if($this->session->get('logueado')!= 1){
-            header('Location:'.base_url().'/index.php/Login/cerrar?inactividad=1');            
+            header('Location:'.base_url().'index.php/Login/cerrar?inactividad=1');            
             die();
         }
     }

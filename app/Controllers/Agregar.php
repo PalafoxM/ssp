@@ -4,6 +4,7 @@ use App\Libraries\Curps;
 use App\Libraries\Fechas;
 use App\Libraries\Funciones;
 use App\Models\Mglobal;
+use App\Models\MiModelo;
 
 
 use stdClass;
@@ -34,26 +35,26 @@ class Agregar extends BaseController {
         echo view($data['layout'], $data);               
     }
     
-    public function obtenerOpcionesSelect($select, $tabla, $where = null)
-    {
-        $catalogos = new Mglobal;
-        try {
-            $dataDB = array('select' => $select, 'tabla' => $tabla, 'where' => $where);
-            $response = $catalogos->getTabla($dataDB);
+    // public function obtenerOpcionesSelect($select, $tabla, $where = null)
+    // {
+    //     $catalogos = new Mglobal;
+    //     try {
+    //         $dataDB = array('select' => $select, 'tabla' => $tabla, 'where' => $where);
+    //         $response = $catalogos->getTabla($dataDB);
 
-            if (isset($response) && isset($response->data)) {
-                return $response->data;
-            } else {
-                return array();
-            }
-        } catch (\Exception $e) {
-            log_message('error', "Se produjo una excepción: " . $e->getMessage());
-            return array();
-        }
-    }
+    //         if (isset($response) && isset($response->data)) {
+    //             return $response->data;
+    //         } else {
+    //             return array();
+    //         }
+    //     } catch (\Exception $e) {
+    //         log_message('error', "Se produjo una excepción: " . $e->getMessage());
+    //         return array();
+    //     }
+    // }
 
-// Ejemplo de uso
-// $opcionesAsunto = obtenerOpcionesSelect('id_asunto, dsc_asunto', 'cat_asuntos', 'visible = 1');
+    // Ejemplo de uso
+    // $opcionesAsunto = obtenerOpcionesSelect('id_asunto, dsc_asunto', 'cat_asuntos', 'visible = 1');
 
 
     // public function index()
@@ -184,53 +185,48 @@ class Agregar extends BaseController {
     }
 
     public function guardaTurno(){
+        $session = \Config\Services::session();
         $response = new \stdClass();
         $response->error = true;
         $save = new Mglobal;
         $data = $this->request->getPost();
+        
+        $currentDateTime = new \DateTime();
+        $formattedDate = $currentDateTime->format('Y-m-d H:i:s');
+      
         $dataInsert = [
-            
-            `anio`                         =>  "2023",
-            `id_asunto`                    => $data['asunto'],     
-            `fecha_peticion`               => $data[''],             
-            `fecha_recepcion`              => $data[''],             
-            `solicitante_titulo`           => $data[''],                 
-            `solicitante_nombre`           => $data[''],                 
-            `solicitante_primer_apellido`  => $data[''],                         
-            `solicitante_segundo_apellido` => $data[''],                         
-            `solicitante_cargo`            => $data[''],             
-            `solicitante_razon_social`     => $data[''],                     
-            `resumen`                      => $data[''],     
-            `id_estatus`                   => $data[''],         
-            `id_destinatario`              => $data[''],             
-            `cargo_turno`                  => $data[''],         
-            `unidad`                       => $data[''],     
-            `confirmacion`                 => $data[''],         
-            `fecha_confirmacion`           => $data[''],                 
-            `fecha_terminado`              => $data[''],             
-            `resultado_turno`              => $data[''],             
-            `firma_turno`                  => $data[''],         
-            `usuario_registro`             => $data[''],             
-            `fecha_registro`               => $data[''],             
-            `usuario_actualiza`            => $data[''],             
-            `fecha_actualiza`              => $data[''],             
-            
+            'anio'                         =>  '2023',
+            'id_asunto'                    => $data['asunto'],     
+            'fecha_peticion'               => $data['fecha_peticion'],             
+            'fecha_recepcion'              => $data['fecha_recepcion'],             
+            'solicitante_titulo'           => $data['titulo_inv'],                 
+            'solicitante_nombre'           => $data['nombre_t'],                 
+            'solicitante_primer_apellido'  => $data['primer_apellido'],                         
+            'solicitante_segundo_apellido' => $data['segundo_apellido'],                         
+            'solicitante_cargo'            => $data['cargo_inv'],             
+            'solicitante_razon_social'     => $data['razon_social_inv'],                     
+            'resumen'                      => $data['resumen'],     
+            'id_estatus'                   => $data['status'],         
+            'confirmacion'                 => isset($data['confirmacion']) ? $data['confirmacion'] : '0',
+            'resultado_turno'              => $data['resultado_turno'],             
+            'firma_turno'                  => $data['firma_turno'],         
+            'usuario_registro'             => $session->id_usuario,             
+            'fecha_registro'               => $formattedDate, 
+            // arrays
+            // 'id_destinatario'              => isset($data['nombre_turno']) ? $data['nombre_turno'] : array(), 
+            // 'id_destinatario_copia'        => isset($data['cpp']) ? $data['cpp'] : array(),
+            // 'id_indicacion'                => isset($data['indicacion']) ? $data['indicacion'] : array(),
         ];
+        
+        $dataBitacora = ['id_user' =>  $session->id_usuario, 'script' => 'Agregar.php/guardaTurno'];
+        
 
-        $dataConfig = [
-            "tabla" => "actividad_respuesta",
-            "editar"=> false,
-        ];
+            if ($respuesta->error){
+                $response->respuesta = $respuesta->respuesta;
+                $this->respond($response);
+            }
 
-        $respuesta =  $save->updateInsertTabla($dataInsert, $dataConfig, $dataBitacora);
-        // $respuesta = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Auditoria.saveRespuestaEspecifica"]);
-
-        if ($respuesta->error){
-            $response->respuesta = $respuesta->respuesta;
-            $this->respond($response);
-        }
-
-        return $this->respond($response);
+            return $this->respond($response);
     }
 
   

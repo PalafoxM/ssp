@@ -49,6 +49,28 @@ class Database extends Config
      * This database connection is used when
      * running PHPUnit database tests.
      */
+    public array $biotacora = [
+        'DSN'         => '',
+        'hostname'    => '10.0.72.21',
+        'username'    => 'userTurnos2',
+        'password'    => 'y3>u0292WcP*',
+        'database'    => 'bitacora',
+        'DBDriver'    => 'SQLite3',
+        'DBPrefix'    => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
+        'pConnect'    => false,
+        'DBDebug'     => true,
+        'charset'     => 'utf8',
+        'DBCollat'    => 'utf8_general_ci',
+        'swapPre'     => '',
+        'encrypt'     => false,
+        'compress'    => false,
+        'strictOn'    => false,
+        'failover'    => [],
+        'port'        => 3306,
+        'foreignKeys' => true,
+        'busyTimeout' => 1000,
+    ];
+
     public array $tests = [
         'DSN'         => '',
         'hostname'    => '127.0.0.1',

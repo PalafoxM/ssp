@@ -75,6 +75,12 @@
         font-weight: bold;
         color:yellow;
     }
+   
+    .campoObligatorio::after {
+            content: "*";
+            color: red;
+            margin-left: 5px; 
+        }
 </style>
 <body>
     <div class=" mt-3">
@@ -84,81 +90,84 @@
                 <div class="col-md-12 ">
                     <div class="card"><!--init card -->
                         <div class="card-body">
-                            <h3>DATOS GENERALES</h3>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="asunto" class="form-label">ASUNTO</label>
-                                    <select class="form-select form-control-sm " id="asunto" name="asunto"  >
-                                            <option value="">SELECCCIONE..</option>
-                                        <?php foreach ($cat_asuntos as $opcion) : ?>
-                                            <option value="<?= $opcion->id_asunto ?>"><?= strtoupper($opcion->dsc_asunto) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                            <blockquote class="blockquote">
+                                <h3>DATOS GENERALES:</h3>
+                                <small>Los camppos marcados con<strong class="campoObligatorio"></strong>     son obigatorios</small>
+                            </blockquote>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="asunto" class="form-label">ASUNTO</label>
+                                        <select class="form-select form-control-sm " id="asunto" name="asunto"  >
+                                                <option ></option>
+                                            <?php foreach ($cat_asuntos as $opcion) : ?>
+                                                <option value="<?= $opcion->id_asunto ?>"><?= strtoupper($opcion->dsc_asunto) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php
+                                $fechaActual = date('d/m/Y');
+                                ?> 
+                                <div class="col-md-3">
+                                    <div class="mb-3 position-relative" id="datepicker1">
+                                        <label for="fecha_peticion" class="form-label">FECHA PETICIÓN</label>
+                                        <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker1" id="fecha_peticion" name="fecha_peticion" placeholder="dd/mm/aaaa" value="<?php echo $fechaActual; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3 position-relative" id="datepicker2">
+                                        <label for="fecha_recepcion" class="form-label">FECHA RECEPCIÓN</label>
+                                        <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker2" id="fecha_recepcion" name="fecha_recepcion" placeholder="dd/mm/aaaa" value="<?php echo $fechaActual; ?>">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                               
-                                    <div class="mb-3 position-relative" id="datepicker1">
-                                        <label class="form-label">FECHA PETICIÓN</label>
-                                        <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker1" id="fecha_peticion" name="fecha_peticion" placeholder="dd/mm/dddd">
-                                    </div>
-                            </div>
-                            <div class="col-md-3">
-                                    <div class="mb-3 position-relative" id="datepicker2">
-                                        <label class="form-label">FECHA PETICIÓN</label>
-                                        <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker2" id="fecha_recepcion" name="fecha_recepcion" placeholder="dd/mm/dddd">
-                                    </div>
-                                    
-                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                               
+                            <div class="row">
+                                <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="titulo_inv" class="form-label">TITULO</label>
-                                        <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm">
+                                        <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm" placeholder="titulo">
                                     </div>
-                            </div>
-                            <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
                                     <div class="mb-3">
-                                        <label for="nombre_t" class="form-label">NOMBRE</label>
-                                        <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm" placeholder="NOMBRE">
+                                        <label for="nombre_t" class="form-label campoObligatorio">NOMBRE</label>
+                                        <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm " placeholder="NOMBRE" required>
                                     </div>
-                            </div>
-                            <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
                                     <div class="mb-3">
-                                        <label for="primer_apellido" class="form-label">PRIMER APELLIDO</label>
-                                        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm" placeholder="PRIMER APELLIDO">
+                                        <label for="primer_apellido" class="form-label campoObligatorio">PRIMER APELLIDO</label>
+                                        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm " placeholder="PRIMER APELLIDO" required>
                                     </div>
-                            </div>
-                            <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="segundo_apellido" class="form-label">SEGUNDO APELLIDO</label>
                                         <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control form-control-sm" placeholder="SEGUNDO APELLIDO">
                                     </div>
-                                  
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="cargo_inv" class="form-label">CARGO</label>
-                                    <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="razon_social_inv" class="form-label">RAZON SOCIAL</label>
-                                    <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="cargo_inv" class="form-label">CARGO</label>
+                                        <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="razon_social_inv" class="form-label">RAZON SOCIAL</label>
+                                        <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div class="mb-3">
-                                <label class="form-label">SINTESIS ASUNTO</label>
-                                <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
-                                    placeholder="Tiene un limite 225 caracteres."></textarea>
+                            <div class="row">
+                                <div class="mb-3">
+                                    <label class="form-label">SINTESIS ASUNTO</label>
+                                    <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
+                                        placeholder="Tiene un limite 225 caracteres."></textarea>
+                                </div>
                             </div>
                         </div>    
                     </div><!--end card -->
@@ -170,38 +179,72 @@
                 <div class="col-md-12">
                     <div class="card"><!--init card -->
                         <div class="card-body">
-                            <h3>TURNAR A:</h3>
-                            <div class="row">
-                            <div class="col-md-5">
-                                <div class="mb-3">
-                                    <label for="nombre_turno" class="form-label">NOMBRE</label>
-                                    <select class="select2 form-select form-control-sm" id="nombre_turno" name="nombre_turno">
-                                    <option value="">SELECCCIONE..</option>
-                                        <?php foreach ($turnado as $opcion) : ?>
-                                            <option value="<?= $opcion->id_destinatario ?>"><?= strtoupper($opcion->nombre_destinatario ." ". $opcion->cargo) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h3>TURNAR A:</h3>
+                                <button  type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTurnarA"> <i class="dripicons-plus icono"></i> AGREGAR</button>
+                            </div>                    
+                            <div id="modalTurnarA" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-full-width">
+                                    <div class="modal-content">
+                                        <div class="modal-header modal-colored-header bg-secondary">
+                                            <h4 class="modal-title" id="fullWidthModalLabel">TURNAR A:</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="mb-3">
+                                                        <label for="nombre_turno" class="form-label">NOMBRES:</label>
+                                                        <select class="select2 form-select form-control-sm" id="nombre_turno" name="nombre_turno[]" multiple="multiple">
+                                                        <option></option>
+                                                            <?php foreach ($turnado as $opcion) : ?>
+                                                                <option value="<?= $opcion->id_destinatario ?>"><?= strtoupper($opcion->nombre_destinatario ." ". $opcion->cargo) ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-check form-checkbox-success mt-4">
+                                                        <input type="checkbox" class="form-check-input" id = "confirmacion" name = "confirmacion" checked>
+                                                        <label class="form-check-label" for="confirmacion">CONFIRMACIÓN</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="container">
+                                                    <table id="selectedValuesNombreTurno">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>IDENTIFICADOR</th>
+                                                                <th>NOMBRE</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                            <div class="container">
+                                    <table id="selectedValuesNombreTurno1">
+                                        <thead>
+                                            <tr>
+                                                <th>IDENTIFICADOR</th>
+                                                <th>NOMBRE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="mb-3">
-                                    <label for="dependencia" class="form-label">DEPENDENCIA</label>
-                                    <input type="text" id="dependencia" name="dependencia" class="form-control form-control-sm">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-check form-checkbox-success mt-4">
-                                    <input type="checkbox" class="form-check-input" id = "confirmacion" name = "confirmacion" checked>
-                                    <label class="form-check-label" for="confirmacion">CONFIRMACIÓN</label>
-                                </div>
-                            </div><!--END CARD -->
                         </div>
-                    </div>
+                    </div><!--END CARD -->
+                    
+
                     <div class="card"><!--init card -->
                         <div class="card-body">
-                            <!-- <h3>CON COPIA PARA:</h3>
-                            <!-- Info Header Modal -->
-                                <!--<button  type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_cpp">AGREGAR</button> -->
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h3>CON COPIA PARA:</h3>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_cpp"> <i class="dripicons-plus icono"></i> AGREGAR</button>
@@ -215,9 +258,9 @@
                                             </div>
                                             <div class="modal-body">
                                                <div class="mb-3">
-                                                    <label for="cpp" class="form-label">NOMBRES</label> <small class=""><strong>Nota:</strong> puedes seleccionar todos los nombres que necesites:</small>
+                                                    <label for="cpp" class="form-label">SELECCIONE LOS NOMBRES A LOS QUE DESEA COPIAR</label> <small class=""><strong>Nota:</strong> puedes seleccionar todos los nombres que necesites:</small>
                                                     <select class="form-select form-control-sm select2" id="cpp" name="cpp[]" multiple="multiple">
-                                                    <option ></option>
+                                                    <option></option>
                                                     <?php $count = 0; ?>
                                                         <?php foreach ($turnado as $opcion) : ?>
                                                             <option value="<?= $opcion->id_destinatario ?>" <?php echo ($count < 2) ? 'class="primeras2"' :'class="opciones"' ?>>
@@ -227,13 +270,11 @@
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div> 
-                                                        
-
                                                 <div class="container">
                                                     <table id="selectedValuesTable">
                                                         <thead>
                                                             <tr>
-                                                                <th>ID</th>
+                                                                <th>IDENTIFICADOR </th>
                                                                 <th>NOMBRE</th>
                                                             </tr>
                                                         </thead>
@@ -243,45 +284,44 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">CERRAR</button>
-                                                <!-- <button type="button" class="btn btn-info">GUARDAR</button> -->
                                             </div>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
                                 <!-- tablas con nombres  -->
                                 <div class="container">
-                                <table id="selectedValuesTable1">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>NOMBRE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                                    <table id="selectedValuesTable1">
+                                        <thead>
+                                            <tr>
+                                                <th>IDENTIFICADOR </th>
+                                                <th>NOMBRE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
                                 </div>
-                            
                         </div>
                     </div><!--END CARD -->
+
                     <div class="card"><!--init card -->
                         <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h3>INDICACIONES:</h3>
-                            <!-- Full width modal -->
-                            <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_indicacion"><i class="dripicons-plus icono"></i> AGREGAR</button>
-                        </div>    
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h3>INDICACIONES:</h3>
+                                <!-- Full width modal -->
+                                <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_indicacion"><i class="dripicons-plus icono"></i> AGREGAR</button>
+                            </div>    
                             <div id="modal_indicacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-full-width">
                                     <div class="modal-content">
-                                        <div class="modal-header">
+                                        <div class="modal-header modal-colored-header bg-primary">
                                             <h4 class="modal-title" id="fullWidthModalLabel">AGREGAR INDICACIONES:</h4>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label for="indicacion1" class="form-label">SELECCIONE</label>
+                                                <label for="indicacion" class="form-label">SELECCIONE LAS INDICACIONES NECESARIAS:</label>
                                                 <select class="form-select form-control-sm select2" id="indicacion" name="indicacion[]" multiple="multiple">
-                                                <option value="">SELECCCIONE..</option>
+                                                <option></option>
                                                     <?php foreach ($cat_indicaciones as $opcion) : ?>
                                                         <option value="<?= $opcion->id_indicacion ?>"><?= strtoupper($opcion->dsc_indicacion) ?></option>
                                                     <?php endforeach; ?>
@@ -291,7 +331,7 @@
                                                     <table id="selectedValuesIndicacion">
                                                         <thead>
                                                             <tr>
-                                                                <th>ID</th>
+                                                                <th>IDENTIFICADOR</th>
                                                                 <th>NOMBRE</th>
                                                             </tr>
                                                         </thead>
@@ -310,19 +350,16 @@
                                 <table id="selectedValuesIndicacion1">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>IDENTIFICADOR</th>
                                             <th>NOMBRE</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
-                                </div>
-                        
+                            </div>
                         </div>
                     </div><!--END CARD -->
-                    </div>    
-                <!-- seccion derecha fin -->
-                </div>
+                </div>    
             </div>
             
             <div class="row">
@@ -330,10 +367,11 @@
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <div class="row">
+                                <h3>QUIEN TRAMITÓ:</h3>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="tramito" class="form-label">TRAMITÓ</label>
-                                        <span class="form-control form-control-sm" ><?php echo strtoupper(htmlspecialchars($nombre_completo)); ?></span>
+                                        <span class="form-control form-control-sm" id="tramito"><?php echo strtoupper(htmlspecialchars($nombre_completo)); ?></span>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -367,9 +405,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            
-                            
                         </div>
                     </div><!--END CARD -->    
                 </div>
@@ -377,7 +412,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card"><!--init card -->
-                        <div class="card-body">
+                    <div class="card-body">
+                            <h3>RESPUESTA DEL TURNO:</h3>
                             <div class="mb-3">
                                 <label for="resultado_turno" class="form-label">RESULTADO DEL TURNO</label>
                                 <textarea data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
@@ -387,36 +423,36 @@
                     </div><!--END CARD -->
                 </div>
             </div>
-            <!-- <div class="row text-right justify-content-center mt-3 mb-3">    -->
                 <div class="row mb-5 ">
-                    <div class="col-md-12 text-center ">
-                        <button class="btn btn-primary" type="submit"><i class="mdi mdi-content-save"></i> Guardar </button>
-                        <button class="btn btn-danger" type="button" onclick="st.agregar.cancelarTurno();"><i class="mdi mdi-content-save-off-outline" id="cancelarTurno" ></i> Cancelar </button>
-                    </div>
+                        <div class="col-md-12 text-center ">
+                            <button class="btn btn-info" type="submit"><i class="mdi mdi-content-save"></i> Guardar </button>
+                            <button class="btn btn-warning" type="button" onclick="st.agregar.cancelarTurno();"><i class="mdi mdi-content-save-off-outline" id="cancelarTurno" ></i> Cancelar </button>
+                        </div>
                 </div>
-            <!-- </div> -->
         </form>    
     </div>
 <script>
     $(document).ready(function(){
         st.agregar.saveTempccp();
         st.agregar.saveTempIndicacion();
+        st.agregar.saveTempNombreTurno();
         st.agregar.agregarTurno();
-        $('#nombre_turno').select2();
-        $('#indicacion1').select2();
-        $('#indicacion2').select2();
-        $('#indicacion3').select2();
-        $('#indicacion4').select2();
-        $('#tramito').select2();
+        $('#nombre_turno').select2({
+            placeholder: "SELECCCIONE..",
+            dropdownParent: $("#modalTurnarA") ,
+        });
         $('#firma_turno').select2({
+            placeholder: "SELECCCIONE..",
+        });
+        $('#asunto').select2({
             placeholder: "SELECCCIONE..",
         });
         $('#status').select2({
             placeholder: "SELECCCIONE..",
         });
         $('#cpp').select2({
-            dropdownParent: $("#modal_cpp") ,
             placeholder: "SELECCCIONE..",
+            dropdownParent: $("#modal_cpp") ,
             templateResult: function (data) {    
                 if (!data.element) {
                 return data.text;
@@ -428,9 +464,17 @@
                 return $wrapper;
             }
         });
-        $('#indicacion').select2({dropdownParent: $("#modal_indicacion") });
-
-        
+        $('#indicacion').select2({
+            placeholder: "SELECCCIONE..",
+            dropdownParent: $("#modal_indicacion"),
+         });
+       
+       
+       
+        $('#fecha_peticion, #fecha_recepcion').datepicker({
+            language: 'es'
+        });
+                
        
        
     });
