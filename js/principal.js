@@ -46,8 +46,7 @@ saeg.principal = (function () {
                         console.log(response);
                         if(response == 'correcto'){
                             Swal.fire("Bienvenido!", "ingresando...", "success");
-                            window.location.href = base_url + "index.php/Inicio";
-                                                       
+                            window.location.href = base_url + "index.php/Inicio";                           
                         }else{
                             Swal.fire("Usuario incorrecto!", "Favor de verificar sus credenciales de acceso", "error");                            
                             return false;

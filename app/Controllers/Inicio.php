@@ -7,7 +7,7 @@ use App\Models\Mglobal;
 
 use stdClass;
 use CodeIgniter\API\ResponseTrait;
-
+require_once FCPATH . '/mpdf/autoload.php';
 class Inicio extends BaseController {
 
     use ResponseTrait;
@@ -50,10 +50,27 @@ class Inicio extends BaseController {
         $session = \Config\Services::session();
         $principal = new Mglobal;
        
-        $dataDB = array('tabla' => 'turno', 'where' => 'visible = 1');  
+        $dataDB = array('tabla' => 'turno', 'where' => 'visible = 1 ORDER BY fecha_registro DESC');  
         $response = $principal->getTabla($dataDB); 
       
          return $this->respond($response->data);
     }
+
+    public function pdfTurno(){
+        $mpdf = new \Mpdf\Mpdf();
+        $id_turno= $this->request->getGet('id_turno');
+        // Agregar contenido al PDF
+        $html = '<h1>Hello World - Turno ID: ' . $id_turno . '</h1>';
+        $mpdf->WriteHTML($html);
+
+        // Generar el PDF
+        $mpdf->Output('output.pdf', 'I'); // Descargar el PDF directamente
+
+        // También puedes guardar el PDF en el servidor utilizando una ruta en lugar de 'D'
+        // $mpdf->Output('path/to/output.pdf', 'F'); // Guardar el PDF en el servidor
+
+        exit;
+    }
+
     
 }

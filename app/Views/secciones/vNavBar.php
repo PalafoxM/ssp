@@ -75,7 +75,8 @@
     <div class="app-search dropdown d-none d-lg-block">
 
         <div id="titulo">
-            <h4 class="neon">SISTEMA DE TURNOS 2.0</h4>
+            <!-- <h4 class="neon">SISTEMA DE TURNOS 2.0</h4> -->
+            <h4>SISTEMA DE TURNOS 2.0</h4>
         </div>
         
     </div>

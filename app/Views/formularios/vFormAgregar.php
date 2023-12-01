@@ -97,8 +97,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="asunto" class="form-label">ASUNTO</label>
-                                        <select class="form-select form-control-sm " id="asunto" name="asunto"  >
+                                        <label for="asunto" class="form-label campoObligatorio">ASUNTO</label>
+                                        <select class="form-select form-control-sm " id="asunto" name="asunto" required>
                                                 <option ></option>
                                             <?php foreach ($cat_asuntos as $opcion) : ?>
                                                 <option value="<?= $opcion->id_asunto ?>"><?= strtoupper($opcion->dsc_asunto) ?></option>
@@ -377,7 +377,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="firma_turno" class="form-label">FIRMA DEL TURNO</label>
-                                        <select class="form-select form-control-sm select2" id="firma_turno" name = "firma_turno" >
+                                        <select class="form-select form-control-sm select2" id="firma_turno" name="firma_turno" >
                                         <!-- <option value="">SELECCCIONE..</option> -->
                                             <option></option>
                                             <?php foreach ($firmaTurno as $opcion) : ?>

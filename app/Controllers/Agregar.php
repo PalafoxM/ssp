@@ -4,7 +4,7 @@ use App\Libraries\Curps;
 use App\Libraries\Fechas;
 use App\Libraries\Funciones;
 use App\Models\Mglobal;
-use App\Models\MiModelo;
+use App\Models\Magregarturno;
 
 
 use stdClass;
@@ -35,8 +35,8 @@ class Agregar extends BaseController {
         echo view($data['layout'], $data);               
     }
     
-    // public function obtenerOpcionesSelect($select, $tabla, $where = null)
-    // {
+    //public function obtenerOpcionesSelect($select, $tabla, $where = null)
+    //{
     //     $catalogos = new Mglobal;
     //     try {
     //         $dataDB = array('select' => $select, 'tabla' => $tabla, 'where' => $where);
@@ -187,18 +187,20 @@ class Agregar extends BaseController {
     public function guardaTurno(){
         $session = \Config\Services::session();
         $response = new \stdClass();
-        $response->error = true;
-        $save = new Mglobal;
+        // $response->error = true;
+        $agregar = new Magregarturno();
         $data = $this->request->getPost();
         
         $currentDateTime = new \DateTime();
         $formattedDate = $currentDateTime->format('Y-m-d H:i:s');
-      
+        $fecha_peticion = $currentDateTime::createFromFormat('d/m/Y', $data['fecha_peticion'])->format('Y-m-d');
+        $fecha_recepcion = $currentDateTime::createFromFormat('d/m/Y', $data['fecha_recepcion'])->format('Y-m-d');
         $dataInsert = [
             'anio'                         =>  '2023',
             'id_asunto'                    => $data['asunto'],     
-            'fecha_peticion'               => $data['fecha_peticion'],             
-            'fecha_recepcion'              => $data['fecha_recepcion'],             
+            // 'fecha_peticion'               => $data['fecha_peticion'],             
+            'fecha_peticion'               => $fecha_peticion,             
+            'fecha_recepcion'              => $fecha_recepcion,             
             'solicitante_titulo'           => $data['titulo_inv'],                 
             'solicitante_nombre'           => $data['nombre_t'],                 
             'solicitante_primer_apellido'  => $data['primer_apellido'],                         
@@ -219,14 +221,19 @@ class Agregar extends BaseController {
         ];
         
         $dataBitacora = ['id_user' =>  $session->id_usuario, 'script' => 'Agregar.php/guardaTurno'];
-        
-
-            if ($respuesta->error){
-                $response->respuesta = $respuesta->respuesta;
-                $this->respond($response);
-            }
-
+       try{
+        $respuesta = $agregar->guardarTurnoNuevo($dataInsert,$dataBitacora);
+        } catch (\Exception $e) {
+        $this->handleException($e);
+        } 
+            // var_dump($respuesta);
+            // die();
+        if ($respuesta){
+            $response->respuesta = $respuesta;
             return $this->respond($response);
+        }
+        
+        return $this->respond($response);
     }
 
   

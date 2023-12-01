@@ -14,7 +14,18 @@ st.agregar = (function () {
                     data:formData,
                     dataType: "html",
                     success: function (response) {
-                        console.log(response);
+                         console.log(typeof response);
+                        var res= JSON.parse (response);
+                         console.log(typeof res);
+                         if(res.respuesta.error){
+                            Swal.fire("error", "Solicite apoyo al area de sistemas");
+                         }
+                         Swal.fire("success", "Se guardo con exito");
+                         $("#formAgregarTurno")[0].reset();
+                         $('#asunto, #nombre_turno, #cpp, #indicacion, #firma_turno').val(null).trigger('change');
+                        //  window.location.href = base_url + "index.php/Inicio";
+                        //  window.location.href = base_url + "index.php/Inicio/pdfTurno" + res.respuesta.id_turno;
+                        window.location.href = base_url + "index.php/Inicio/pdfTurno?id_turno=" + res.respuesta.id_turno;
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         Swal.fire("Error!", textStatus, errorThrown, "error");  

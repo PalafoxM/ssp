@@ -8,7 +8,7 @@ use App\Models\Mglobal;
 use CodeIgniter\HTTP\Response;
 use stdClass;
 
-class Magregaturno extends Model 
+class Magregarturno extends Model 
 {
     protected $DBGroup = 'default';
     public $errorConexion = false;
@@ -22,7 +22,7 @@ class Magregaturno extends Model
         $this->Mglobal = new Mglobal();
     }
 
-    public function guardarTurno($dataInsert,$dataBitacora){
+    public function guardarTurnoNuevo($dataInsert,$dataBitacora){
        
         $Bitacoracontrol = new Bitacoracontrol();
         $response = new \stdClass();
@@ -46,9 +46,9 @@ class Magregaturno extends Model
         log_message("critical","Respuesta: ".json_encode($response));
         return $response;
        }
-
-
-
+       
+       $response->error = false; 
+       return $response;
 
     }
 
