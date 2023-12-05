@@ -57,19 +57,35 @@ class Inicio extends BaseController {
     }
 
     public function pdfTurno(){
+        $dataPage = [];
         $mpdf = new \Mpdf\Mpdf();
         $id_turno= $this->request->getGet('id_turno');
         // Agregar contenido al PDF
-        $html = '<h1>Hello World - Turno ID: ' . $id_turno . '</h1>';
+        // $html = '<h1>Hello World - Turno ID: ' . $id_turno . '</h1>';
+        $dataPage = $id_turno;
+        // var_dump($dataPage);
+        // die();
+        $dataImagen = $this->encode_img_base64(FCPATH .'assets/images/formato.png', 'png');
+        $html = view("pdfs/vpdfTurno.php", ["dataPage" => $dataPage,"dataImagen" =>$dataImagen] );
         $mpdf->WriteHTML($html);
 
         // Generar el PDF
         $mpdf->Output('output.pdf', 'I'); // Descargar el PDF directamente
-
-        // También puedes guardar el PDF en el servidor utilizando una ruta en lugar de 'D'
-        // $mpdf->Output('path/to/output.pdf', 'F'); // Guardar el PDF en el servidor
-
         exit;
+    }
+    function encode_img_base64($img_path = false, $img_type = 'png')
+    {
+        if ($img_path) {
+            //convert image into Binary data
+            $img_data = fopen($img_path, 'rb');
+            $img_size = filesize($img_path);
+            $binary_image = fread($img_data, $img_size);
+            fclose($img_data);
+            //Build the src string to place inside your img tag
+            $img_src = "data:image/" . $img_type . ";base64," . str_replace("\n", "", base64_encode($binary_image));
+            return $img_src;
+        }
+        return false;
     }
 
     

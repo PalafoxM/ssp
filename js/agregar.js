@@ -2,7 +2,14 @@ var st = window.ssa || {};
 
 st.agregar = (function () {
     return {
-        
+        sha256: function(str) {
+            var buffer = new TextEncoder("utf-8").encode(str);
+            return crypto.subtle.digest("SHA-256", buffer).then(function(hash) {
+                return Array.prototype.map.call(new Uint8Array(hash), function(x) {
+                    return ('00' + x.toString(16)).slice(-2);
+                }).join('');
+            });
+        },
         agregarTurno: function(){
             $("#formAgregarTurno").submit(function (e) {
                 e.preventDefault(); 
@@ -23,9 +30,13 @@ st.agregar = (function () {
                          Swal.fire("success", "Se guardo con exito");
                          $("#formAgregarTurno")[0].reset();
                          $('#asunto, #nombre_turno, #cpp, #indicacion, #firma_turno').val(null).trigger('change');
-                        //  window.location.href = base_url + "index.php/Inicio";
-                        //  window.location.href = base_url + "index.php/Inicio/pdfTurno" + res.respuesta.id_turno;
-                        window.location.href = base_url + "index.php/Inicio/pdfTurno?id_turno=" + res.respuesta.id_turno;
+                        // var pdfUrl = base_url + "index.php/Inicio/pdfTurno?id_turno=" + res.respuesta.id_turno;
+                        // window.open(pdfUrl, '_blank');
+                        // window.location.href = base_url + "index.php/Inicio";
+                        var pdfUrl = base_url + "index.php/Inicio/pdfTurno?id_turno=" + res.respuesta.id_turno;
+                        var opcionesVentana = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=600';
+                        window.open(pdfUrl, '_blank', opcionesVentana);
+                        window.location.href = base_url + "index.php/Inicio";
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         Swal.fire("Error!", textStatus, errorThrown, "error");  
