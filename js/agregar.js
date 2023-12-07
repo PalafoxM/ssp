@@ -34,7 +34,7 @@ st.agregar = (function () {
                         // window.open(pdfUrl, '_blank');
                         // window.location.href = base_url + "index.php/Inicio";
                         var pdfUrl = base_url + "index.php/Inicio/pdfTurno?id_turno=" + res.respuesta.id_turno;
-                        var opcionesVentana = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=600';
+                        var opcionesVentana = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=800';
                         window.open(pdfUrl, '_blank', opcionesVentana);
                         window.location.href = base_url + "index.php/Inicio";
                     },

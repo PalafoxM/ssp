@@ -165,8 +165,8 @@
                             <div class="row">
                                 <div class="mb-3">
                                     <label class="form-label">SINTESIS ASUNTO</label>
-                                    <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
-                                        placeholder="Tiene un limite 225 caracteres."></textarea>
+                                    <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="600" rows="5" 
+                                        placeholder="Tiene un limite 600 caracteres."></textarea>
                                 </div>
                             </div>
                         </div>    
