@@ -81,6 +81,11 @@
             color: red;
             margin-left: 5px; 
         }
+    .invalid-input  {
+      border: 2px solid red;
+
+    }
+   
 </style>
 <body>
     <div class=" mt-3">
@@ -118,7 +123,7 @@
                                 <div class="col-md-3">
                                     <div class="mb-3 position-relative" id="datepicker2">
                                         <label for="fecha_recepcion" class="form-label">FECHA RECEPCIÓN</label>
-                                        <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker2" id="fecha_recepcion" name="fecha_recepcion" placeholder="dd/mm/aaaa" value="<?php echo $fechaActual; ?>">
+                                        <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker2" id="fecha_recepcion" name="fecha_recepcion" placeholder="dd/mm/aaaa" value="<?php echo $fechaActual; ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -126,25 +131,25 @@
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="titulo_inv" class="form-label">TITULO</label>
-                                        <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm" placeholder="titulo">
+                                        <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm" placeholder="titulo" pattern="[a-zA-Z0-9\s]+">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="nombre_t" class="form-label campoObligatorio">NOMBRE</label>
-                                        <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm " placeholder="NOMBRE" required>
+                                        <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm " placeholder="NOMBRE" required pattern="[a-zA-Z0-9\s]+">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="primer_apellido" class="form-label campoObligatorio">PRIMER APELLIDO</label>
-                                        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm " placeholder="PRIMER APELLIDO" required>
+                                        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm " placeholder="PRIMER APELLIDO" required pattern="[a-zA-Z0-9\s]+">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="segundo_apellido" class="form-label">SEGUNDO APELLIDO</label>
-                                        <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control form-control-sm" placeholder="SEGUNDO APELLIDO">
+                                        <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control form-control-sm" placeholder="SEGUNDO APELLIDO" pattern="[a-zA-Z0-9\s]+">
                                     </div>
                                 </div>
                             </div>
@@ -152,21 +157,21 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="cargo_inv" class="form-label">CARGO</label>
-                                        <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO">
+                                        <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO" pattern="[a-zA-Z0-9\s]+">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="razon_social_inv" class="form-label">RAZON SOCIAL</label>
-                                        <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL">
+                                        <label for="razon_social_inv" class="form-label campoObligatorio">RAZON SOCIAL</label>
+                                        <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL" required pattern="[a-zA-Z0-9\s]+">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="mb-3">
-                                    <label class="form-label">SINTESIS ASUNTO</label>
+                                    <label class="form-label campoObligatorio">SINTESIS ASUNTO</label>
                                     <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="600" rows="5" 
-                                        placeholder="Tiene un limite 600 caracteres."></textarea>
+                                        placeholder="Tiene un limite 600 caracteres." required pattern="[a-zA-Z0-9\s]+"></textarea>
                                 </div>
                             </div>
                         </div>    
@@ -475,7 +480,10 @@
             language: 'es'
         });
                 
-       
+        $("#resumen, #titulo_inv,#segundo_apellido,#primer_apellido,#nombre_t,#cargo_inv ,#razon_social_inv").on("input", function() {
+            console.log(st.agregar.validarEntrada($(this)));
+
+        });
        
     });
 </script>

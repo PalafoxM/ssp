@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turnos 2.0</title>
 </head>
+
 <body>
 
     <h1>Hola <?php echo $nombre_completo; ?></h1> 
-    <h4>Turnos recientes</h4>
+    <h4>Turnos recientes</h4> 
+   
     <table
         id="table"
         data-locale="es-MX"
@@ -25,7 +27,7 @@
         <thead>
             <tr>
                 <th data-field="id_turno" data-width="20" data-sortable="true">FOLIO</th>
-                <th data-field="fecha_recepcion" data-width="20" data-sortable="true">FECHA RECEPCION</th>
+                <th data-field="fecha_recepcion" data-width="20" data-sortable="true" data-formatter="ini.inicio.formattFechaRecepcion">FECHA RECEPCION</th>
                 <th data-field="solicitante_nombre" data-width="100" data-sortable="true">REMITENTE</th>
                 <th data-field="solicitante_razon_social" data-width="50" data-sortable="true">RAZON SOCIAL</th>
                 <th data-field="resumen" data-width="100" data-sortable="true"  data-formatter="ini.inicio.formatterTruncaTexto" data-tooltip="true">SINTESIS ASUNTO</th>
@@ -43,9 +45,9 @@
 <script src="<?php echo base_url('/assets/bootstrap-table-master/dist_/extensions/export/bootstrap-table-export.min.js');?>"></script>
 <script>
     
-    $('[data-toggle="tooltip"]').tooltip({
-        trigger : 'hover'
-    });
+    // $('[data-toggle="tooltip"]').tooltip({
+    //     trigger : 'hover'
+    // });
     function headerStyle() {
     return {
         css: {
@@ -54,6 +56,9 @@
         }
     };
     }
+
+
+   
 </script>
 </body>
 </html>

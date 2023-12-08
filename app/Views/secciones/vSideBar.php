@@ -73,7 +73,7 @@
                                 <a href="<?= base_url("/index.php/Agregar")?>"><i class="dripicons-plus"></i>  Agregar</a>
                             </li>
                             <li>
-                                <a href="#"><i class="dripicons-search"></i>  Buscar</a>
+                                <a href="<?= base_url("/index.php/Inicio")?>"><i class="dripicons-search"></i>  Buscar</a>
                             </li>
                             <li>
                                 <a href="#"><i class="dripicons-gear"></i>  Opciones</a>
