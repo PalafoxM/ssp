@@ -149,7 +149,20 @@ st.agregar = (function () {
                     $('#selectedValuesIndicacion1 tbody').append('<tr><td colspan="2">No hay elementos seleccionados</td></tr>');
                 }
             }
-        }
+        },
+        validarEntrada:function(input) {
+            var resumen = input.val();
+            var regex = /^[a-zA-Z0-9\s.,!?()-]+$/;
+           
+            if (resumen.length > 0 && resumen.length <= 600 && regex.test(resumen)) {
+              input.removeClass("invalid-input");
+              return true;  
+            } else {
+              input.addClass("invalid-input");
+              return false;
+              
+            }
+          }
         
     }
 })();
