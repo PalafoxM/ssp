@@ -8,6 +8,7 @@ use App\Models\Magregarturno;
 
 
 use stdClass;
+use Exception;
 use CodeIgniter\API\ResponseTrait;
 
 class Agregar extends BaseController {
@@ -183,7 +184,37 @@ class Agregar extends BaseController {
     {
         log_message('error', "Se produjo una excepción: " . $e->getMessage());
     }
-
+    // function validarCampo($valor,$nombreCampo) {
+    // // function validarCampo($valor, $nombreCampo) {
+    //     $pattern = "/^([a-zA-Z 0-9]+)$/";
+    //     // global $pattern;
+    //     // return preg_match($pattern, $valor) ? $valor : null;
+    //     if (!preg_match($pattern, $valor)) {
+    //         throw new Exception("Error en el campo '$nombreCampo': No cumple con el patrón esperado.");
+    //         // $this->handleException("Error en el campo '$nombreCampo': No cumple con el patrón esperado.");
+    //     }
+    
+    //      return $valor;
+    // }
+    // function validarCampo($valor, $nombreCampo) {
+    //     $pattern = "/^([a-zA-Z 0-9]+)$/";
+    
+    //     if (!preg_match($pattern, $valor)) {
+    //         throw new Exception("Error en el campo '$nombreCampo': No cumple con el patrón esperado.");
+    //     }
+    
+    //     return $valor;
+    // }
+    function validarCampo($valor, $nombreCampo) {
+        // $pattern = "/^([a-zA-Z 0-9]+)$/";
+        $pattern = "/^([a-zA-ZáéíóúüñÁÉÍÓÚÜÑ 0-9]+)$/";
+        
+        if (!preg_match($pattern, $valor)) {
+            throw new Exception("Error en el campo '$nombreCampo': Por favor, utilice únicamente caracteres alfanuméricos (letras y números). Gracias.");
+        }
+    
+        return $valor;
+    }
     public function guardaTurno(){
         $session = \Config\Services::session();
         $response = new \stdClass();
@@ -195,19 +226,21 @@ class Agregar extends BaseController {
         $formattedDate = $currentDateTime->format('Y-m-d H:i:s');
         $fecha_peticion = $currentDateTime::createFromFormat('d/m/Y', $data['fecha_peticion'])->format('Y-m-d');
         $fecha_recepcion = $currentDateTime::createFromFormat('d/m/Y', $data['fecha_recepcion'])->format('Y-m-d');
+
+        $anioActual = date("Y"); 
         $dataInsert = [
-            'anio'                         =>  '2023',
-            'id_asunto'                    => $data['asunto'],     
-            // 'fecha_peticion'               => $data['fecha_peticion'],             
+            'anio'                         => $anioActual,
+            'id_asunto'                    => $data['asunto'],           
             'fecha_peticion'               => $fecha_peticion,             
             'fecha_recepcion'              => $fecha_recepcion,             
+            // 'solicitante_titulo'           => $data['titulo_inv'],                 
             'solicitante_titulo'           => $data['titulo_inv'],                 
             'solicitante_nombre'           => $data['nombre_t'],                 
             'solicitante_primer_apellido'  => $data['primer_apellido'],                         
             'solicitante_segundo_apellido' => $data['segundo_apellido'],                         
             'solicitante_cargo'            => $data['cargo_inv'],             
             'solicitante_razon_social'     => $data['razon_social_inv'],                     
-            'resumen'                      => $data['resumen'],     
+            'resumen'                      => $this->validarCampo($data['resumen'],"resumen"),     
             'id_estatus'                   => $data['status'],         
             'confirmacion'                 => isset($data['confirmacion']) ? $data['confirmacion'] : '0',
             'resultado_turno'              => $data['resultado_turno'],             
@@ -215,25 +248,24 @@ class Agregar extends BaseController {
             'usuario_registro'             => $session->id_usuario,             
             'fecha_registro'               => $formattedDate, 
             // arrays
-            // 'id_destinatario'              => isset($data['nombre_turno']) ? $data['nombre_turno'] : array(), 
-            // 'id_destinatario_copia'        => isset($data['cpp']) ? $data['cpp'] : array(),
-            // 'id_indicacion'                => isset($data['indicacion']) ? $data['indicacion'] : array(),
+            'id_destinatario'              => isset($data['nombre_turno']) ? $data['nombre_turno'] : array(), 
+            'id_destinatario_copia'        => isset($data['cpp']) ? $data['cpp'] : array(),
+            'id_indicacion'                => isset($data['indicacion']) ? $data['indicacion'] : array(),
         ];
         
         $dataBitacora = ['id_user' =>  $session->id_usuario, 'script' => 'Agregar.php/guardaTurno'];
-       try{
-        $respuesta = $agregar->guardarTurnoNuevo($dataInsert,$dataBitacora);
-        } catch (\Exception $e) {
-        $this->handleException($e);
-        } 
-            // var_dump($respuesta);
-            // die();
-        if ($respuesta){
+        
+       
+        try {
+            $respuesta = $agregar->guardarTurnoNuevo($dataInsert, $dataBitacora);
             $response->respuesta = $respuesta;
             return $this->respond($response);
+        } catch (\Exception $e) {
+            $this->handleException($e);
+            
+            $response->error = $e->getMessage();
+            return $this->respond($response);
         }
-        
-        return $this->respond($response);
     }
 
   

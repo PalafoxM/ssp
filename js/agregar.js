@@ -19,32 +19,31 @@ st.agregar = (function () {
                     type: "POST",
                     url: base_url + "index.php/Agregar/guardaTurno",
                     data:formData,
-                    dataType: "html",
+                    dataType: "json",
                     success: function (response) {
-                         console.log(typeof response);
-                        var res= JSON.parse (response);
-                         console.log(typeof res);
-                         if(res.respuesta.error){
+                        console.log(response);
+                        if(response.respuesta.error){
                             Swal.fire("error", "Solicite apoyo al area de sistemas");
-                         }
-                         Swal.fire("success", "Se guardo con exito");
-                         $("#formAgregarTurno")[0].reset();
-                         $('#asunto, #nombre_turno, #cpp, #indicacion, #firma_turno').val(null).trigger('change');
-                        // var pdfUrl = base_url + "index.php/Inicio/pdfTurno?id_turno=" + res.respuesta.id_turno;
-                        // window.open(pdfUrl, '_blank');
-                        // window.location.href = base_url + "index.php/Inicio";
-                        var pdfUrl = base_url + "index.php/Inicio/pdfTurno?id_turno=" + res.respuesta.id_turno;
+                        }
+                        Swal.fire("success", "Se guardo con exito");
+                        $("#formAgregarTurno")[0].reset();
+                        $('#asunto, #nombre_turno, #cpp, #indicacion, #firma_turno').val(null).trigger('change');
+                        var pdfUrl = base_url + "index.php/Inicio/pdfTurno?id_turno=" + response.respuesta.id_turno;
                         var opcionesVentana = 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=800';
                         window.open(pdfUrl, '_blank', opcionesVentana);
                         window.location.href = base_url + "index.php/Inicio";
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        Swal.fire("Error!", textStatus, errorThrown, "error");  
-                        console.log('error:' + textStatus, errorThrown);
+                    error: function (response,jqXHR, textStatus, errorThrown) {
+                         var res= JSON.parse (response.responseText);
+                        //  console.log(res.message);
+                         Swal.fire("Error", '<p> '+ res.message + '</p>');  
                     }
                 });
             });
         },
+       
+        
+        
         cancelarTurno: function(){
             Swal.fire({
                 title: "¿Está seguro de que desea cancelar?",
@@ -153,7 +152,7 @@ st.agregar = (function () {
         validarEntrada:function(input) {
             var resumen = input.val();
             var regex = /^[a-zA-Z0-9\s.,!?()-]+$/;
-           
+            $pattern = "/^([a-zA-ZáéíóúüñÁÉÍÓÚÜÑ 0-9]+)$/";
             if (resumen.length > 0 && resumen.length <= 600 && regex.test(resumen)) {
               input.removeClass("invalid-input");
               return true;  

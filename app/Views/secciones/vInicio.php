@@ -26,14 +26,14 @@
         data-url="<?=base_url("/index.php/Inicio/getPrincipal")?>">
         <thead>
             <tr>
-                <th data-field="id_turno" data-width="20" data-sortable="true">FOLIO</th>
+                <th data-field="id_turno" data-width="20" data-sortable="true" class="text-center">FOLIO</th>
                 <th data-field="fecha_recepcion" data-width="20" data-sortable="true" data-formatter="ini.inicio.formattFechaRecepcion">FECHA RECEPCION</th>
                 <th data-field="solicitante_nombre" data-width="100" data-sortable="true">REMITENTE</th>
                 <th data-field="solicitante_razon_social" data-width="50" data-sortable="true">RAZON SOCIAL</th>
                 <th data-field="resumen" data-width="100" data-sortable="true"  data-formatter="ini.inicio.formatterTruncaTexto" data-tooltip="true">SINTESIS ASUNTO</th>
                 <th data-field="resultado_turno" data-width="100" data-sortable="true" data-formatter="ini.inicio.formatterTruncaTexto" data-tooltip="true">RESULTADO TURNO</th>
                 <th data-field="id_estatus" data-width="20" data-sortable="true" data-formatter="ini.inicio.formatteStatus" class="text-center" >ESTATUS</th>
-                 <th data-field="id_turno" data-width="20" data-formatter="ini.inicio.formatterAccionesTurno" data-sortable="true">Acciones</th>
+                <th data-field="id_turno" data-width="20" data-formatter="ini.inicio.formatterAccionesTurno" data-sortable="true">Acciones</th>
             </tr>
         </thead>
     </table>  

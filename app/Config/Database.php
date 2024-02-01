@@ -49,7 +49,7 @@ class Database extends Config
      * This database connection is used when
      * running PHPUnit database tests.
      */
-    public array $biotacora = [
+    public array $bitacora = [
         'DSN'         => '',
         'hostname'    => '10.0.72.21',
         'username'    => 'userTurnos2',

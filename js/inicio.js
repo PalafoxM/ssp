@@ -36,6 +36,7 @@ ini.inicio = (function () {
             return accion;
         },
         formatterTruncaTexto:function(value, row) {
+            if(value === null) return "";
             var maxLength = 30;
             var truncatedValue = value.length > maxLength ? value.substring(0, maxLength) + '...' : value;
             return '<span data-toggle="tooltip" title="' + value + '">' + truncatedValue + '</span>';

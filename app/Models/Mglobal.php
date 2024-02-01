@@ -520,7 +520,7 @@ class Mglobal extends Model {
      *   llave        (array) ["llave_1","llave_2"]
      *  ]
      */
-    public function localUpdateInsertTabla($dataInsert = array(), $dataConfig = array(), $dataBitacora = array(), $nombreElemento = false, &$db = '', &$response = array(), &$bitacora = array() )
+    public function localUpdateInsertTabla($dataInsert = array(), $dataConfig = array(), $dataBitacora = array(), $nombreElemento = false, &$db, &$response, &$bitacora = array() )
     {
         /** 
         $dataConfig = [

@@ -28,6 +28,10 @@ class Magregarturno extends Model
         $response = new \stdClass();
         $response->error = true;
         $bitacora = [];
+        $data = [];
+        $datos = [];
+        $datosCopia = [];
+        $datosIndicacion = [];
         $errorDB = false;
         
         /** para guardar en la primera
@@ -42,14 +46,98 @@ class Magregarturno extends Model
             * @param array:editar                  (opcional) Llave primaria para editar ["idCampoTablaName",idTabla]
             * @param array:adicionales             Variable utilizada para el caso en que se requiera cambiar parte de la estructura de la función
             */
-       if(!$this->Mglobal->localSaveTabla($this->db, $response, $dataInsert, $dataBitacora, 'turno', $bitacora, 'id_turno', false, false)){
-        log_message("critical","Respuesta: ".json_encode($response));
-        return $response;
-       }
-       
+        // die(var_dump($dataInsert['id_destinatario']));  
+        $data = [
+            'anio'                          => $dataInsert['anio'],
+            'id_asunto'                     => $dataInsert['id_asunto'],
+            'fecha_peticion'                => $dataInsert['fecha_peticion'],
+            'fecha_recepcion'               => $dataInsert['fecha_recepcion'],
+            'solicitante_titulo'            => $dataInsert['solicitante_titulo'],
+            'solicitante_nombre'            => $dataInsert['solicitante_titulo'],
+            'solicitante_primer_apellido'   => $dataInsert['solicitante_primer_apellido'],
+            'solicitante_segundo_apellido'  => $dataInsert['solicitante_segundo_apellido'],
+            'solicitante_cargo'             => $dataInsert['solicitante_cargo'],
+            'solicitante_razon_social'      => $dataInsert['solicitante_razon_social'],
+            'resumen'                       => $dataInsert['resumen'],
+            'id_estatus'                    => $dataInsert['id_estatus'],
+            'confirmacion'                  => $dataInsert['confirmacion'],
+            'resultado_turno'               => $dataInsert['resultado_turno'],
+            'firma_turno'                   => $dataInsert['firma_turno'],
+            'usuario_registro'              => $dataInsert['usuario_registro'],
+            'fecha_registro'                => $dataInsert['fecha_registro'],
+        ];
+        
+        // die(var_dump($dataInsert)); 
+        $this->db->transBegin();     
+            if(!$this->Mglobal->localSaveTabla($this->db, $response, $data, $dataBitacora, 'turno', $bitacora, 'id_turno', false, false)){
+                log_message("critical","Respuesta: ".json_encode($response));
+                log_message('critical','statusDB signosVitales: '.json_encode($this->db->transStatus()));
+                return $response;
+            }
+            // die(var_dump($response->id_turno)); 
+            // $datos['id_turno'] = $response->id_turno;
+           
+            foreach ($dataInsert['id_destinatario'] as $valor) {
+                $datos[] = ['id_turno'=>$response->id_turno,'id_destinatario' => (int)$valor];
+            }
+            //  die(var_dump($datos)); 
+            $dataConfig = [
+                'tabla' => "turno_destinatario",
+                'paramIdTabla' => "id_turno_destinatario",
+                'paramDelete' => ['visible' => 0],
+                'whereDelete' => ['id_turno'=>$response->id_turno, 'visible' => 1],
+                'llave' => ['id_turno','id_destinatario' ],
+            ];
+            if (!$this->Mglobal->localUpdateInsertTabla($datos, $dataConfig, $dataBitacora, "turnoDestinatario", $this->db, $response, $bitacora )){
+                log_message("critical","Respuesta: ".json_encode($response));
+                log_message('critical','statusDB: '.json_encode($this->db->transStatus()));
+                return $response;
+            }
+            ////////////////////////////////////////
+            foreach ($dataInsert['id_destinatario_copia'] as $valor) {
+                $datosCopia[] = ['id_turno'=>$response->id_turno,'id_destinatario' => (int)$valor];
+            }
+            //  die(var_dump($datosCopia)); 
+            $dataConfig = [
+                'tabla' => "turno_con_copia",
+                'paramIdTabla' => "id_turno_con_copia",
+                'paramDelete' => ['visible' => 0],
+                'whereDelete' => ['id_turno'=>$response->id_turno, 'visible' => 1],
+                'llave' => ['id_turno','id_destinatario'],
+            ];
+            if (!$this->Mglobal->localUpdateInsertTabla($datosCopia, $dataConfig, $dataBitacora, "turnoConCopia", $this->db, $response, $bitacora )){
+                log_message("critical","Respuesta: ".json_encode($response));
+                log_message('critical','statusDB: '.json_encode($this->db->transStatus()));
+                return $response;
+            }
+            ////////////////////////////////////////
+            foreach ($dataInsert['id_indicacion'] as $valor) {
+                $datosIndicacion[] = ['id_turno'=>$response->id_turno,'id_indicacion' => (int)$valor];
+            }
+            // die(var_dump($datosIndicacion)); 
+            $dataConfig = [
+                'tabla' => "turno_indicacion",
+                'paramIdTabla' => "id_turno_indicacion",
+                'paramDelete' => ['visible' => 0],
+                'whereDelete' => ['id_turno'=>$response->id_turno, 'visible' => 1],
+                'llave' => ['id_turno','id_indicacion'],
+            ];
+            if (!$this->Mglobal->localUpdateInsertTabla($datosIndicacion, $dataConfig, $dataBitacora, "turnoIndicacion", $this->db, $response, $bitacora )){
+                log_message("critical","Respuesta: ".json_encode($response));
+                log_message('critical','statusDB: '.json_encode($this->db->transStatus()));
+                return $response;
+            }
+
+        $this->db->transCommit();    
        $response->error = false; 
        return $response;
 
     }
+    
 
+  
+    
+        
+       
+     
 }
