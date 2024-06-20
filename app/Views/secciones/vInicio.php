@@ -8,7 +8,7 @@
 
 <body>
 
-    <h1>Hola <?php echo $nombre_completo; ?></h1> 
+    <h1 style="color:black">Bienvenido <?php echo $nombre_completo; ?></h1> 
     <h4>Turnos recientes</h4> 
    
     <table

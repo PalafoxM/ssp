@@ -74,13 +74,9 @@ class Magregarturno extends Model
                 log_message('critical','statusDB signosVitales: '.json_encode($this->db->transStatus()));
                 return $response;
             }
-            // die(var_dump($response->id_turno)); 
-            // $datos['id_turno'] = $response->id_turno;
-           
             foreach ($dataInsert['id_destinatario'] as $valor) {
                 $datos[] = ['id_turno'=>$response->id_turno,'id_destinatario' => (int)$valor];
             }
-            //  die(var_dump($datos)); 
             $dataConfig = [
                 'tabla' => "turno_destinatario",
                 'paramIdTabla' => "id_turno_destinatario",
@@ -97,7 +93,6 @@ class Magregarturno extends Model
             foreach ($dataInsert['id_destinatario_copia'] as $valor) {
                 $datosCopia[] = ['id_turno'=>$response->id_turno,'id_destinatario' => (int)$valor];
             }
-            //  die(var_dump($datosCopia)); 
             $dataConfig = [
                 'tabla' => "turno_con_copia",
                 'paramIdTabla' => "id_turno_con_copia",
@@ -114,7 +109,6 @@ class Magregarturno extends Model
             foreach ($dataInsert['id_indicacion'] as $valor) {
                 $datosIndicacion[] = ['id_turno'=>$response->id_turno,'id_indicacion' => (int)$valor];
             }
-            // die(var_dump($datosIndicacion)); 
             $dataConfig = [
                 'tabla' => "turno_indicacion",
                 'paramIdTabla' => "id_turno_indicacion",

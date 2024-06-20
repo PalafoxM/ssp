@@ -3,7 +3,7 @@
 <div class="leftside-menu">
 
         <!-- LOGO -->
-        <a href="#" class="logo text-center logo-light">
+        <a href="#" class="logo text-center logo-light mt-2">
             <span class="logo-lg">
                 <img src="<?php echo base_url()?>/assets/images/st4.png" alt="" height="90">
             </span>
@@ -27,8 +27,8 @@
         <!--- Sidemenu -->
         <ul class="side-nav mt-5">
                 <li class="side-nav-title side-nav-item">MENÚ DEL SISTEMA</li>
-               
-                <?php if((int)$session->id_perfil == 1): ?>
+<!--                
+                <?php //if((int)$session->id_perfil == -1): ?>
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#configuracion" aria-expanded="false" aria-controls="configuracion" class="side-nav-link">
                             <i class="uil-server"></i>
@@ -43,9 +43,9 @@
                             </ul>
                         </div>
                     </li> 
-                <?php endif?> 
+                <?php //endif?>  -->
                 
-                <?php if((int)$session->id_perfil == 1): ?>
+                <?php if((int)$session->id_perfil == -1): ?>
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#gestion" aria-expanded="false" aria-controls="gestion" class="side-nav-link">
                             <i class="uil-home-alt"></i>
@@ -84,7 +84,7 @@
                         </ul>
                     </div>
                 </li> 
-                <li class="side-nav-item">
+                <!-- <li class="side-nav-item">
                     <a data-bs-toggle="collapse" href="#llamadas" aria-expanded="false" aria-controls="junta" class="side-nav-link">
                         <i class="dripicons-phone"></i>
                         <span> Llamadas </span>
@@ -106,9 +106,9 @@
                             </li>
                         </ul>
                     </div>
-                </li>   
+                </li>    -->
             
-                <?php if((int)$session->id_perfil == 1): ?>
+                <!-- <?php //if((int)$session->id_perfil == -1): ?>
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#reportes" aria-expanded="false" aria-controls="reportes" class="side-nav-link">
                             <i class="uil-clipboard-alt"></i>
@@ -118,7 +118,7 @@
                         <div class="collapse" id="reportes">
                             <ul class="side-nav-second-level">
                                 <li>
-                                    <a href="<?php echo base_url('index.php/Junta/reporteComentarios') ?>"> Reporte de comentarios</a>
+                                    <a href="<?php echo base_url('index.php/Junta/reporteComentarios') ?>"> Reporte</a>
                                 </li>
                                 <li>
                                     <a href="<?php echo base_url('index.php/Junta/reporteVotaciones') ?>"> Reporte de votaciones</a>
@@ -129,7 +129,7 @@
                             </ul>
                         </div>
                     </li>   
-                <?php endif?> 
+                <?php //endif?>  -->
         </ul>
     <div class="clearfix"></div>
 

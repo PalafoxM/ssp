@@ -1,4 +1,23 @@
+<style>
+   .imagenLogin{
+    max-width:50%;
+    height: auto;
+   
+}
 
+   @media only screen and (max-width: 1600px) {
+        .imagenLogin img{
+            width:65%;
+           
+        }  
+    }
+   @media only screen and (max-width: 1400px) {
+    #txtTitulo{
+            display:none;
+        }  
+    }
+</style>
+<link href="<?php echo base_url();?>/assets/css/custom.css" rel="stylesheet" type="text/css"  />
 <div class="auth-fluid">
             <!--Auth fluid left content -->
             <div class="auth-fluid-form-box" >
@@ -7,18 +26,18 @@
 
                         <!-- Logo -->
                         <div class="auth-brand text-center text-lg-start ">
-                            <a href="#" class="logo-dark">
-                                <span><img src="<?php echo base_url();?>/assets/images/st4.png" alt="Logo" height="230"></span>
-                            </a>
-                            <a href="#" class="logo-light text-center">
-                                <span><img src="<?php echo base_url();?>/assets/images/st4.png" alt="Logo" height="230"></span>
+                            
+                            <a href="#" class="logo-light text-center imagenLogin ">
+                                <span><img src="<?php echo base_url();?>/assets/images/st4.png" alt="Logo" class="img-fluid"></span>
                             </a>
                         </div>
 
-                        <!-- title-->
+                        <div class="text-center " id="txtTitulo">
                         <h2 class="mt-0" style="color: #069">Sistema de Turnos 2.0</h2>
                         <p class="text-muted mb-4">Ingrese usuario y contraseña</p>
+                        <!-- <span id="tamanioPantalla" style="color:red"></span> -->
 
+                        </div>
                         <!-- form -->
                         <form id="login" name="login" autocomplete="off">
                             <div class="mb-3">
@@ -54,4 +73,20 @@
 
         <script>
             saeg.principal.login();
+            // // Función para actualizar el tamaño de pantalla en el span
+            //     function actualizarTamanioPantalla() {
+            //         // Obtener el ancho y alto de la pantalla
+            //         var anchoPantalla = window.innerWidth;
+            //         var altoPantalla = window.innerHeight;
+
+            //         // Mostrar los valores en el span
+            //         var spanTamanioPantalla = document.getElementById("tamanioPantalla");
+            //         spanTamanioPantalla.textContent = "Ancho: " + anchoPantalla + "px, Alto: " + altoPantalla + "px";
+            //     }
+
+            //     // Llamar a la función inicialmente para mostrar el tamaño de pantalla actual
+            //     actualizarTamanioPantalla();
+
+            //     // Agregar un evento de cambio de tamaño para actualizar dinámicamente el tamaño de pantalla
+            //     window.addEventListener("resize", actualizarTamanioPantalla);
         </script>

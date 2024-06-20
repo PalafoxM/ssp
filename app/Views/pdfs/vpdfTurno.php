@@ -7,12 +7,11 @@
 </head>
 <style>
        
-        @font-face {
+        /* @font-face {
             font-family: 'ProximaNova'; 
-            src: url(FCPATH .'assets/fonts/custom/proxima-nova.otf') format('opentype');
-           
-        }
-
+            src: url(<?php echo FCPATH?>'assets/fonts/custom/proxima-nova.otf') format('opentype');
+        } */
+       
         .container{
             /* border:3px solid red; */
             margin: 0;
@@ -27,9 +26,12 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        .proxima{
+        /* .proxima{
+            font-family: 'BalooRegular', sans-serif;
+        } */
+        /* .proxima{
             font-family: 'ProximaNova', sans-serif;
-        }
+        } */
         .folio{
             width:13%;
             color:#ecf7ff;
@@ -39,7 +41,15 @@
         .textResumen{
             font-size: 12px;
             text-align: justify;
-        
+        }
+        .textList{
+            font-size: 13px;
+            text-align: justify;
+            list-style: none;
+        }
+        .textTurnado{
+            font-size: 12px;
+            text-align: justify;
         }
         .resumen{
             
@@ -49,42 +59,75 @@
             font-size: 12px;
            
         }
+        .bordeRojo{
+            /* border: 1px solid red; */
+        }
     </style>
     
 <body>
+   
+
     <?php date_default_timezone_set('America/Mexico_City');
         $fechaActual = date('Y-m-d');
         setlocale(LC_TIME, 'es_MX'); 
         $fechaFormateada = strftime('%d de %B del %y', strtotime($fechaActual));
     ?>
     <div class='container'>
-        <div class="" style="margin-left: 65.5%; margin-top:5.3%;">
-            <small class="proxima fecha">Guanajuato, Gto, <?= $fechaFormateada; ?></small>
+
+        <div class="bordeRojo" style="position:absolute; margin-left: 65.5%; margin-top:5.3%;width:30%; height:18px">
+             <small class="proxima fecha">Guanajuato, Gto, <?= $fechaFormateada; ?></small>
         </div>
-        <div class="folio" style="margin-left: 74%; margin-top:2.5%;">
+        <div class="folio bordeRojo" style="position:absolute; margin-left: 74%; margin-top:2.1%;width:15%;height:18px">
             <span class="proxima "><?= $dataPage['id_turno']."/".$dataPage['anio']; ?></span>
         </div>
-        
-        <div class="" style="margin-left: 76.5%; margin-top:2.8%;">
+
+        <div class="bordeRojo" style="position:absolute; margin-left: 75.7%; margin-top:2.6%;width:17%; height:18px;">
             <span class="proxima "><?= strtoupper($dataPage['usuario_registro']); ?></span>
         </div>
-        <div class="" style="margin-left: 18%; margin-top:25.3%;">
-            <span class="proxima "><?= $dataPage['asunto']; ?></span>
+        <div class="textTurnado bordeRojo" style="position:absolute; margin-left: 4%; margin-top:3%;width:80%; height:70px">
+            <ul style=" list-style:none;">
+                <?php 
+                foreach ( $dataPage['turnado'] as $turnado) { 
+                    echo '<li>'. $turnado->nombre_destinatario .' '. $turnado->cargo.'</li>';
+                }
+                ?>
+            </ul> 
         </div>
-        <div class="" style="margin-left: 9%; margin-top:0.5%;">
+        <div class="textTurnado bordeRojo" style="position:absolute; margin-left: 18%; margin-top:14%;">
+            <span class="proxima "><strong><?= $dataPage['asunto']; ?></strong></span>
+        </div>
+        <div class="textTurnado bordeRojo" style="margin-left: 9%; margin-top:0.5%;">
             <span class="proxima "><?= strtoupper($dataPage['nombre_completo']); ?></span>
         </div>
-        <div class="" style="margin-left: 9%; margin-top:0.5%;">
+        <div class="textTurnado bordeRojo" style="margin-left: 9%; margin-top:0.5%;">
             <span class="proxima "><?= strtoupper($dataPage['cargo']); ?></span>
         </div>
-        <div class="" style="margin-left: 9%; margin-top:0.5%;">
+        <div class="textTurnado bordeRojo" style="margin-left: 9%; margin-top:0.5%;">
             <span class="proxima "><?= strtoupper($dataPage['razon_social']); ?></span>
         </div>
-        <div class="" style="margin-left: 9%; margin-top:0.5%;">
-            <span class="proxima "><?= strtoupper($dataPage['fecha_recepcion']); ?></span>
+        <div class="bordeRojo" style="margin-left: 9%; margin-top:0.5%;">
+            <span class="proxima "><strong><?= strtoupper($dataPage['fecha_recepcion']); ?></strong></span>
         </div>
-        <div class="resumen" style="margin-left: 9%; margin-top:4%;">
+        <div class="resumen bordeRojo" style="margin-left: 9%; margin-top:5%;">
             <span class="proxima textResumen"><?= $dataPage['resumen']; ?></span>
+        </div>
+        <div class="textList bordeRojo" style="margin-left: 9%; margin-top:14%;">
+            <ul>
+                <?php 
+                foreach ( $dataPage['indicaciones'] as $indicacion) { 
+                    echo '<li>' . $indicacion->dsc_indicacion . '</li>';
+                }
+                ?>
+            </ul> 
+        </div>
+        <div class="textList bordeRojo" style="margin-left: 9%; margin-top:3%;">
+           <ul>
+               <?php 
+                foreach ( $dataPage['destinatarioCopia'] as $destinatario) { 
+                    echo '<li>' . $destinatario->nombre_destinatario . '</li>';
+                }
+                ?>
+            </ul>
         </div>
         
     </div>

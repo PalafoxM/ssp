@@ -25,10 +25,8 @@
         -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
         -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
         -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-        transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
-       
+        transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1); 
     }
-
     .neon:hover {
     text-shadow: 0 0 10px rgba(255,255,255,1) , 0 0 20px rgba(255,255,255,1) , 0 0 30px rgba(255,255,255,1) , 0 0 40px #00ffff , 0 0 70px #00ffff , 0 0 80px #00ffff , 0 0 100px #00ffff ;
     }
@@ -96,7 +94,7 @@
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <blockquote class="blockquote">
-                                <h3>DATOS GENERALES:</h3>
+                                <h3 class="textoNegro">DATOS GENERALES:</h3>
                                 <small>Los camppos marcados con<strong class="campoObligatorio"></strong>     son obigatorios</small>
                             </blockquote>
                             <div class="row">
@@ -185,7 +183,7 @@
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h3>TURNAR A:</h3>
+                                <h3 class="textoNegro">TURNAR A:</h3>
                                 <button  type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTurnarA"> <i class="dripicons-plus icono"></i> AGREGAR</button>
                             </div>                    
                             <div id="modalTurnarA" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
@@ -228,7 +226,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
                                         </div>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
@@ -251,7 +249,7 @@
                     <div class="card"><!--init card -->
                         <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h3>CON COPIA PARA:</h3>
+                                    <h3 class="textoNegro">CON COPIA PARA:</h3>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_cpp"> <i class="dripicons-plus icono"></i> AGREGAR</button>
                                 </div>
                                 <div id="modal_cpp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-header-modalLabel" aria-hidden="true">
@@ -311,7 +309,7 @@
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h3>INDICACIONES:</h3>
+                                <h3 class="textoNegro">INDICACIONES:</h3>
                                 <!-- Full width modal -->
                                 <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_indicacion"><i class="dripicons-plus icono"></i> AGREGAR</button>
                             </div>    
@@ -372,7 +370,7 @@
                     <div class="card"><!--init card -->
                         <div class="card-body">
                             <div class="row">
-                                <h3>QUIEN TRAMITÓ:</h3>
+                                <h3 class="textoNegro">QUIEN TRAMITÓ:</h3>
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="tramito" class="form-label">TRAMITÓ</label>
@@ -418,7 +416,7 @@
                 <div class="col-md-12">
                     <div class="card"><!--init card -->
                     <div class="card-body">
-                            <h3>RESPUESTA DEL TURNO:</h3>
+                            <h3 class="textoNegro">RESPUESTA DEL TURNO:</h3>
                             <div class="mb-3">
                                 <label for="resultado_turno" class="form-label">RESULTADO DEL TURNO</label>
                                 <textarea data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
@@ -482,7 +480,6 @@
                 
         $("#resumen, #titulo_inv,#segundo_apellido,#primer_apellido,#nombre_t,#cargo_inv ,#razon_social_inv").on("input", function() {
             console.log(st.agregar.validarEntrada($(this)));
-
         });
        
     });

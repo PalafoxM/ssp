@@ -82,12 +82,13 @@ class Inicio extends BaseController {
         ';
         $dataDB = array('select' => $select,'tabla' => 'turno', 'where' => 'id_turno= "'.$id_turno.'" AND visible = 1');
         $response = $catalogos->getTabla($dataDB);
-        $dataPage['id_turno'] = $response->data[0]->id_turno;
-        $dataPage['anio'] = $response->data[0]->anio;
+
+        $dataPage['id_turno'] =     $response->data[0]->id_turno;
+        $dataPage['anio'] =         $response->data[0]->anio;
         $titulo = (empty($response->data[0]->solicitante_titulo)) ? '' : $response->data[0]->solicitante_titulo.".";
-        $dataPage['nombre_completo'] = $titulo." ".$response->data[0]->solicitante_nombre." ".$response->data[0]->solicitante_primer_apellido." ".$response->data[0]->solicitante_segundo_apellido;
+        $dataPage['nombre_completo'] = $response->data[0]->solicitante_nombre." ".$response->data[0]->solicitante_primer_apellido." ".$response->data[0]->solicitante_segundo_apellido;
         $dataPage['cargo'] = $response->data[0]->solicitante_cargo;
-        $dataPage['razon_social'] =$response->data[0]->solicitante_razon_social; 
+        $dataPage['razon_social'] = $response->data[0]->solicitante_razon_social; 
         $dataPage['resumen'] =$response->data[0]->resumen; 
        
         $dataPage['fecha_recepcion'] =  strftime('%d/%b/%y', strtotime($response->data[0]->fecha_recepcion));;
@@ -99,10 +100,35 @@ class Inicio extends BaseController {
         $dataDB = array('select' => 'usuario','tabla' => 'seg_usuarios', 'where' => 'id_usuario= "'.$response->data[0]->usuario_registro.'" AND visible = 1');
         $responseUsuario = $catalogos->getTabla($dataDB);
         $dataPage['usuario_registro'] = $responseUsuario->data[0]->usuario;
-        // var_dump($responseUsuario);
-        //  die();
+        // turnado a: 
+        $dataDB = array('select' => 'nombre_destinatario,cargo','tabla' => 'cat_destinatario', 'where' => 'id_destinatario IN (SELECT id_destinatario FROM `turno_destinatario` WHERE id_turno ="'.$id_turno.'")');
+        $responseIndicacion = $catalogos->getTabla($dataDB);
+        $dataPage['turnado'] =$responseIndicacion->data;
+        // con indicaciones
+        $dataDB = array('select' => 'dsc_indicacion','tabla' => 'cat_indicaciones', 'where' => 'id_indicacion IN (SELECT id_indicacion FROM `turno_indicacion` WHERE id_turno ="'.$id_turno.'")');
+        $responseIndicacion = $catalogos->getTabla($dataDB);
+        $dataPage['indicaciones'] =$responseIndicacion->data;
+        //  var_dump($responseCopia->data);
+        //   die();
+        // con copia
+        $dataDB = array('select' => 'nombre_destinatario','tabla' => 'cat_destinatario', 'where' => 'id_destinatario IN (SELECT id_destinatario FROM `turno_con_copia` WHERE id_turno = "'.$id_turno.'")');
+        $responseCopia = $catalogos->getTabla($dataDB);
+        $dataPage['destinatarioCopia'] =$responseCopia->data;
+        //  var_dump($responseCopia->data);
+        //   die();
 
         $dataImagen = $this->encode_img_base64(FCPATH .'assets/images/formato.png', 'png');
+        $mpdfConfig = [
+            'fontDir' => FCPATH . 'assets/fonts/custom/',
+            'fontdata' => [
+                'proxima-nova' => [
+                    'R' => 'proxima-nova.ttf',
+                ],
+            ],
+        ];
+        
+        $mpdf = new \Mpdf\Mpdf($mpdfConfig);
+        
         $html = view("pdfs/vpdfTurno.php", ["dataPage" => $dataPage,"dataImagen" =>$dataImagen] );
         $mpdf->WriteHTML($html);
 

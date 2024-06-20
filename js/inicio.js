@@ -77,7 +77,77 @@ ini.inicio = (function () {
             var año = fechaOriginal.getFullYear();
             var nuevoFormato = dia + " de " + mes + " de " + año;
             return '<strong>' + nuevoFormato + '</strong>';
-        }
+        },
+        formattAcciones: function(value,row){
+            let Botones = "<div class='contenedor'>" +
+            "<button type='button' class='btn btn-danger' title='Remover'><i class='mdi mdi-account-off'></i></button>" +
+            "<button type='button' title='Editar' data-bs-toggle='modal' data-bs-target='#staticBackdrop' class='btn btn-info' onclick='ini.inicio.getUsuario(" + row.id_usuario + ")'><i class='mdi mdi-account-edit'></i></button>" +
+            "</div>";
+           return Botones;
+        },
+        getUsuario: function(id){
+            $.ajax({
+                type: "POST",
+                url: base_url + "index.php/Usuario/getUsuario",
+                dataType: "json",
+                data:{id_usuario:id},
+                success: function(data) {
+                    if (data) {
+                        console.log(data);
+                        console.log(data.id_perfil);
+                        $('#id_usuario').val(data.id_usuario);
+                        $('#usuario').val(data.usuario);
+                        $('#contrasenia').val(data.contrasenia);
+                        $('#nombre').val(data.nombre);
+                        $('#primer_apellido').val(data.primer_apellido);
+                        $('#segundo_apellido').val(data.segundo_apellido);
+                        $('#sexo').val(data.id_sexo);
+                        $('#id_clues').val(data.id_clues).change();
+                        $('#correo').val(data.correo);
+                        $('#perfil').val(data.id_perfil);
+                    } else {
+                        Swal.fire("info", "No se encontraron datos del usuario.", "info");
+                    }
+                },
+                error: function() {
+                    Swal.fire("info", "No se encontraron datos del usuario.", "info");
+                }
+            });
+        },
+        updateUsuario: function(){
+                $('#formUsuario').submit(function(event) {
+                    event.preventDefault();
+
+                    var formData = $(this).serialize();
+                    console.log(formData);
+                    $.ajax({
+                        url: base_url + "index.php/Usuario/UpdateUsuario",
+                        type: "post",
+                        dataType: "json",
+                        data: formData,
+                        beforeSend: function () {
+                            // element.disabled = true;
+                            $('#btnGuardar').prop('disabled', true);
+                        },
+                        complete: function () {
+                            // element.disabled = false;
+                            $('#btnGuardar').prop('disabled', false);
+                        },
+                        success: function (response, textStatus, jqXHR) {
+                            if (response.error) {
+                                Swal.fire("Atención", response.respuesta, "warning");
+                                return false;
+                            }
+                            Swal.fire("Correcto", "Registro exitoso", "success");
+                            window.location.href = `${base_url}index.php/Usuario`;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log("error(s):" + jqXHR);
+                        },
+                    });
+                });
+             
+        },
         
         
     }
