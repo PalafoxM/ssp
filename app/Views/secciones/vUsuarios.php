@@ -20,7 +20,11 @@
         }
 </style>
 <body>
-
+    <div class="row mt-3">
+        <div class="col text-end">
+            <button  class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick='ini.inicio.limpiaModal();'>Agregar Usuario</button>
+        </div>
+    </div>
     <table
         id="table"
         data-locale="es-MX"
@@ -54,13 +58,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Editar Usuario</h5>
+                <h5 class="modal-title" id="staticBackdropLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div> <!-- end modal header -->
             <div class="modal-body">
                 <form id="formUsuario">
                     <div class="mb-3 ">
                         <input type="hidden" class="form-control" id="id_usuario" name="id_usuario" >
+                        <input type="hidden" class="form-control" id="editar" name="editar" >
                     </div>
                     <div class="row g-2">
                         <div class="mb-3 col-md-6">
@@ -106,8 +111,8 @@
                             <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" placeholder="Primer Apellido">
                         </div>
                         <div class="mb-3 col-md-4">
-                            <label for="segundo_apeliido" class="form-label">Segundo Apellido</label>
-                            <input type="text" class="form-control" id="segundo_apeliido" name="segundo_apeliido" placeholder="Segundo Apellido">
+                            <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
+                            <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido" placeholder="Segundo Apellido">
                         </div>
                     </div>            
                         <div class="mb-3 ">
@@ -131,6 +136,8 @@
         </div> <!-- end modal content-->
     </div> <!-- end modal dialog-->
 </div> <!-- end modal-->
+
+
 
 
 
@@ -166,7 +173,7 @@
         };
         }
         $('#staticBackdrop').on('hidden.bs.modal', function (e) {
-            // Limpiar el formulario
+            
             $('#formUsuario')[0].reset();
         });
 

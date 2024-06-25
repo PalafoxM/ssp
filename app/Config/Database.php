@@ -26,9 +26,9 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => '10.0.72.21',
-        'username'     => 'userTurnos2',
-        'password'     => 'y3>u0292WcP*',
+        'hostname'     => 'localhost',
+        'username'     => 'root',
+        'password'     => 'mario',
         'database'     => 'turnos2',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
@@ -51,11 +51,11 @@ class Database extends Config
      */
     public array $bitacora = [
         'DSN'         => '',
-        'hostname'    => '10.0.72.21',
-        'username'    => 'userTurnos2',
-        'password'    => 'y3>u0292WcP*',
+        'hostname'    => 'localhost',
+        'username'    => 'root',
+        'password'    => 'mario',
         'database'    => 'bitacora',
-        'DBDriver'    => 'SQLite3',
+        'DBDriver'    => 'MySQLi',
         'DBPrefix'    => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
         'pConnect'    => false,
         'DBDebug'     => true,

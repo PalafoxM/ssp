@@ -48,14 +48,14 @@
                 <?php if((int)$session->id_perfil == -1): ?>
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#gestion" aria-expanded="false" aria-controls="gestion" class="side-nav-link">
-                            <i class="uil-home-alt"></i>
+                            <i class="dripicons-user-group"></i>
                             <span> Usuarios </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="gestion">
                             <ul class="side-nav-second-level">
                                 <li>
-                                    <a href="<?= base_url("/index.php/Usuario")?>">Usuarios</a>
+                                    <a href="<?= base_url("/index.php/Usuario")?>"><i class="dripicons-user"></i> Usuarios </a>
                                 </li>
                             </ul>
                         </div>
@@ -76,15 +76,15 @@
                                 <a href="<?= base_url("/index.php/Inicio")?>"><i class="dripicons-search"></i>  Buscar</a>
                             </li>
                             <li>
-                                <a href="#"><i class="dripicons-gear"></i>  Opciones</a>
+                                <a href="<?= base_url("/index.php/Opciones")?>"><i class="dripicons-gear"></i>  Opciones</a>
                             </li>
                             <li>
-                                <a href="#"><i class="dripicons-document"></i>  Reportes</a>
+                                <a href="<?= base_url("/index.php/Reportes")?>"><i class="dripicons-document"></i>  Reportes</a>
                             </li>
                         </ul>
                     </div>
                 </li> 
-                <!-- <li class="side-nav-item">
+                <li class="side-nav-item">
                     <a data-bs-toggle="collapse" href="#llamadas" aria-expanded="false" aria-controls="junta" class="side-nav-link">
                         <i class="dripicons-phone"></i>
                         <span> Llamadas </span>
@@ -106,7 +106,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>    -->
+                </li>   
             
                 <!-- <?php //if((int)$session->id_perfil == -1): ?>
                     <li class="side-nav-item">

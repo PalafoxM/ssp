@@ -80,12 +80,13 @@ ini.inicio = (function () {
         },
         formattAcciones: function(value,row){
             let Botones = "<div class='contenedor'>" +
-            "<button type='button' class='btn btn-danger' title='Remover'><i class='mdi mdi-account-off'></i></button>" +
-            "<button type='button' title='Editar' data-bs-toggle='modal' data-bs-target='#staticBackdrop' class='btn btn-info' onclick='ini.inicio.getUsuario(" + row.id_usuario + ")'><i class='mdi mdi-account-edit'></i></button>" +
+            "<button type='button' class='btn btn-danger' title='Remover' id='remover' onclick='ini.inicio.deleteUsuario(" + row.id_usuario + ")'><i class='mdi mdi-account-off'></i></button>" +
+            "<button type='button' title='Editar' data-bs-toggle='modal' data-bs-target='#staticBackdrop' class='btn btn-warning' onclick='ini.inicio.getUsuario(" + row.id_usuario + ")'><i class='mdi mdi-account-edit'></i></button>" +
             "</div>";
            return Botones;
         },
         getUsuario: function(id){
+            
             $.ajax({
                 type: "POST",
                 url: base_url + "index.php/Usuario/getUsuario",
@@ -94,7 +95,13 @@ ini.inicio = (function () {
                 success: function(data) {
                     if (data) {
                         console.log(data);
-                        console.log(data.id_perfil);
+                        
+                        $('#staticBackdropLabel').text('Editar Usuario');
+                        
+                        $('#editar').prop('disabled', true);
+                        $('#editar').val('');
+
+                        $('#id_usuario').prop('disabled', false);
                         $('#id_usuario').val(data.id_usuario);
                         $('#usuario').val(data.usuario);
                         $('#contrasenia').val(data.contrasenia);
@@ -105,6 +112,7 @@ ini.inicio = (function () {
                         $('#id_clues').val(data.id_clues).change();
                         $('#correo').val(data.correo);
                         $('#perfil').val(data.id_perfil);
+
                     } else {
                         Swal.fire("info", "No se encontraron datos del usuario.", "info");
                     }
@@ -120,6 +128,14 @@ ini.inicio = (function () {
 
                     var formData = $(this).serialize();
                     console.log(formData);
+                    
+                    // var params = new URLSearchParams(formData);
+                    // var editar = params.get('editar');
+
+                    // console.log('Valor de editar:', editar);
+                    //    if( editar===1 ){
+
+                    //    }     
                     $.ajax({
                         url: base_url + "index.php/Usuario/UpdateUsuario",
                         type: "post",
@@ -145,9 +161,68 @@ ini.inicio = (function () {
                             console.log("error(s):" + jqXHR);
                         },
                     });
+
                 });
-             
         },
+        deleteUsuario: function(id){
+            // TODO preguntar si desea borrar o no con un swal 
+
+            Swal.fire({
+                title: "Estas Seguro?",
+                text: "No podras revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, Eliminar"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  
+                    console.log(id);
+                    $.ajax({
+                        url: base_url + "index.php/Usuario/deleteUsuario",
+                        type: "post",
+                        dataType: "json",
+                        data: {'id_usuario':id},
+                        beforeSend: function () {
+                            // element.disabled = true;
+                            $('#remover').prop('disabled', true);
+                        },
+                        complete: function () {
+                            // element.disabled = false;
+                            $('#remover').prop('disabled', false);
+                        },
+                        success: function (response, textStatus, jqXHR) {
+                            if (response.error) {
+                                Swal.fire("Atención", response.respuesta, "warning");
+                                return false;
+                            }
+                            Swal.fire("Correcto", "Registro eliminado con exito", "success");
+                            window.location.href = `${base_url}index.php/Usuario`;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log("error(s):" + jqXHR);
+                        },
+                    });
+
+                }
+              });
+
+
+
+            
+        },
+        limpiaModal:function(){
+            $('#formUsuario')[0].reset();
+            $('#id_clues').val('').change();
+            $('#staticBackdropLabel').text('Agregar Usuario');
+            $('#id_usuario').prop('disabled', true);
+            $('#editar').prop('disabled', false);
+            $('#editar').val(1);
+            $("#contrasenia").prop("readonly", false);
+        },
+
+
         
         
     }

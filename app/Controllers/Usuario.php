@@ -56,7 +56,7 @@ class Usuario extends BaseController {
         $principal = new Mglobal;
         $dataDB = array();
         if ($session->id_perfil == -1) {
-             $dataDB = array('tabla' => 'vw_usuarios', 'where' => 'visible = 1 ORDER BY fecha_registro DESC');
+            $dataDB = array('tabla' => 'vw_usuarios', 'where' => 'id_perfil >= 1 AND visible = 1 ORDER BY fecha_registro DESC');
         } elseif ($session->id_perfil == 1) {
             $dataDB = array('tabla' => 'vw_usuarios', 'where' => 'id_perfil >= 1 AND visible = 1 ORDER BY fecha_registro DESC');
         } 
@@ -106,27 +106,37 @@ class Usuario extends BaseController {
         $response = new \stdClass();
         $response->error = true;
         $data = $this->request->getPost();
-        // var_dump($data);
+        // var_dump(isset($data['editar']));
         // die();
         
         $dataInsert=[       
             'usuario' => $data['usuario'],
-            'contrasenia' => $data['contrasenia'],
+            'contrasenia' => md5($data['contrasenia']),
             'correo' => $data['correo'],
             'id_perfil' => $data['perfil'],
             'id_sexo' => $data['sexo'],
             'nombre' =>$data['nombre'],
             'primer_apellido' => $data['primer_apellido'],
-            'segundo_apellido' => $data['segundo_apeliido'],
+            'segundo_apellido' => $data['segundo_apellido'],
             'id_clues' => $data['id_clues'],
         ];
         // var_dump($dataInsert);
         // die();
-        $dataConfig = [
-            "tabla"=>"seg_usuarios",
-            "editar"=>true,
-             "idEditar"=>['id_usuario'=>$data['id_usuario']]
-        ];
+        if (isset($data['editar'])){
+            $dataConfig = [
+                "tabla"=>"seg_usuarios",
+                "editar"=>false,
+                //  "idEditar"=>['id_usuario'=>$data['id_usuario']]
+            ];  
+        }else{
+            $dataConfig = [
+                "tabla"=>"seg_usuarios",
+                "editar"=>true,
+                 "idEditar"=>['id_usuario'=>$data['id_usuario']]
+            ];
+        }
+        
+
         $response = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Usuario.saveUsuario"]);
         return $this->respond($response);
     }
