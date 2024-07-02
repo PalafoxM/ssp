@@ -207,10 +207,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <div class="form-check form-checkbox-success mt-4">
+                                                    <!-- TODO  crear un input tipo text para observaiones-->
+                                                    <!-- <div class="form-check form-checkbox-success mt-4">
                                                         <input type="checkbox" class="form-check-input" id = "confirmacion" name = "confirmacion" checked>
                                                         <label class="form-check-label" for="confirmacion">CONFIRMACIÓN</label>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div class="container">

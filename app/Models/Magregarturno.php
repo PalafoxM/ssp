@@ -53,7 +53,7 @@ class Magregarturno extends Model
             'fecha_peticion'                => $dataInsert['fecha_peticion'],
             'fecha_recepcion'               => $dataInsert['fecha_recepcion'],
             'solicitante_titulo'            => $dataInsert['solicitante_titulo'],
-            'solicitante_nombre'            => $dataInsert['solicitante_titulo'],
+            'solicitante_nombre'            => $dataInsert['solicitante_nombre'],
             'solicitante_primer_apellido'   => $dataInsert['solicitante_primer_apellido'],
             'solicitante_segundo_apellido'  => $dataInsert['solicitante_segundo_apellido'],
             'solicitante_cargo'             => $dataInsert['solicitante_cargo'],

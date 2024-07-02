@@ -68,12 +68,12 @@ class Funciones {
         return date_format($date,$format);
     }
 
-    public function dateEuroToISO($date)
+    public function dateEuroToISO($date, $separador = "/" )
     {
-        $date = explode("/",$date);
+        $date = explode($separador,$date);
         return $date[2]."-".$date[1]."-".$date[0];
     }
-
+    
     public function getEdad($fechaInicial = false, $fechaFinal = false)
     {
         $fechaFinal = (!$fechaFinal)? date("Y-m-d"): $fechaFinal;

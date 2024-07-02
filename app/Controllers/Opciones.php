@@ -41,7 +41,7 @@ class Opciones extends BaseController {
         $data = array();
         // $data['unidad'] = $this->globals->getTabla(["tabla"=>"cat_clues","select"=>"id_clues, NOMBRE_UNIDAD", "where"=>["visible"=>1],'limit' => 10]); 
         // $data['perfiles'] = $this->globals->getTabla(["tabla"=>"seg_perfiles", "where"=>["visible"=>1]]); 
-        // $data['cat_sexo'] = $this->globals->getTabla(["tabla"=>"cat_sexo", "where"=>["visible"=>1]]); 
+        $data['cat_tipo_cargo'] = $this->globals->getTabla(["tabla"=>"cat_tipo_cargo", "where"=>["visible"=>1]]); 
         $data['scripts'] = array('opciones');
         $data['edita'] = 0;
         // $data['nombre_completo'] = $session->nombre_completo; 

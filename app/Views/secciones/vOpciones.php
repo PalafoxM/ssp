@@ -72,8 +72,16 @@
                             <input type="text" class="form-control" id="cargo"  name="cargo" placeholder="Cargo">
                         </div>
                         <div class="mb-3">
-                            <label for="dsc_cargo" class="form-label">Descripcion del Cargo</label>
-                            <input type="text" class="form-control" id="dsc_cargo"  name="dsc_cargo" placeholder="Cargo">
+                            <!-- <label for="dsc_cargo" class="form-label">Descripcion del Cargo</label>
+                            cat_tipo_cargo
+                            <input type="text" class="form-control" id="dsc_cargo"  name="dsc_cargo" placeholder="Cargo"> -->
+                            <label for="dsc_cargo" class="form-label">ESTATUS</label>
+                            <select id="dsc_cargo" name="dsc_cargo" class="form-select">
+                                <option value="">Seleccione</option>
+                                    <?php foreach ($cat_tipo_cargo->data as $item): ?>
+                                        <option value="<?php echo $item->id_tipo_cargo; ?>"><?php echo $item->dsc_tipo_cargo; ?></option>
+                                    <?php endforeach; ?>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
                     
@@ -121,10 +129,10 @@
             }
         };
         }
-        $('#staticBackdrop').on('hidden.bs.modal', function (e) {
+        // $('#staticBackdrop').on('hidden.bs.modal', function (e) {
             
-            $('#formUsuario')[0].reset();
-        });
+        //     $('#formUsuario')[0].reset();
+        // });
 
     });
 </script>

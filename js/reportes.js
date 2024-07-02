@@ -205,6 +205,60 @@ ini.reportes = (function () {
             $('#editar').val(1);
 
         },
+        limpiarFiltro: function () {
+            $("#limpiar_filtro").hide();
+            $('#fecha_inicio').val('');
+            $('#fecha_final').val('');
+            $('#resultado_turno').val('');
+            $('#estatus').val('');
+            $('#table').bootstrapTable('refresh');
+        },
+        // excel
+        reporteExcel: function(){
+        var fecha_inicio = $('#fecha_inicio').val();
+        var fecha_final = $('#fecha_final').val();
+        var resultado_turno = $('#resultado_turno').val();
+        var estatus=  $('#estatus').val();
+
+        if (!fecha_inicio || !fecha_final || !resultado_turno || !estatus) {
+            alert("Todos los campos son obligatorios.");
+            return;
+        }
+        console.log({
+            'fecha_inicio': fecha_inicio,
+            'fecha_final': fecha_final,
+            'resultado_turno': resultado_turno,
+            'estatus': estatus
+        });
+          $.ajax({
+            url: base_url + "index.php/Reportes/getPrincipalExcel",
+            type: 'POST',
+            data: {
+                'fecha_inicio': fecha_inicio,
+                'fecha_final': fecha_final,
+                'resultado_turno': resultado_turno,
+                'estatus': estatus
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data){
+                console.log(data);
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                a.href = url;
+                a.download = 'reporte.xlsx';
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            error: function(xhr, status, error){
+                console.log(error);
+            }
+        });
+          
+        },
 
 
         

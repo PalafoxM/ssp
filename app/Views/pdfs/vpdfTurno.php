@@ -60,7 +60,7 @@
            
         }
         .bordeRojo{
-            /* border: 1px solid red; */
+            border: 1px solid red;
         }
     </style>
     
@@ -105,6 +105,7 @@
         <div class="textTurnado bordeRojo" style="margin-left: 9%; margin-top:0.5%;">
             <span class="proxima "><?= strtoupper($dataPage['razon_social']); ?></span>
         </div>
+        <!-- Fecha Recepcion -->
         <div class="bordeRojo" style="margin-left: 9%; margin-top:0.5%;">
             <span class="proxima "><strong><?= strtoupper($dataPage['fecha_recepcion']); ?></strong></span>
         </div>

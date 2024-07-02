@@ -8,7 +8,12 @@ use App\Models\Mglobal;
 use stdClass;
 use CodeIgniter\API\ResponseTrait;
 require_once FCPATH . '/mpdf/autoload.php';
+require_once FCPATH . 'spout/src/Spout/Autoloader/autoload.php';
+
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+
 class Reportes extends BaseController {
+    private $funciones;
 
     use ResponseTrait;
     private $defaultData = array(
@@ -23,6 +28,8 @@ class Reportes extends BaseController {
         date_default_timezone_set('America/Mexico_City');  
         $session = \Config\Services::session();
         $this->globals = new Mglobal();
+
+        $this->funciones = new Funciones();
         if($session->get('logueado')!= 1){
             header('Location:'.base_url().'index.php/Login/cerrar?inactividad=1');            
             die();
@@ -53,14 +60,168 @@ class Reportes extends BaseController {
     public function getPrincipal()
     {
         $session = \Config\Services::session();
-        $principal = new Mglobal;
        
-        $dataDB = array('tabla' => 'turno', 'where' => 'visible = 1 ORDER BY fecha_registro DESC');  
-        $response = $principal->getTabla($dataDB); 
-      
-         return $this->respond($response->data);
-    }
+        $data = $this->request->getBody();
+        $data = json_decode($data);
+  
+        $response = new \stdClass();
+        $dataConfig = [
+            'dataBase' => 'turnos2',
+            'tabla' => 'turno',
+            'where' => 'visible = 1',
+            'order' => 'id_turno DESC',
+        ];
+        
+        $dataConfig['limit'] = ['start' => $data->offset, 'length' => $data->limit];
+        
+        $where = "visible = 1 ";
 
+        if($data->estatus && $data->estatus != 3){
+            $where .= " AND id_estatus IN ('".$data->estatus."')  ";
+        }
+
+        if($data->fecha_inicio && $data->fecha_final){
+
+            $where .= " AND (fecha_recepcion BETWEEN '" .$this->funciones->dateEuroToISO($data->fecha_inicio,"-") . "' AND '" . $this->funciones->dateEuroToISO($data->fecha_final,"-") . "')";
+        }
+        
+        if($data->resultado_turno && $data->resultado_turno != 3){
+            $where .= " AND id_resultado_turno = '".$data->resultado_turno."' ";
+        }
+
+        if ($data->search != "") {
+            $where .= " AND ( id_turno = {$data->search} ";
+            $where .= " OR fecha_recepcion = {$data->search} ";
+            $where .= " OR solicitante_nombre = {$data->search} ";
+            $where .= " OR resumen = {$data->search} ";
+            $where .= " OR solicitante_razon_social = {$data->search} )"; 
+        }
+
+        $dataConfig['where'] = $where;
+        $request = $this->globals->getTabla($dataConfig);
+
+        if (isset($dataConfig['limit'])) {
+            unset($dataConfig['limit']);
+        }
+
+        $dataConfig['select'] = 'count(*) AS total_registros';
+        $requestTotal = $this->globals->getTabla($dataConfig);
+
+        $response->rows = $request->data;
+        $response->total = $requestTotal->data[0]->total_registros;
+        $response->totalNotFiltered = $requestTotal->data[0]->total_registros;
+
+        return $this->respond($response);
+
+        }
+ /* public function getPrincipalExcel()
+    {
+        $session = \Config\Services::session();
+        // $data = $this->request->getBody();
+        $data = $this->request->getPost();
+        // $data = json_decode($data);
+        $response = new \stdClass();
+
+        $dataConfig = [
+            'dataBase' => 'turnos2',
+            'tabla' => 'turno',
+            'where' => 'visible = 1',
+            'order' => 'id_turno DESC',
+        ];
+        
+        $where = "visible = 1 ";
+
+        if($data['estatus'] && $data['estatus'] != 3){
+            $where .= " AND id_estatus IN ('".$data['estatus']."')  ";
+        }
+
+        if($data['fecha_inicio'] && $data['fecha_final']){
+
+            $where .= " AND (fecha_recepcion BETWEEN '" .$this->funciones->dateEuroToISO($data['fecha_inicio'],"-") . "' AND '" . $this->funciones->dateEuroToISO($data['fecha_final'],"-") . "')";
+        }
+        
+        if($data['resultado_turno'] && $data['resultado_turno'] != 3){
+            $where .= " AND id_resultado_turno = '".$data['resultado_turno']."' ";
+        }
+
+
+        $dataConfig['where'] = $where;
+      
+        $request = $this->globals->getTabla($dataConfig);
+        $response = $request->data;
+       
+        return $this->respond($response);
+        
+    } */
+    public function getPrincipalExcel()
+    {
+        $session = \Config\Services::session();
+        $data = $this->request->getPost();
+        $response = new \stdClass();
+
+        $dataConfig = [
+            'dataBase' => 'turnos2',
+            'tabla' => 'turno',
+            'where' => 'visible = 1',
+            'order' => 'id_turno DESC',
+        ];
+        
+        $where = "visible = 1 ";
+
+        if ($data['estatus'] && $data['estatus'] != 3) {
+            $where .= " AND id_estatus IN ('".$data['estatus']."')  ";
+        }
+
+        if ($data['fecha_inicio'] && $data['fecha_final']) {
+            $where .= " AND (fecha_recepcion BETWEEN '" .$this->funciones->dateEuroToISO($data['fecha_inicio'], "-") . "' AND '" . $this->funciones->dateEuroToISO($data['fecha_final'], "-") . "')";
+        }
+        
+        if ($data['resultado_turno'] && $data['resultado_turno'] != 3) {
+            $where .= " AND id_resultado_turno = '".$data['resultado_turno']."' ";
+        }
+
+        $dataConfig['where'] = $where;
+        $request = $this->globals->getTabla($dataConfig);
+        $response = $request->data;
+
+
+        // Lógica para generar el archivo Excel
+        $excelData = [];
+        $header = ['ID', 'Fecha Recepción', 'Estatus', 'Resultado Turno'];
+        $excelData[] = $header;
+
+        foreach ($response as $row) {
+            $excelData[] = [
+                $row->id_turno,
+                $row->fecha_recepcion,
+                $row->id_estatus,
+                $row->id_resultado_turno
+            ];
+        }
+       
+        // Crea el escritor de Excel
+        $writer = WriterEntityFactory::createXLSXWriter();
+        
+        ob_start();
+        $writer->openToBrowser('reporte.xlsx');
+
+        // Escribe los datos en el archivo Excel
+        foreach ($excelData as $row) {
+            $rowFromValues = WriterEntityFactory::createRowFromArray($row);
+            $writer->addRow($rowFromValues);
+        }
+
+        // Cierra el escritor de Excel
+        $writer->close();
+        
+        /* $output = ob_get_clean();
+
+        // Configura la respuesta HTTP sin duplicar encabezados
+        return $this->response->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                              ->setHeader('Content-Disposition', 'attachment; filename="reporte.xlsx"')
+                              ->setBody($output); */
+        exit;
+    }
     
     public function getUsuarios()
     {

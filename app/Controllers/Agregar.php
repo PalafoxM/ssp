@@ -232,8 +232,7 @@ class Agregar extends BaseController {
             'anio'                         => $anioActual,
             'id_asunto'                    => $data['asunto'],           
             'fecha_peticion'               => $fecha_peticion,             
-            'fecha_recepcion'              => $fecha_recepcion,             
-            // 'solicitante_titulo'           => $data['titulo_inv'],                 
+            'fecha_recepcion'              => $fecha_recepcion,                           
             'solicitante_titulo'           => $data['titulo_inv'],                 
             'solicitante_nombre'           => $data['nombre_t'],                 
             'solicitante_primer_apellido'  => $data['primer_apellido'],                         
@@ -252,7 +251,8 @@ class Agregar extends BaseController {
             'id_destinatario_copia'        => isset($data['cpp']) ? $data['cpp'] : array(),
             'id_indicacion'                => isset($data['indicacion']) ? $data['indicacion'] : array(),
         ];
-        
+       /*  var_dump($dataInsert);
+        die(); */
         $dataBitacora = ['id_user' =>  $session->id_usuario, 'script' => 'Agregar.php/guardaTurno'];
         
        
