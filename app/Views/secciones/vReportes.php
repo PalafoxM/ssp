@@ -123,17 +123,7 @@
         return params
     }
     
-    /* $(function() {
-        $("#limpiar_filtro").click(function () {
-            
-            $('#fecha_inicio').val('');
-            $('#fecha_final').val('');
-            $('#resultado_turno').val('');
-            $('#estatus').val('');
-            $table.bootstrapTable('refresh');
-        })
-    })
-     */
+   
 
 
     $(document).ready(function(){
