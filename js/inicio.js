@@ -29,10 +29,10 @@ ini.inicio = (function () {
         },
         
         formatterAccionesTurno: function(value,row){
-            let accion = ``;
-            accion += `<button type="button" onclick="ini.inicio.abrirVentanaPdf(${row.id_turno})" class="btn btn-secondary" title="Mostrar"><i class="mdi mdi-file-pdf"></i> </button>`
-            accion += `<button type="button"  class="btn btn-warning" title="Modificar" style="margin-left:5px"><i class="mdi mdi-lead-pencil"></i> </button>`
-                // return `<button type="button" onclick="ini.inicio.abrirVentanaPdf(${row.id_turno})" class="btn btn-info"><i class="mdi mdi-file-pdf"></i> </button>`;
+            let accion = "<div class='contenedor'>"+
+                "<button type='button' onclick='ini.inicio.abrirVentanaPdf("+ row.id_turno+")' class='btn btn-secondary' title='Mostrar'><i class='mdi mdi-file-pdf'></i> </button>"+
+                "<button type='button'  class='btn btn-warning' title='Modificar' style='margin-left:5px'><i class='mdi mdi-lead-pencil'></i> </button>"+
+                "</div>";
             return accion;
         },
         formatterTruncaTexto:function(value, row) {
@@ -40,6 +40,17 @@ ini.inicio = (function () {
             var maxLength = 30;
             var truncatedValue = value.length > maxLength ? value.substring(0, maxLength) + '...' : value;
             return '<span data-toggle="tooltip" title="' + value + '">' + truncatedValue + '</span>';
+        },
+        formatteStatusResultadoTurno:function(value,row){
+            if (value === '1') {
+                return '<span  title="CON RESULTADO">CON RESULTADO</span>';
+            }else if (value ==='2'){
+                return '<span  title="SIN RESULTADO">SIN RESULTADO</span>';
+            }else if (value ==='3'){
+                return '<span  title="AMBOS">AMBOS</span>';
+            }else{
+                return '<span  title="SIN RESULTADO">SIN RESULTADO</span>';
+            }
         },
         formatteStatus: function(value, row){
             // TODO lo se es una mala practica hacer esto pero en este caso me es de mucha ayuda I'm sorry

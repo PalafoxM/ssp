@@ -5,7 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turnos 2.0</title>
 </head>
-
+<style>
+      .contenedor {
+            display: grid;
+            grid-auto-flow: column;
+            gap: 10px; /* Espacio entre los botones */
+        }
+        .boton {
+            padding: 1px 1px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+        }
+</style>
 <body>
 
     <h1 style="color:black">Bienvenido <?php echo $nombre_completo; ?></h1> 
@@ -32,6 +45,7 @@
                 <th data-field="solicitante_razon_social" data-width="50" data-sortable="true">RAZON SOCIAL</th>
                 <th data-field="resumen" data-width="100" data-sortable="true"  data-formatter="ini.inicio.formatterTruncaTexto" data-tooltip="true">SINTESIS ASUNTO</th>
                 <th data-field="resultado_turno" data-width="100" data-sortable="true" data-formatter="ini.inicio.formatterTruncaTexto" data-tooltip="true">RESULTADO TURNO</th>
+                <th data-field="id_resultado_turno" data-width="100" data-sortable="true" data-formatter="ini.inicio.formatteStatusResultadoTurno" >ESTATUS RESULTADO TURNO</th>
                 <th data-field="id_estatus" data-width="20" data-sortable="true" data-formatter="ini.inicio.formatteStatus" class="text-center" >ESTATUS</th>
                 <th data-field="id_turno" data-width="20" data-formatter="ini.inicio.formatterAccionesTurno" data-sortable="true">Acciones</th>
             </tr>

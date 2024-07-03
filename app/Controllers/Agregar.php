@@ -137,7 +137,8 @@ class Agregar extends BaseController {
             'cat_asuntos' => 'id_asunto, dsc_asunto',
             'cat_destinatario' => 'id_destinatario, nombre_destinatario, cargo, id_tipo_cargo',
             'cat_indicaciones' => 'id_indicacion, dsc_indicacion',
-            'cat_estatus' => 'id_estatus, dsc_status'
+            'cat_estatus' => 'id_estatus, dsc_status',
+            'cat_resultado_turno' => 'id_resultado_turno, descripcion',
         );
 
         foreach ($tables as $table => $select ) {
@@ -172,6 +173,8 @@ class Agregar extends BaseController {
                 $this->handleException($e);
             }
         }
+        // var_dump($data['cat_destinatario']);
+        // die();
 
             $data['scripts'] = array('principal','agregar');
             $data['edita'] = 0;
@@ -241,7 +244,8 @@ class Agregar extends BaseController {
             'solicitante_razon_social'     => $data['razon_social_inv'],                     
             'resumen'                      => $this->validarCampo($data['resumen'],"resumen"),     
             'id_estatus'                   => $data['status'],         
-            'confirmacion'                 => isset($data['confirmacion']) ? $data['confirmacion'] : '0',
+            'observaciones'                => $data['observaciones'],
+            'id_resultado_turno'              => $data['id_resultado_turno'],   
             'resultado_turno'              => $data['resultado_turno'],             
             'firma_turno'                  => $data['firma_turno'],         
             'usuario_registro'             => $session->id_usuario,             

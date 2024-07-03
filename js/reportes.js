@@ -207,11 +207,23 @@ ini.reportes = (function () {
         },
         limpiarFiltro: function () {
             $("#limpiar_filtro").hide();
+            $("#excel").hide();
             $('#fecha_inicio').val('');
             $('#fecha_final').val('');
             $('#resultado_turno').val('');
             $('#estatus').val('');
             $('#table').bootstrapTable('refresh');
+        },
+        formatteStatusResultadoTurno:function(value,row){
+            if (value === '1') {
+                return '<span  title="CON RESULTADO">CON RESULTADO</span>';
+            }else if (value ==='2'){
+                return '<span  title="SIN RESULTADO">SIN RESULTADO</span>';
+            }else if (value ==='3'){
+                return '<span  title="AMBOS">AMBOS</span>';
+            }else{
+                return '<span  title="SIN RESULTADO">SIN RESULTADO</span>';
+            }
         },
         // excel
         reporteExcel: function(){

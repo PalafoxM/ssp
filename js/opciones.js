@@ -208,7 +208,7 @@ ini.opciones = (function () {
             
         },
         limpiaModal:function(){
-            // $('#formDestinatario')[0].reset();
+             $('#formDestinatario')[0].reset();
             $('#staticBackdropLabel').text('Agregar Usuario');
             $('#id_destinatario').prop('disabled', true);
             $('#editar').prop('disabled', false);

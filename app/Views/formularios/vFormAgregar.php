@@ -116,12 +116,14 @@
                                     <div class="mb-3 position-relative" id="datepicker1">
                                         <label for="fecha_peticion" class="form-label">FECHA PETICIÓN</label>
                                         <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker1" id="fecha_peticion" name="fecha_peticion" placeholder="dd/mm/aaaa" value="<?php echo $fechaActual; ?>">
+                                        <div id="fecha-error" style="color: red; display: none;">No se pueden ingresar fechas futuras.</div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3 position-relative" id="datepicker2">
                                         <label for="fecha_recepcion" class="form-label">FECHA RECEPCIÓN</label>
                                         <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" data-date-container="#datepicker2" id="fecha_recepcion" name="fecha_recepcion" placeholder="dd/mm/aaaa" value="<?php echo $fechaActual; ?>" required>
+                                        <div id="fecha-error2" style="color: red; display: none;">No se pueden ingresar fechas futuras.</div>
                                     </div>
                                 </div>
                             </div>
@@ -129,25 +131,25 @@
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="titulo_inv" class="form-label">TITULO</label>
-                                        <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm" placeholder="titulo" pattern="[a-zA-Z0-9\s]+">
+                                        <input type="text" id="titulo_inv" name="titulo_inv" class="form-control form-control-sm" placeholder="titulo" pattern="[a-zA-Z0-9\s]+" onkeyup="st.agregar.toUpperCase(this)">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="nombre_t" class="form-label campoObligatorio">NOMBRE</label>
-                                        <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm " placeholder="NOMBRE" required pattern="[a-zA-Z0-9\s]+">
+                                        <input type="text" id="nombre_t" name="nombre_t" class="form-control form-control-sm " placeholder="NOMBRE" required pattern="[a-zA-Z0-9\s]+" onkeyup="st.agregar.toUpperCase(this)">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="primer_apellido" class="form-label campoObligatorio">PRIMER APELLIDO</label>
-                                        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm " placeholder="PRIMER APELLIDO" required pattern="[a-zA-Z0-9\s]+">
+                                        <input type="text" id="primer_apellido" name="primer_apellido" class="form-control form-control-sm " placeholder="PRIMER APELLIDO" required pattern="[a-zA-Z0-9\s]+" onkeyup="st.agregar.toUpperCase(this)">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         <label for="segundo_apellido" class="form-label">SEGUNDO APELLIDO</label>
-                                        <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control form-control-sm" placeholder="SEGUNDO APELLIDO" pattern="[a-zA-Z0-9\s]+">
+                                        <input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control form-control-sm" placeholder="SEGUNDO APELLIDO" pattern="[a-zA-Z0-9\s]+" onkeyup="st.agregar.toUpperCase(this)">
                                     </div>
                                 </div>
                             </div>
@@ -155,21 +157,21 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="cargo_inv" class="form-label">CARGO</label>
-                                        <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO" pattern="[a-zA-Z0-9\s]+">
+                                        <input type="text" id="cargo_inv" name="cargo_inv" class="form-control form-control-sm" placeholder="CARGO" pattern="[a-zA-Z0-9\s]+" onkeyup="st.agregar.toUpperCase(this)">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="razon_social_inv" class="form-label campoObligatorio">RAZON SOCIAL</label>
-                                        <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL" required pattern="[a-zA-Z0-9\s]+">
+                                        <input type="text" id="razon_social_inv" name="razon_social_inv" class="form-control form-control-sm" placeholder="RAZON SOCIAL" required pattern="[a-zA-Z0-9\s]+" onkeyup="st.agregar.toUpperCase(this)">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="mb-3">
                                     <label class="form-label campoObligatorio">SINTESIS ASUNTO</label>
-                                    <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="600" rows="5" 
-                                        placeholder="Tiene un limite 600 caracteres." required pattern="[a-zA-Z0-9\s]+"></textarea>
+                                    <textarea name="resumen" id="resumen" data-toggle="maxlength" class="form-control" maxlength="1000" rows="5" 
+                                        placeholder="Tiene un limite 1000 caracteres." required pattern="[a-zA-Z0-9\s]+" onkeyup="st.agregar.toUpperCase(this)"></textarea>
                                 </div>
                             </div>
                         </div>    
@@ -195,26 +197,29 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                                <div class="col-md-10">
+                                                <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label for="nombre_turno" class="form-label">NOMBRES:</label>
                                                         <select class="select2 form-select form-control-sm" id="nombre_turno" name="nombre_turno[]" multiple="multiple">
                                                         <option></option>
                                                             <?php foreach ($turnado as $opcion) : ?>
-                                                                <option value="<?= $opcion->id_destinatario ?>"><?= strtoupper($opcion->nombre_destinatario ." ". $opcion->cargo) ?></option>
+                                                                <option value="<?= $opcion->id_destinatario ?>"><?= strtoupper($opcion->nombre_destinatario ." - ". $opcion->cargo) ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <!-- TODO  crear un input tipo text para observaiones-->
-                                                    <!-- <div class="form-check form-checkbox-success mt-4">
-                                                        <input type="checkbox" class="form-check-input" id = "confirmacion" name = "confirmacion" checked>
-                                                        <label class="form-check-label" for="confirmacion">CONFIRMACIÓN</label>
-                                                    </div> -->
+                                            </div>
+                                            <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-check mt-4">
+                                                    <label class="form-check-label" for="confirmacion">CON ATENCIÓN A:</label>
+                                                    <input type="test" class="form-control" id="observaciones" name = "observaciones" onkeyup="st.agregar.toUpperCase(this)">
+                                                   
                                                 </div>
                                             </div>
-                                            <div class="container">
+
+                                            </div>
+                                            <div class="container mt-3">
                                                     <table id="selectedValuesNombreTurno">
                                                         <thead>
                                                             <tr>
@@ -268,7 +273,7 @@
                                                     <?php $count = 0; ?>
                                                         <?php foreach ($turnado as $opcion) : ?>
                                                             <option value="<?= $opcion->id_destinatario ?>" <?php echo ($count < 2) ? 'class="primeras2"' :'class="opciones"' ?>>
-                                                                <?= strtoupper($opcion->nombre_destinatario ." ". $opcion->cargo) ?>
+                                                                <?= strtoupper($opcion->nombre_destinatario ." - ". $opcion->cargo) ?>
                                                             </option>
                                                             <?php $count++; ?>
                                                         <?php endforeach; ?>
@@ -416,13 +421,38 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card"><!--init card -->
-                    <div class="card-body">
+                        <div class="card-body">
+
                             <h3 class="textoNegro">RESPUESTA DEL TURNO:</h3>
-                            <div class="mb-3">
-                                <label for="resultado_turno" class="form-label">RESULTADO DEL TURNO</label>
-                                <textarea data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
-                                    placeholder="Tiene un limite 225 caracteres." id="resultado_turno" name="resultado_turno"></textarea>
-                            </div>
+                                <div class="row">
+                                    <div class="mb-3">
+                                    <label for="id_resultado_turno" class="form-label">ESTATUS TURNO</label>
+                                            <select class="form-select form-control-sm" id="id_resultado_turno" name="id_resultado_turno" >
+                                            <!-- <option value="">SELECCCIONE..</option> -->
+                                                <option></option>
+                                                <?php foreach ($cat_resultado_turno as $opcion) : ?>
+                                                    <?php
+                                                        $selected = ($opcion->id_resultado_turno == 2) ? 'selected' : '';
+                                                    ?>
+                                                    <option value="<?= $opcion->id_resultado_turno ?>" <?= $selected ?>><?=  strtoupper($opcion->descripcion) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                    </div>
+                                </div> 
+                                <div class="row">  
+                                    <div class="mb-3">
+                                        <label for="resultado_turno" class="form-label">RESULTADO DEL TURNO</label>
+                                        <textarea data-toggle="maxlength" class="form-control" maxlength="225" rows="5" 
+                                            placeholder="Tiene un limite 225 caracteres." id="resultado_turno" name="resultado_turno" onkeyup="st.agregar.toUpperCase(this)"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <label for="formFile" class="form-label">AGREGAR ARCHIVO</label>
+                                        <input class="form-control" type="file" id="formFile">
+                                    </div>
+                                </div>
+
                         </div>
                     </div><!--END CARD -->
                 </div>
@@ -443,6 +473,7 @@
         st.agregar.agregarTurno();
         $('#nombre_turno').select2({
             placeholder: "SELECCCIONE..",
+            maximumSelectionLength: 3,
             dropdownParent: $("#modalTurnarA") ,
         });
         $('#firma_turno').select2({
@@ -457,6 +488,7 @@
         $('#cpp').select2({
             placeholder: "SELECCCIONE..",
             dropdownParent: $("#modal_cpp") ,
+            maximumSelectionLength: 4,
             templateResult: function (data) {    
                 if (!data.element) {
                 return data.text;
@@ -482,6 +514,33 @@
         $("#resumen, #titulo_inv,#segundo_apellido,#primer_apellido,#nombre_t,#cargo_inv ,#razon_social_inv").on("input", function() {
             console.log(st.agregar.validarEntrada($(this)));
         });
+
+
+        $('#fecha_peticion').on('change', function() {
+            var fechaIngresada = $(this).val().split('/').reverse().join('-');
+            var fechaActual = new Date().toISOString().split('T')[0];
+
+            if (new Date(fechaIngresada) > new Date(fechaActual)) {
+                $('#fecha-error').show();
+                $(this).val('');
+            } else {
+                $('#fecha-error').hide();
+            }
+        });
+        $('#fecha_recepcion').on('change', function() {
+            var fechaIngresada = $(this).val().split('/').reverse().join('-');
+            var fechaActual = new Date().toISOString().split('T')[0];
+
+            if (new Date(fechaIngresada) > new Date(fechaActual)) {
+                $('#fecha-error2').show();
+                $(this).val('');
+            } else {
+                $('#fecha-error2').hide();
+            }
+        });
+        
+       
+        
        
     });
 </script>

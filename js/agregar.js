@@ -161,7 +161,11 @@ st.agregar = (function () {
               return false;
               
             }
-          }
+          },
+          // convioerte todo los de los inputs a mayusculas
+          toUpperCase:function(element){
+            element.value = element.value.toUpperCase();
+        }
         
     }
 })();
