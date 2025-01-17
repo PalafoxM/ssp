@@ -80,7 +80,7 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest a
 //Para detectar automaticamente la URL
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://'.$_SERVER['HTTP_HOST'] : 'http://'.$_SERVER['HTTP_HOST'];
 //$urlServer = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'http://salud1.guanajuato.gob.mx:8080' : 'http://salud1.guanajuato.gob.mx:8080';   //Server Atlas
-defined('BASE') || define('BASE',$protocol.'/turnos');
+defined('BASE') || define('BASE',$protocol.'/ssp');
 /**
  * @deprecated Use \CodeIgniter\Events\Events::PRIORITY_LOW instead.
  */
