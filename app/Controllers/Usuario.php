@@ -55,10 +55,27 @@ class Usuario extends BaseController {
         $session = \Config\Services::session();
         $principal = new Mglobal;
         $dataDB = array();
-        if ($session->id_perfil == -1) {
-            $dataDB = array('tabla' => 'vw_usuarios', 'where' => 'id_perfil >= 1 AND visible = 1 ORDER BY fecha_registro DESC');
-        } elseif ($session->id_perfil == 1) {
-            $dataDB = array('tabla' => 'vw_usuarios', 'where' => 'id_perfil >= 1 AND visible = 1 ORDER BY fecha_registro DESC');
+        if ($session->id_perfil == 1) {
+            $dataDB = array('tabla' => 'usuario', 'where' => 'id_perfil >= 1 AND visible = 1 ORDER BY fecha_registro DESC');
+        } elseif ($session->id_perfil >= 2) {
+            $dataDB = array('tabla' => 'usuario', 'where' => 'id_perfil >= 1 AND visible = 1 ORDER BY fecha_registro DESC');
+        } 
+        $response = $principal->getTabla($dataDB);
+        // var_dump($response);
+        // die();
+        return $this->respond($response->data);
+    }
+    public function getDocumento()
+    {
+        $session = \Config\Services::session();
+        $principal = new Mglobal;
+        $id_usuario = $this->request->getPost('id_usuario');
+        $dataDB = array();
+      
+        if ($session->id_perfil == '1' || $session->id_perfil == '2') {
+            $dataDB = array('tabla' => 'vw_practicante', 'where' => ['visible' => 1, 'id_usuario'=> $id_usuario]);
+        }else  {
+            $dataDB = array('tabla' => 'vw_practicante', 'where' => ['id_usuario'=> $id_usuario ,'id_dependencia'=> $session->id_dependencia, 'visible' => 1]);
         } 
         $response = $principal->getTabla($dataDB);
         // var_dump($response);
@@ -77,7 +94,7 @@ class Usuario extends BaseController {
 
         // var_dump($id_usuario);
         // die();
-        $response = $this->globals->getTabla(["tabla"=>"vw_usuarios", "select"=>"id_usuario, usuario, contrasenia, id_perfil, nombre, primer_apellido, segundo_apellido, id_sexo, id_clues, correo" ,"where"=>["id_usuario" => $id_usuario, "visible" => 1]])->data;
+        $response = $this->globals->getTabla(["tabla"=>"usuario", "select"=>"id_usuario, usuario, contrasenia, id_perfil,curp, nombre, primer_apellido, segundo_apellido,id_dependencia, id_sexo, correo" ,"where"=>["id_usuario" => $id_usuario, "visible" => 1]])->data;
         // var_dump($response[0]);
         // die();
         return $this->respond($response[0]);
@@ -94,11 +111,30 @@ class Usuario extends BaseController {
         }
 
         $dataConfig = [
-            "tabla"=>"seg_usuarios",
+            "tabla"=>"usuario",
             "editar"=>true,
             "idEditar"=>['id_usuario'=>$data['id_usuario']]
         ];
         $response = $this->globals->saveTabla(["visible"=>0],$dataConfig,["script"=>"Usuario.deleteUsuario"]);
+        return $this->respond($response);
+    }
+    public function eliminarPracticante()
+    {
+        $response = new \stdClass();
+        $response->error = true;
+        $id_practicante = $this->request->getPost('id_practicante');
+
+        if (!isset($id_practicante) || empty($id_practicante)){
+            $response->respuesta = "No se ha proporcionado un identificador válido";
+            return $this->respond($response);
+        }
+
+        $dataConfig = [
+            "tabla"=>"practicante",
+            "editar"=>true,
+            "idEditar"=>['id_practicante'=>$id_practicante]
+        ];
+        $response = $this->globals->saveTabla(["visible"=>0],$dataConfig,["script"=>"Usuario.deletePracticante"]);
         return $this->respond($response);
     }
     public function UpdateUsuario()
@@ -128,6 +164,7 @@ class Usuario extends BaseController {
                 "editar"=>false,
                 //  "idEditar"=>['id_usuario'=>$data['id_usuario']]
             ];  
+      
         }else{
             $dataConfig = [
                 "tabla"=>"seg_usuarios",
@@ -139,6 +176,120 @@ class Usuario extends BaseController {
 
         $response = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Usuario.saveUsuario"]);
         return $this->respond($response);
+    }
+    public function guardarComentario()
+    {
+        $response = new \stdClass();
+        $response->error = true;
+        $data = $this->request->getPost();
+        $dataInsert=[       
+            'comentario' => $data['comentario'],
+           
+        ];
+        $dataConfig = [
+            "tabla"=>"archivo_cv",
+            "editar"=>true,
+             "idEditar"=>['id_archivo_cv'=>$data['id_archivo_cv']]
+        ];
+        $response = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Usuario.saveUsuario"]);
+        return $this->respond($response);
+         
+    }
+    public function editarArchivo()
+    {
+        $session = \Config\Services::session();
+        $globals = new Mglobal;
+        $data = array(); 
+        if ($this->request->getFile('file')) {
+            try {
+                $file           = $this->request->getFile('file');
+                $id_documento   = $this->request->getPost('id_documento');
+                // Validar tipo de archivo
+              
+                if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
+                    $response['error'] = true;
+                    $response['message'] = 'El archivo debe ser un PDF válido';
+                    return $this->response->setJSON($response);
+                }
+        
+                // Guardar archivo
+                $newName = $file->getRandomName(); // Genera un nombre único
+                $originalName = $file->getClientName();
+                $size = $file->getSize();
+                $mimeType = $file->getMimeType();
+    
+                $datos = [
+                    'tamanio' => $size,
+                    'tipo' => $mimeType,
+                    'ruta_absoluta' => WRITEPATH . 'uploads/pdf/practicante/' . $newName,
+                    'ruta_relativa' => 'assets/pdf/practicante/' . $newName,
+                    'valido' => 0
+                ];
+        
+                $dataConfig = [
+                    "tabla"        => "documento",
+                    "editar"       => true,
+                    "idEditar"     =>["id_documento" => (int)$id_documento]
+                ];
+                $dataBitacora = ['id_user' => 7, 'script' => 'Agregar.php/guardaArchivo'];
+           
+                $result = $globals->saveTabla($datos, $dataConfig, $dataBitacora);
+
+                $file->move(FCPATH . 'assets/pdf/practicante/', $newName); 
+                $response['message'] = 'Archivo subido correctamente: ' . $newName;
+                return $this->response->setJSON($result);
+        
+            } catch (\Exception $e) {
+                $response['error'] = true;
+                $response['message'] = 'Error al subir el archivo: ' . $e->getMessage();
+                return $this->response->setJSON($response);
+            }
+        }
+    }
+    public function guardarComentarioDoc()
+    {
+        $response = new \stdClass();
+        $response->error = true;
+        $data = $this->request->getPost();
+        if($data['id']==1){
+            $dataInsert=[       
+                'valido'      => $data['id'], 
+            ];
+        }else{
+            $dataInsert=[       
+                'comentarios' => $data['comentario'],
+                'valido'      => $data['id']
+               
+            ];
+        }
+       
+        $dataConfig = [
+            "tabla"=>"documento",
+            "editar"=>true,
+            "idEditar"=>['id_documento'=>$data['id_documento']]
+        ];
+        $response = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Usuario.saveDocumento"]);
+        return $this->respond($response);
+         
+    }
+    public function cambioEstatus()
+    {
+        $response = new \stdClass();
+        $response->error = true;
+        $id_archivo_cv = $this->request->getPost('id_archivo_cv');
+        $id            = $this->request->getPost('id');
+        $dataInsert=[       
+            'estatus' => $id,
+           
+        ];
+        $dataConfig = [
+            "tabla"=>"archivo_cv",
+            "editar"=>true,
+             "idEditar"=>['id_archivo_cv'=> $id_archivo_cv]
+        ];
+        $response = $this->globals->saveTabla($dataInsert,$dataConfig,["script"=>"Usuario.saveUsuario"]);
+        return $this->respond($response);
+         
     }
     public function saveUsuario()
     {

@@ -22,7 +22,7 @@
 <body>
     <div class="row mt-3">
         <div class="col text-end">
-            <button  class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick='ini.inicio.limpiaModal();'>Agregar Usuario</button>
+            <button  class="btn btn-primary" data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick='ini.inicio.limpiaModal();'>Agregar</button>
         </div>
     </div>
     <table

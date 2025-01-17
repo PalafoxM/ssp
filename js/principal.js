@@ -58,7 +58,102 @@ saeg.principal = (function () {
                     }
                 });
             });
-        }
+        },
+        formParticipante: function(){
+            $("#formParticipante").submit(function (e) {
+                e.preventDefault();         
+                $('#btn_guardar').hide();      
+                $('#btn_load').show();      
+                $.ajax({
+                    type: "POST",
+                    url: base_url + "index.php/Principal/guardarParticipantes",
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if(response.error == false){
+                            Swal.fire("Exitó", response.respuesta, "success");
+                            window.location.href = base_url + "index.php/Inicio"               
+                        }else{
+                            Swal.fire("Error", response.respuesta , "error"); 
+                            $('#btn_guardar').show();      
+                            $('#btn_load').hide();  
+                        } 
+                    
+                    },
+                    error: function (response,jqXHR, textStatus, errorThrown) {
+                        var res= JSON.parse (response.responseText);
+                       //  console.log(res.message);
+                        Swal.fire("Error", '<p> '+ res.message + '</p>');  
+                   }
+                });
+            });
+        },
+        formPracticante: function(){
+            $("#formParticipante").submit(function (e) {
+                e.preventDefault();         
+                $('#btn_guardar').hide();      
+                $('#btn_load').show();      
+                $.ajax({
+                    type: "POST",
+                    url: base_url + "index.php/Principal/guardarPracticante",
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if(response.error == false){
+                            Swal.fire("Exitó", response.respuesta, "success");
+                            window.location.href = base_url + "index.php/Inicio/practicantes"
+                            
+                        }else{
+                            Swal.fire("Error", response.respuesta , "error"); 
+                        } 
+                        $('#btn_guardar').show();      
+                        $('#btn_load').hide();  
+                    },
+                    error: function (response,jqXHR, textStatus, errorThrown) {
+                        var res= JSON.parse (response.responseText);
+                       //  console.log(res.message);
+                        Swal.fire("Error", '<p> '+ res.message + '</p>');  
+                   }
+                });
+            });
+        },
+        formCargaParticipante: function(){
+            $("#formCargaParticipante").submit(function (e) {
+                e.preventDefault();         
+                $('#btn_guardar').hide();      
+                $('#btn_load').show();  
+                let formData = new FormData(this); 
+                console.log(formData);   
+ 
+                $.ajax({
+                    type: "POST",
+                    url: base_url + "index.php/Principal/guardarCargaParticipante",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function (response) {
+                               // Mostrar los mensajes de éxito o error
+                    if (response.error) {
+                        Swal.fire("Error", response.message, "error");
+                    } else {
+                        Swal.fire("Éxito", response.message, "success");
+                        $("#formCargaParticipante")[0].reset(); // Limpia el formulario
+                         window.location.href = base_url + "index.php/Inicio/listaDocumento"
+                    }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error:", textStatus, errorThrown);
+                        Swal.fire("Error", "Ocurrió un problema al guardar los datos.", "error");
+                    },
+                    complete: function () {
+                        // Restaurar el botón de guardar
+                        $("#btn_guardar").show();
+                        $("#btn_load").hide();
+                    },
+                });
+            });
+        },
         
     }
 })();

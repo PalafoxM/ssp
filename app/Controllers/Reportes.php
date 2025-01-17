@@ -44,17 +44,17 @@ class Reportes extends BaseController {
 
     public function index()
     {        
-        $session = \Config\Services::session();   
+        $session = \Config\Services::session();
         $data = array();
-        // $data['unidad'] = $this->globals->getTabla(["tabla"=>"cat_clues","select"=>"id_clues, NOMBRE_UNIDAD", "where"=>["visible"=>1],'limit' => 10]); 
-        $data['cat_resultado_turno'] = $this->globals->getTabla(["tabla"=>"cat_resultado_turno", "where"=>["visible"=>1]]); 
-        $data['cat_estatus'] = $this->globals->getTabla(["tabla"=>"cat_estatus", "where"=>["visible"=>1]]); 
-        $data['scripts'] = array('reportes');
-        $data['edita'] = 0;
-        // $data['nombre_completo'] = $session->nombre_completo; 
-        $data['contentView'] = 'secciones/vReportes';                
-        $this->_renderView($data);
-        
+        if ($session->get('logueado')==1) {
+            header('Location:' . base_url() . 'index.php/Inicio');
+            die();
+        }
+        //$data['scripts'] = array('principal','somatometria');        
+        $data['scripts'] = array('principal');
+        $data['layout'] = 'plantilla/lytLogin';
+        $data['contentView'] = 'secciones/vLogin';                
+        $this->_renderView($data);        
     }
 
     public function getPrincipal()

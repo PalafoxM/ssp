@@ -182,6 +182,40 @@ class Agregar extends BaseController {
             $data['contentView'] = 'formularios/vFormAgregar';                
             $this->_renderView($data);
     }
+    public function uploadFile()
+    {
+        $response = ['error' => false, 'message' => ''];
+        $file = $this->request->getFile('file');
+        try {
+            // Verificar si el archivo fue cargado
+            if (!$this->request->getFile('file')) {
+                $response['error'] = true;
+                $response['message'] = 'Archivo no recibido';
+                return $this->response->setJSON($response);
+            }
+    
+            $file = $this->request->getFile('file');
+            // Validar tipo de archivo
+            if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
+                $response['error'] = true;
+                $response['message'] = 'El archivo debe ser un PDF válido';
+                return $this->response->setJSON($response);
+            }
+    
+            // Guardar archivo
+            $newName = $file->getRandomName(); // Genera un nombre único
+            $file->move(WRITEPATH . 'uploads', $newName); // Guarda en la carpeta 'writable/uploads'
+    
+            $response['message'] = 'Archivo subido correctamente: ' . $newName;
+            return $this->response->setJSON($response);
+    
+        } catch (\Exception $e) {
+            $response['error'] = true;
+            $response['message'] = 'Error al subir el archivo: ' . $e->getMessage();
+            return $this->response->setJSON($response);
+        }
+    }
+    
 
     private function handleException($e)
     {

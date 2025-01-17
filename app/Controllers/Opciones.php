@@ -68,20 +68,71 @@ class Opciones extends BaseController {
     public function getUsuario()
     {
         $session = \Config\Services::session();
-        $id_destinatario = $this->request->getPost('id_destinatario');
+        $id_usuario = $this->request->getPost('id_usuario');
         
         // Validar que el ID de usuario esté presente y sea válido
-        if (!$id_destinatario) {
+        if (!$id_usuario) {
             return $this->fail('ID de usuario no proporcionado', 400);
         }
 
         // var_dump($id_usuario);
         // die();
-        $response = $this->globals->getTabla(["tabla"=>"vw_destinatarios", "select"=>"id_destinatario, nombre_destinatario, cargo, id_tipo_cargo" ,"where"=>["id_destinatario" => $id_destinatario, "visible" => 1]])->data;
+        $response = $this->globals->getTabla(["tabla"=>"usuario" ,"where"=>["id_usuario" => $id_usuario, "visible" => 1]])->data;
         // var_dump($response[0]);
         // die();
         return $this->respond($response[0]);
     }
+    public function actualizarContrasenia()
+    {
+        $session = \Config\Services::session();
+        $nueva_contrasenia = $this->request->getPost('nueva_contrasenia');
+        $confirma_contrasenia = $this->request->getPost('confirma_contrasenia');
+        $id_usuario = $this->request->getPost('id_usuario');
+    
+        // Validar que los campos no estén vacíos
+        if (!$nueva_contrasenia || !$confirma_contrasenia) {
+            return $this->respond([
+                'error' => true,
+                'message' => 'Los campos de contraseña no pueden estar vacíos.'
+            ], 400);
+        }
+    
+        // Validar que las contraseñas coincidan
+        if ($nueva_contrasenia !== $confirma_contrasenia) {
+            return $this->respond([
+                'error' => true,
+                'message' => 'Las contraseñas no coinciden.'
+            ], 400);
+        }
+
+        $validarCambio = $this->globals->getTabla(["tabla"=>"usuario" ,"where"=>["id_usuario" => $id_usuario, "visible" => 1]])->data[0];
+        if($validarCambio->curp == $nueva_contrasenia ){
+            return $this->respond([
+                'error' => true,
+                'message' => 'La contraseña no debe ser la misma al curp'
+            ], 400);
+        }
+        if($validarCambio->contrasenia == md5($nueva_contrasenia) ){
+            return $this->respond([
+                'error' => true,
+                'message' => 'Las contraseña no debe ser la misma a la actual'
+            ], 400);
+        }
+        // Procesar la actualización de la contraseña
+        $dataConfig = [
+            "tabla" => "usuario",
+            "editar" => true,
+            "idEditar" => ['id_usuario' => $id_usuario]
+        ];
+    
+        $response = $this->globals->saveTabla(
+            ["contrasenia" => md5($nueva_contrasenia), 'cambio_pass' => 0],
+            $dataConfig,
+            ["script" => "Opciones.actualizarUsuario"]
+        );
+        return $this->respond($response);
+    }
+    
     public function deleteUsuario()
     {
         $response = new \stdClass();

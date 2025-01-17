@@ -1,92 +1,75 @@
-<style>
-   .imagenLogin{
-    max-width:50%;
-    height: auto;
-   
-}
+ <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5">
+     <div class="container">
+         <div class="row justify-content-center">
+             <div class="col-xxl-4 col-lg-5">
+                 <div class="card">
 
-   @media only screen and (max-width: 1600px) {
-        .imagenLogin img{
-            width:65%;
-           
-        }  
-    }
-   @media only screen and (max-width: 1400px) {
-    #txtTitulo{
-            display:none;
-        }  
-    }
-</style>
-<link href="<?php echo base_url();?>/assets/css/custom.css" rel="stylesheet" type="text/css"  />
-<div class="auth-fluid">
-            <!--Auth fluid left content -->
-            <div class="auth-fluid-form-box" >
-                <div class="align-items-center d-flex h-100">
-                    <div class="card-body">
+                     <!-- Logo -->
+                     <div class="card-header pt-4 pb-4 text-center bg-primary">
+                         <a href="index.html">
+                             <span><img src="<?php echo base_url();?>assets/images/logo.png" alt="" height="18"></span>
+                         </a>
+                     </div>
 
-                        <!-- Logo -->
-                        <div class="auth-brand text-center text-lg-start ">
-                            
-                            <a href="#" class="logo-light text-center imagenLogin ">
-                                <span><img src="<?php echo base_url();?>/assets/images/st4.png" alt="Logo" class="img-fluid"></span>
-                            </a>
-                        </div>
+                     <div class="card-body p-4">
 
-                        <div class="text-center " id="txtTitulo">
-                        <h2 class="mt-0" style="color: #069">Sistema de Turnos 2.0</h2>
-                        <p class="text-muted mb-4">Ingrese usuario y contraseña</p>
-                        <!-- <span id="tamanioPantalla" style="color:red"></span> -->
+                         <div class="text-center w-75 m-auto">
+                             <h4 class="text-dark-50 text-center pb-0 fw-bold">Ingresar</h4>
+                             <p class="text-muted mb-4">INGRESAR SU CREDENCIALES DE ACCESO</p>
+                         </div>
 
-                        </div>
-                        <!-- form -->
-                        <form id="login" name="login" autocomplete="off">
-                            <div class="mb-3">
-                                <label for="usuario" class="form-label">Usuario</label>
-                                <input class="form-control" type="text" id="usuario" name="usuario" required="" placeholder="Ingresa tu usuario">
-                            </div>
-                            <div class="mb-3">
-                                <!--<a href="pages-recoverpw-2.html" class="text-muted float-end"><small>Recuperar contraseña</small></a>-->
-                                <label for="contrasenia" class="form-label">Contraseña</label>
-                                <input class="form-control" type="password" required="" id="contrasenia" name="contrasenia" placeholder="Ingresa tu contraseña">
-                            </div>
-                            
-                            <div class="d-grid mb-0 text-center">
-                                <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i> Entrar </button>
-                            </div>
-                        </form>
-                    </div> <!-- end .card-body -->
-                </div> <!-- end .align-items-center.d-flex.h-100-->
-            </div>
-            <!-- end auth-fluid-form-box-->
+                         <form id="login" name="login" autocomplete="off">
 
-            <!-- Auth fluid right content -->
-            <div class="auth-fluid-right text-left">
-                <div class="auth-user-testimonial">
-                    <img src="<?php echo base_url().'/assets/images/logo2_blanco.png'?>" alt width="183px" height="80px">
-                    <img src="<?= base_url("/assets/images/Logo DGPyD.png")?>" alt  height="60px">
-                    <img src="<?= base_url("/assets/images/DTIC-8.png")?>" alt  height="60px">
-                </div> <!-- end auth-user-testimonial-->
-            </div>
-            <!-- end Auth fluid right content -->
-        </div>
-        <!-- end auth-fluid-->
+                             <div class="mb-3">
+                                 <label for="curp" class="form-label">CURP</label>
+                                 <input class="form-control" type="text" id="curp" name="usuario" required=""
+                                     placeholder="CURP">
+                             </div>
 
-        <script>
-            saeg.principal.login();
-            // // Función para actualizar el tamaño de pantalla en el span
-            //     function actualizarTamanioPantalla() {
-            //         // Obtener el ancho y alto de la pantalla
-            //         var anchoPantalla = window.innerWidth;
-            //         var altoPantalla = window.innerHeight;
+                             <div class="mb-3">
+                                 <a href="pages-recoverpw.html" class="text-muted float-end"><small>Olvide mi
+                                         contraseña?</small></a>
+                                 <label for="contrasenia" class="form-label">CONTRASEÑA</label>
+                                 <div class="input-group input-group-merge">
+                                     <input type="password" id="contrasenia" name="contrasenia" class="form-control"
+                                         placeholder="Enter your password">
+                                     <div class="input-group-text" data-password="false">
+                                         <span class="password-eye"></span>
+                                     </div>
+                                 </div>
+                             </div>
 
-            //         // Mostrar los valores en el span
-            //         var spanTamanioPantalla = document.getElementById("tamanioPantalla");
-            //         spanTamanioPantalla.textContent = "Ancho: " + anchoPantalla + "px, Alto: " + altoPantalla + "px";
-            //     }
+                             <div class="mb-3 mb-3">
+                                 <div class="form-check">
+                                     <input type="checkbox" class="form-check-input" id="checkbox-signin" checked>
+                                     <label class="form-check-label" for="checkbox-signin">Recordarme</label>
+                                 </div>
+                             </div>
 
-            //     // Llamar a la función inicialmente para mostrar el tamaño de pantalla actual
-            //     actualizarTamanioPantalla();
+                             <div class="mb-3 mb-0 text-center" id="btn_entrar">
+                                 <button class="btn btn-primary" type="submit"><i class="mdi mdi-login"></i> Entrar
+                                 </button>
+                             </div>
 
-            //     // Agregar un evento de cambio de tamaño para actualizar dinámicamente el tamaño de pantalla
-            //     window.addEventListener("resize", actualizarTamanioPantalla);
-        </script>
+                         </form>
+                     </div> <!-- end card-body -->
+                 </div>
+                 <!-- end card -->
+
+                 <div class="row mt-3">
+                     <div class="col-12 text-center">
+                         <p class="text-muted">No tengo Cuenta? <a href="pages-register.html"
+                                 class="text-muted ms-1"><b>Sign Up</b></a></p>
+                     </div> <!-- end col -->
+                 </div>
+                 <!-- end row -->
+
+             </div> <!-- end col -->
+         </div>
+         <!-- end row -->
+     </div>
+     <!-- end container -->
+ </div>
+ <script>
+saeg.principal.login();
+ </script>

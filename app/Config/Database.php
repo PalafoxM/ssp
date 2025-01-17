@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
+        'hostname'     => '172.31.113.61',
         'username'     => 'root',
-        'password'     => 'mario',
-        'database'     => 'turnos2',
+        'password'     => 'Gnosis01',
+        'database'     => 'ssp',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
@@ -51,12 +51,12 @@ class Database extends Config
      */
     public array $bitacora = [
         'DSN'         => '',
-        'hostname'    => 'localhost',
+        'hostname'    => '172.31.113.61',
         'username'    => 'root',
-        'password'    => 'mario',
+        'password'    => 'Gnosis01',
         'database'    => 'bitacora',
         'DBDriver'    => 'MySQLi',
-        'DBPrefix'    => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
+        'DBPrefix'    => '',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
         'pConnect'    => false,
         'DBDebug'     => true,
         'charset'     => 'utf8',
