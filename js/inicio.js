@@ -89,7 +89,7 @@ ini.inicio = (function () {
                                 success: function(response) {
                                     console.log(response);
                                     if (!response.error) {
-                                        Swal.fire("Éxito", "El archivo se cargó correctamente.", "success");
+                                        Swal.fire("Genial", "El archivo se cargó correctamente.", "success");
                                         $('#documentoPracticante').bootstrapTable('refresh');
                                         
                                     } else {
@@ -117,7 +117,7 @@ ini.inicio = (function () {
         formatterAccionesPracticante: function(value,row){
             let accion = "<div class='contenedor'>"+
                 "<button type='button' onclick='ini.inicio.abrirVentanaPdf("+ row.id_practicante +")' class='btn btn-primary' title='Mostrar PDF'><i class='mdi mdi-file-pdf'></i> </button>"+
-                "<a href="+base_url+"index.php/Inicio/formulario/"+ row.id_practicante+"/1/ type='button' class='btn btn-secondary' title='Editar'><i class='mdi mdi-account-edit'></i> </a>"+
+                "<a href="+base_url+"index.php/Inicio/formulario/"+ row.id_practicante+"/1/ type='button' class='btn btn-secondary' title='Editar'><i class='mdi mdi-border-color'></i> </a>"+
                 "<button type='button' onclick='ini.inicio.eliminarPracticante("+ row.id_practicante+")' class='btn btn-danger' title='Eliminar'><i class='mdi mdi-delete'></i> </button>"+
                 "</div>";
             return accion;
@@ -173,19 +173,148 @@ ini.inicio = (function () {
             "</div>";
            return Botones;
         },
+        reportesMensuales: function(value,row)
+        {
+            return `<a href=${base_url+row.ruta_relativa} target="_blank" title='Ver' 
+                                class='btn btn-info'>
+                            <i class='mdi mdi-file-pdf'></i>
+                        </a>`;
+        },
         accionesPracticanteDocumento: function(value,row)
         {
-            let Botones = `
-            <div class='contenedor'>
-                <button type='button' title='Ver' 
-                        data-bs-toggle='modal' 
-                        data-bs-target='#bs-example-modal-lg' 
-                        class='btn btn-info' 
-                        onclick='ini.inicio.getDocumento(${row.id_usuario})'>
-                    <i class='mdi mdi-file-pdf'></i>
-                </button>
-            </div>`;
+            let Botones = `<div class='contenedor'>`;
+            
+            Botones +=`<button type='button' title='Ver' 
+                                data-bs-toggle='modal' 
+                                data-bs-target='#bs-example-modal-lg' 
+                                class='btn btn-info' 
+                                onclick='ini.inicio.getDocumento(${row.id_usuario})'>
+                            <i class='mdi mdi-file-pdf'></i>
+                        </button>`;
+            Botones += (row.visible == '1')? `
+                        <button type='button' title='Subir reporte' 
+                                class='btn btn-warning' 
+                                onclick='ini.inicio.subirReporte(${row.id_usuario})'>
+                            <i class='mdi mdi-file-pdf'></i>
+                        </button>
+                        <button type='button' title='Eliminar' 
+                                        class='btn btn-danger' 
+                                        onclick='ini.inicio.eliminarDocumento(${row.id_usuario})'>
+                                    <i class='mdi mdi-delete'></i>
+                                </button>
+                              `:'';
+             
+           Botones += `</div>`;
         return Botones;
+        },
+        subirReporte: function(id)
+        {
+            Swal.fire({
+                title: "<strong>Subir Reporte Mensual</strong>",
+                icon: "info",
+                html: `<input type='file' id="reporte" class="form-control" accept=".pdf" >`,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "Guardar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let fileInput = $('#reporte')[0].files[0];
+
+                    if (!fileInput) {
+                        Swal.fire("Error", "Es requerido el archivo PDF", "error");
+                        return;
+                    }
+                    Swal.fire({
+                        title: "Atención",
+                        text: "Se enviará el reporte mensual, ¿Desea proceder?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Proceder"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let formData = new FormData();
+                            formData.append('file', fileInput);
+                            formData.append('id_practicante', id);
+                            $.ajax({
+                                url: base_url + "index.php/Usuario/reporteMensual",
+                                type: 'POST',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    console.log(response);
+                                    if (!response.error) {
+                                        Swal.fire("Genial", response.respuesta  , "success");
+                                        window.location.href = `${base_url}index.php/Inicio/reportes`;
+                                        
+                                        $('#documentoPracticante').bootstrapTable('refresh');
+                                        
+                                    } else {
+                                        Swal.fire("Error", response.respuesta, "error");
+                                        console.log("Error: " + response.error);
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.log(error);
+                                    Swal.fire("Error", "Favor de llamar al Administrador", "error");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        },
+        accionesEstatusDocumento: function(value,row)
+        {
+            let Botones = `<div class='contenedor'>`;
+            if (row.visible == '1') {
+                Botones += '<span class="badge bg-success" title="ACTIVO">ACTIVO</span>';
+            }else{
+                Botones += '<span class="badge bg-danger" title="BAJA">BAJA</span>';
+            }
+            return Botones;
+        },
+        eliminarDocumento: function(id)
+        {
+            Swal.fire({
+                title: "Se eliminara el registro",
+                text: "Esta seguro de eliminar",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Proceder"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: base_url + "index.php/Usuario/deleteUsuario",
+                        dataType: "json",
+                        data:{id_usuario:id},
+                        success: function(data) {
+                            if (data) {
+                                console.log(data);
+                                $('#tableUsuario').bootstrapTable('refresh');
+                                Swal.fire({
+                                    title: "Exito",
+                                    text: "Se elimino correctamente",
+                                    icon: "success"
+                                  });
+                            } else {
+                                Swal.fire("info", "No se encontraron datos del usuario.", "info");
+                            }
+                        },
+                        error: function() {
+                            Swal.fire("info", "No se encontraron datos del usuario.", "info");
+                        }
+                    });
+               
+                }
+              });
         },
         getDocumento: function(id_usuario){
         
@@ -328,7 +457,7 @@ ini.inicio = (function () {
                     success: function(data) {
                         console.log(data);
                         if (data) {
-                            Swal.fire("Éxito", "Se guardo el comentario correctamente.", "success")
+                            Swal.fire("¡Hecho!", "Se guardo el comentario correctamente.", "success")
                            
                         } else {
                             Swal.fire("Error", "Error al guardar comentario.", "error");
@@ -367,6 +496,7 @@ ini.inicio = (function () {
         estudianteCV: function(value, row) {
             let Botones = "<div class='contenedor'>" +
                 "<a href='" + base_url + row.ruta_absoluta + "' target='_blank' type='button' title='Ver' class='btn btn-warning'><i class='mdi mdi-file-pdf'></i></a>" +
+  
                 "<a onclick='ini.inicio.comentario(" + row.id_archivo_cv + ")' type='button' title='Comentario' class='btn btn-info'><i class='mdi mdi-android-messages'></i></a>";
             // Determinar el botón basado en id_archivo_cv
             switch (row.estatus) {
@@ -381,6 +511,7 @@ ini.inicio = (function () {
                     break;
               
             }
+          
         
             Botones += "</div>";
             return Botones;
@@ -401,9 +532,9 @@ ini.inicio = (function () {
                 title: "Estatus del estudiante.",
                 showDenyButton: true,
                 showCancelButton: true,
-                confirmButtonText: "Seleccionar",
+                confirmButtonText: "Aceptar",
                 cancelButtonText: "Cancelar",
-                denyButtonText: `Denegar`
+                denyButtonText: `Rechazar`
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {

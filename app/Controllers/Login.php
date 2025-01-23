@@ -54,6 +54,9 @@ class Login extends BaseController {
             try {
                 $file           = $this->request->getFile('file');
                 $id_dependencia = $this->request->getPost('id_dependencia');
+                $nombre_login   = $this->request->getPost('nombre_login');
+                $curp_login     = $this->request->getPost('curp_login');
+                $matricula      = $this->request->getPost('matricula');
                 // Validar tipo de archivo
                 if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
                     $response['error'] = true;
@@ -66,11 +69,19 @@ class Login extends BaseController {
                 $originalName = $file->getClientName();
                 $size = $file->getSize();
                 $mimeType = $file->getMimeType();
-    
+
+                
+               
+                $dep = $globals->getTabla(['tabla' => 'cat_dependencia', 'where' => ['id_dependencia' => $id_dependencia, 'visible' => 1]]);
+              
                 $datos = [
-                    'nombre' => $originalName,
-                    'tamanio' => $size,
-                    'tipo' => $mimeType,
+                    'nombre'        => $nombre_login,
+                    'curp'          => $curp_login,
+                    'matricula'     => $matricula,
+                    'folio'         => $dep->data[0]->dsc_corto.'-'.$curp_login,
+                    'archivo'       => $originalName,
+                    'tamanio'       => $size,
+                    'tipo'          => $mimeType,
                     'ruta_relativa' => WRITEPATH . 'uploads/' . $newName,
                     'ruta_absoluta' => 'assets/pdf/' . $newName,
                     'id_dependencia' => $id_dependencia,

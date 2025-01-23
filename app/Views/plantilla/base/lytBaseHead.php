@@ -220,7 +220,7 @@
                                         <a class="nav-link arrow-none"
                                             href="<?php echo base_url()?>index.php/Inicio/practicantes"
                                             id="topnav-components" aria-expanded="false">
-                                            <i class="uil-check me-1"></i>Lista
+                                            <i class="uil-check me-1"></i>Lista de Proyectos
                                         </a>
 
                                     </li>
@@ -259,6 +259,16 @@
                                             href="<?php echo base_url()?>index.php/Inicio/validarDocumento"
                                             id="topnav-components" aria-expanded="false">
                                             <i class="dripicons-checklist me-1"></i>Validar Documentos
+                                        </a>
+
+                                    </li>
+                                    <?php endif ?>
+                                    <?php if($session->id_perfil != 4): ?>
+                                    <li class="nav-item">
+                                        <a class="nav-link arrow-none"
+                                            href="<?php echo base_url()?>index.php/Inicio/reportes"
+                                            id="topnav-components" aria-expanded="false">
+                                            <i class="uil-file me-1"></i>Reportes Mensuales
                                         </a>
 
                                     </li>
@@ -403,7 +413,7 @@
                             Swal.fire("Error", data.respuesta, "error");
                         } else {
                             // Mensaje de éxito
-                            Swal.fire("Éxito", data.respuesta, "success");
+                            Swal.fire("¡Hecho!", data.respuesta, "success");
                             window.location.href = `${base_url}index.php/Login/cerrar`;
                         }
                         $('#btn_guardar2').show();

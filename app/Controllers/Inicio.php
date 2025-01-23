@@ -160,8 +160,8 @@ class Inicio extends BaseController {
         $principal = new Mglobal;
         
 
-        $dataDB = ( $session->get('id_perfil') == 1 || $session->get('id_perfil') == '2')?array('tabla' => 'usuario', 'where' => ['visible' => 1, 'id_perfil' => 4]):
-        array('tabla' => 'usuario', 'where' => ['visible' => 1, 'id_dependencia' =>  $session->id_dependencia,'id_perfil' => 4]);  
+        $dataDB = ( $session->get('id_perfil') == 1 || $session->get('id_perfil') == '2')?array('tabla' => 'usuario', 'where' => ['id_perfil' => 4]):
+        array('tabla' => 'usuario', 'where' => ['id_dependencia' =>  $session->id_dependencia,'id_perfil' => 4]);  
         $response = $principal->getTabla($dataDB); 
          return $this->respond($response->data);
     }
@@ -191,6 +191,28 @@ class Inicio extends BaseController {
                                             
         $response = $principal->getTabla($dataDB); 
         return $this->respond($response->data);
+    }
+    public function getReportesMensual()
+    {
+        $session = \Config\Services::session();
+        $principal = new Mglobal;
+        if( $session->id_dependencia == -1){
+            $dataDB = array('tabla' => 'vw_reportes', 'where' => ['visible' => 1]); 
+        }else{
+            $dataDB = array('tabla' => 'vw_reportes', 'where' => ['id_dependencia' => $session->id_dependencia ,'visible' => 1]); 
+        }
+                                            
+        $response = $principal->getTabla($dataDB); 
+        return $this->respond($response->data);
+    }
+    public function reportes()
+    {
+        $session = \Config\Services::session();
+        $principal = new Mglobal;
+        $data['scripts'] = array('principal','inicio');
+        $data['edita']   = 0;
+        $data['contentView'] = 'secciones/vReporteMensual';                
+        $this->_renderView($data);
     }
     public function validarDocumento()
     {

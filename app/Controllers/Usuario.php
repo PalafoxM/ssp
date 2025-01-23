@@ -5,6 +5,8 @@ use App\Libraries\Fechas;
 use App\Libraries\Funciones;
 use App\Models\Mglobal;
 
+use ZipArchive;
+
 use stdClass;
 use CodeIgniter\API\ResponseTrait;
 require_once FCPATH . '/mpdf/autoload.php';
@@ -195,6 +197,209 @@ class Usuario extends BaseController {
         return $this->respond($response);
          
     }
+    public function subirSecuencial()
+    {
+        $session = \Config\Services::session();
+        $globals = new Mglobal;
+        $data = array(); 
+        if ($this->request->getFile('file')) {
+            $file = $this->request->getFile('file');
+                if ($file->getClientMimeType() !== 'text/csv' && strtolower($file->getExtension()) !== 'csv') {
+                    $response->error = true;
+                    $response->respuesta = 'El archivo debe ser de formato CSV.';
+                    return $this->respond($response);
+                }
+                $filePath = $_FILES['file']['tmp_name'];
+               
+            $data = [];
+            if (($handle = fopen($filePath, "r")) !== false) {
+                $header = fgetcsv($handle, 1000, ","); // Lee la primera fila como encabezado
+               
+                while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+                    $encodedRow = array_map('utf8_encode', $row); // Codifica los valores a UTF-8
+                    $courseData = array_combine($header, $encodedRow); // Combina encabezado y valores
+
+                    $data[] = $courseData;
+                }
+                
+                fclose($handle);
+            }
+            $processResponse = $this->procesarDatos($data);
+            if($processResponse->error){
+                $response->error = true;
+                $response->respuesta = $processResponse->respuesta;
+                return $this->respond($response);
+            }
+         
+        }
+    }
+    public function procesarDatos($data)
+    {
+        $response = new \stdClass();
+        $session = \Config\Services::session();
+        $this->globals = new Mglobal();
+        $response->error = true;
+        $response->respuesta = 'Error| Error al guardar el registro';
+        $dataClean = [];
+        $dataTrash = [];
+        $emailsSeen = []; // Lista para verificar correos duplicados en el CSV
+        $curpSeen = []; 
+
+        foreach ($data as &$d) {
+            // Normaliza las claves eliminando el BOM
+            $d = array_combine(
+                array_map(function ($key) {
+                    return preg_replace('/^\xEF\xBB\xBF/', '', $key);
+                }, array_keys($d)),
+                $d
+            );
+        }
+        unset($d); // Evitar referencias no deseadas
+        
+        foreach ($data as $d) {
+            var_dump($d); // Verifica el array procesado
+            var_dump($d['NOMBRE']);
+            var_dump((int)$d['USUARIO_ID']); // Convertir el valor a entero
+            if (isset($d['USUARIO_ID']) && !empty($d['USUARIO_ID'])) {
+                $datos = [
+                    'secuencial' => $d['SECUENCIAL'],
+                ];
+                $dataConfig = [
+                    "tabla"        => "usuario",
+                    "editar"       => true,
+                    "idEditar"     => ["id_usuario" => (int)$d['USUARIO_ID']]
+                ];
+                $dataBitacora = ['id_user' => 7, 'script' => 'Agregar.php/guardaArchivo'];
+                $result = $this->globals->saveTabla($datos, $dataConfig, $dataBitacora);
+                if(!$result->error){
+                    $response->error     = false;
+                    $response->respuesta = 'Registro guardado correctamente';
+                }
+        
+            }
+        }
+        
+        
+        return $response;
+    }
+    public function reporteMensual()
+    {
+        $session = \Config\Services::session();
+        $response = new \stdClass();
+        $globals = new Mglobal;
+        $response->error = true;
+        $response->respuesta = 'Error| Error al subir Reporte';
+        
+            
+                $file           = $this->request->getFile('file');
+                $id_practicante   = $this->request->getPost('id_practicante');
+                // Validar tipo de archivo
+              
+                if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
+                    $response->error = true;
+                    $response->respuesta = 'El archivo debe ser un PDF válido';
+                    return $this->response->setJSON($response);
+                }
+        
+                // Guardar archivo
+                $newName = $file->getRandomName(); // Genera un nombre único
+                $originalName = $file->getClientName();
+                $size = $file->getSize();
+                $mimeType = $file->getMimeType();
+    
+                $datos = [
+                    'tamanio' => $size,
+                    'tipo' => $mimeType,
+                    'id_usuario' => $id_practicante,
+                    'ruta_absoluta' => WRITEPATH . 'assets/pdf/practicante/' . $newName,
+                    'ruta_relativa' => 'assets/pdf/practicante/' . $newName,
+                   
+                ];
+        
+                $dataConfig = [
+                    "tabla"        => "reportes",
+                    "editar"       => false
+                ];
+                $dataBitacora = ['id_user' => 7, 'script' => 'Agregar.php/guardaArchivo'];
+           
+                $result = $globals->saveTabla($datos, $dataConfig, $dataBitacora);
+                if(!$result->error){
+                    $response->error     = false;
+                    $response->respuesta = $result->respuesta;
+                }
+                $file->move(FCPATH . 'assets/pdf/practicante/', $newName); 
+                
+        return $this->respond($response);
+
+    }
+    public function descargarZip()
+    {
+        $session = \Config\Services::session();
+        $response = new \stdClass();
+        $globals = new Mglobal;
+        $response->error = true;
+        $response->respuesta = 'Error| Error al generar ZIP';
+    
+        if ($session->id_perfil == '1' || $session->id_perfil == '2') {
+            $usuarios = $globals->getTabla([
+                'tabla' => 'usuario',
+                'where' => ['visible' => 1, 'id_perfil' => 4]
+            ])->data;
+    
+            $rutaZip = FCPATH . '/uploads/usuarios_archivos.zip';
+    
+            // Crear instancia de ZipArchive
+            $zip = new \ZipArchive();
+    
+            // Asegúrate de que exista el directorio donde se almacenará el ZIP
+            if (!is_dir(dirname($rutaZip))) {
+                mkdir(dirname($rutaZip), 0755, true);
+            }
+    
+            // Abrir o crear el archivo ZIP
+            if ($zip->open($rutaZip, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+    
+                foreach ($usuarios as $u) {
+                    // Obtener los documentos del usuario
+                    $documentos = $globals->getTabla([
+                        'tabla' => 'documento',
+                        'where' => ['visible' => 1, 'id_usuario' => (int)$u->id_usuario]
+                    ])->data;
+    
+                    if (!empty($documentos)) {
+                        foreach ($documentos as $doc) {
+                            $rutaArchivo = FCPATH . $doc->ruta_relativa;
+                            $carpetaUsuario = $u->curp . '/'; // Carpeta con el CURP del usuario
+    
+                            if (file_exists($rutaArchivo)) {
+                                // Agregar archivo al ZIP dentro de la carpeta del CURP
+                                $zip->addFile($rutaArchivo, $carpetaUsuario . basename($rutaArchivo));
+                            } else {
+                                log_message('error', "El archivo $rutaArchivo no existe.");
+                            }
+                        }
+                    }
+                }
+    
+                // Cerrar el archivo ZIP
+                $zip->close();
+    
+                // Responder con la ruta del archivo ZIP
+              
+                $response->error = false;
+                $response->respuesta = 'El ZIP se generó correctamente';
+                $response->ruta = base_url('uploads/usuarios_archivos.zip');
+                
+                return $this->respond($response);
+            } else {
+                return $this->response->setStatusCode(500)->setBody('Error al crear el archivo ZIP.');
+            }
+        }
+    
+        return $this->response->setStatusCode(403)->setBody('Acceso denegado.');
+    }
+    
+    
     public function editarArchivo()
     {
         $session = \Config\Services::session();

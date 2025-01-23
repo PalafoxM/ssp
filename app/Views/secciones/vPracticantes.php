@@ -36,25 +36,16 @@
                     data-url="<?=base_url("/index.php/Inicio/getPracticantes")?>">
                     <thead>
                         <tr>
-                            <th data-field="id_practicante" data-width="20" data-sortable="true" class="text-center">ID
+                            <th data-field="id_practicante" data-width="10" data-sortable="true" class="text-center">CONSECUTIVO
                             </th>
-                            <th data-field="nombre" data-width="20" data-sortable="true">NOMBRE</th>
-                            <th data-field="correo" data-width="100" data-sortable="true">CORREO</th>
+                            <th data-field="folio" data-width="30" data-sortable="true">FOLIO</th>
+                            <th data-field="proyecto" data-width="30" data-sortable="true">NOMBRE DEL PROYECTO</th>
 
-                            <th data-field="numero_prac" data-width="100" data-sortable="true" data-tooltip="true">NUMERO PRACTICANTE
-                            </th>
-
-                            <th data-field="puesto" data-width="100" data-sortable="true" data-tooltip="true">PUESTO
-                            </th>
-                            <th data-field="dias" data-width="100" data-sortable="true" data-tooltip="true">DIAS
-                            </th>
-                            <th data-field="hora" data-width="100" data-sortable="true" data-tooltip="true">HORAS
-                            </th>
-                            <th data-field="descripcion" data-width="100" data-sortable="true" data-tooltip="true">DESCRIPCION
+                            <th data-field="numero_prac" data-width="10" data-sortable="true" data-tooltip="true">NÚMERO DE ESTUDIANTES
                             </th>
 
                             <th data-field="id_practicante" data-width="20" data-formatter="ini.inicio.formatterAccionesPracticante"
-                                data-sortable="true">Acciones</th>
+                                data-sortable="true">ACCIONES</th>
                         </tr>
                     </thead>
                 </table>

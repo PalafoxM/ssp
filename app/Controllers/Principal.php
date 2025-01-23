@@ -171,6 +171,11 @@ class Principal extends BaseController {
         $globals = new Mglobal;
         //die( var_dump($session->get('id_usuario')) );
         $user = $globals->getTabla(['tabla' => 'usuario', 'where' =>['visible' => 1, 'id_usuario' => $session->get('id_usuario') ]])->data[0];
+
+        if(isset($user) && $user->id_dependencia == -1){
+            $response->respuesta = "Atencion el Admministrador no puede realizar un registro, solo los enlaces";
+            return $this->respond($response);
+        }
         $cat_dependencia = $globals->getTabla(['tabla' => 'cat_dependencia', 'where' =>['visible' => 1, 'id_dependencia' => $user->id_dependencia ]])->data[0];
         if( $data['licenciatura'] == '0' ){
             $response->respuesta = "El campo de licenciatura es requerido";

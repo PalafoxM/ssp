@@ -17,42 +17,49 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-sm-4">
-
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="text-sm-end">
-                            <button type="button" class="btn btn-success mb-2 me-1"><i
-                                    class="mdi mdi-cog-outline"></i></button>
-
-                            <button type="button" class="btn btn-light mb-2">Export</button>
-                        </div>
-                    </div><!-- end col-->
+                <div id="toolbar">
+                    <button id="export" class="btn btn-primary" onclick="cargaCsv()">
+                        <i class="mdi mdi-upload"></i> Carga CSV
+                    </button>
+                    <button id="btn_carga" class="btn btn-info" onclick="descargarZip()">
+                        <i class="mdi mdi-download"></i> Descargar Zip
+                    </button>
+                    <button class="btn btn-primary" id="loading" style="display:none;" type="button" disabled>
+                        <span class="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true"></span>
+                        Descargando...
+                    </button>
                 </div>
-                <table id="table" data-locale="es-MX" data-toolbar="#toolbar" data-toggle="table" data-search="true"
-                    data-search-highlight="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]"
-                    data-sortable="true" data-show-refresh="true" data-header-style="headerStyle"
+                <table id="tableUsuario" data-locale="es-MX" data-toolbar="#toolbar" data-toggle="table"
+                    data-search="true" data-search-highlight="true" data-pagination="true"
+                    data-page-list="[10, 25, 50, 100, all]" data-sortable="true" data-show-refresh="true"
+                    data-show-export="true" data-export-types="['excel', 'csv']"
+                    data-export-options='{"fileName": "tabla_practicantes"}' data-header-style="headerStyle"
                     data-url="<?=base_url("/index.php/Inicio/getPracticantesDocumento")?>">
                     <thead>
                         <tr>
-                            <th data-field="id_usuario" data-width="20" data-sortable="true" class="text-center">ID
-                            </th>
+                            <th data-field="id_usuario" data-width="20" data-sortable="true">USUARIO_ID</th>
                             <th data-field="nombre" data-width="20" data-sortable="true">NOMBRE</th>
-                            <th data-field="primer_apellido" data-width="20" data-sortable="true">PRIMER APELLIDO</th>
-                            <th data-field="segundo_apellido" data-width="20" data-sortable="true">SEGUNDO APELLIDO</th>
+                            <th data-field="primer_apellido" data-width="20" data-sortable="true">APELLIDO</th>
                             <th data-field="correo" data-width="100" data-sortable="true">CORREO</th>
                             <th data-field="curp" data-width="100" data-sortable="true" data-tooltip="true">CURP</th>
+                            <th data-field="visible" data-formatter="ini.inicio.accionesEstatusDocumento"
+                                data-width="100" data-sortable="true" data-tooltip="true">ESTATUS</th>
+                            <th data-field="secuencial" data-width="100" data-sortable="true" data-tooltip="true">
+                                SECUENCIAL</th>
                             <th data-field="id_usuario" data-width="20"
                                 data-formatter="ini.inicio.accionesPracticanteDocumento" data-sortable="true">DOCUMENTOS
                             </th>
                         </tr>
                     </thead>
                 </table>
+
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 
 
@@ -155,6 +162,115 @@ function headerStyle() {
             color: '#FFFFFF' // Color del texto del encabezado
         }
     };
+}
+
+function cargaCsv() {
+    Swal.fire({
+        title: "<strong>Subir CSV</strong>",
+        icon: "info",
+        html: `<input type='file' id="fileinput" class="form-control" accept=".csv" >`,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: "Guardar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let fileInput = $('#fileinput')[0].files[0];
+            if (!fileInput) {
+                Swal.fire("Error", "Es requerido el archivo CSV", "error");
+                return;
+            }
+            Swal.fire({
+                title: "Atención",
+                text: "Se enviará el archivo, ¿Desea proceder?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Proceder"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    formData.append('file', fileInput);
+                    $.ajax({
+                        url: base_url + "index.php/Usuario/subirSecuencial",
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            console.log(response);
+                            if (!response.error) {
+                                Swal.fire("Perfecto", "El archivo se cargó correctamente.",
+                                    "success")
+                                $('#tableUsuario').bootstrapTable('refresh');
+
+                            } else {
+                                Swal.fire("Error",
+                                    "Hubo un problema al procesar el archivo.", "error");
+                                console.log("Error: " + response.error);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                            Swal.fire("Error", "Favor de llamar al Administrador", "error");
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+function descargarZip() {
+    Swal.fire({
+        title: "Atención",
+        text: "Se descargará todos los archivos, ¿Desea proceder?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Proceder"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#btn_carga').hide();
+            $('#loading').show();
+            $.ajax({
+                url: base_url + "index.php/Usuario/descargarZip",
+                type: 'POST',
+                data: {
+                    id_usuario: 1
+                },
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    if (!response.error) {
+                        Swal.fire("Genial", "El archivo se cargó correctamente.", "success");
+                        //$('#tableUsuario').bootstrapTable('refresh');
+                        // Crear un enlace de descarga dinámico
+                        const link = document.createElement('a');
+                        link.href = response.ruta; // Ruta proporcionada por el backend
+                        link.download = 'archivos_descarga.zip'; // Nombre sugerido para el archivo
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                    } else {
+                        Swal.fire("Error", "Hubo un problema al procesar el archivo.", "error");
+                        console.log("Error: " + response.error);
+                    }
+                    $('#btn_carga').show();
+                    $('#loading').hide();
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    Swal.fire("Error", "Favor de llamar al Administrador", "error");
+                }
+            });
+        }
+    });
 }
 
 function agregar() {

@@ -35,13 +35,11 @@
                     data-url="<?=base_url("/index.php/Inicio/getEstudianteCV")?>">
                     <thead>
                         <tr>
-                            <th data-field="id_archivo_cv" data-width="20" data-sortable="true" class="text-center">ID
+                            <th data-field="id_archivo_cv" data-width="20" data-sortable="true" class="text-center">CONSECUTIVO
                             </th>
-                            <th data-field="nombre" data-width="20" data-sortable="true">NOMBRE</th>
-                            <th data-field="tipo" data-width="100" data-sortable="true">TIPO</th>
-                            <th data-field="comentario" data-width="100" data-sortable="true">COMENTARIO</th>
-
-                            <th data-field="tamanio" data-width="100" data-sortable="true" data-tooltip="true">TAMAÑO
+                            <th data-field="nombre" data-width="20" data-sortable="true">NOMBRE DEL ESTUDIANTE</th>
+                            <th data-field="folio" data-width="100" data-sortable="true">FOLIO</th>
+                            <th data-field="comentario" data-width="100" data-sortable="true" data-tooltip="true">COMENTARIO
                             </th>
                             <th data-field="ruta_absoluta" data-width="20" data-formatter="ini.inicio.estudianteCV"
                                 data-sortable="true">ACCIONES</th>

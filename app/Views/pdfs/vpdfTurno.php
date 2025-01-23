@@ -61,31 +61,31 @@
         </div>
         <div class="textTurnado" style="position:absolute; margin-left: 9%; width:80%; height:18px;">
             <div style="padding-bottom: 5px;"><strong>Nombre del proyecto</strong></div>
-            <?= $datos->proyecto ?><br>
+            <?= $datos->proyecto ?><br><br>
         </div>
         <div class="textTurnado" style="position:absolute; margin-left: 9%;width:80%; height:18px; ">
             <div style="padding-bottom: 5px;"><strong>Descripción general del Proyecto</strong></div>
-            <?= $datos->descripcion ?><br>
+            <?= $datos->descripcion ?><br><br>
         </div>
         <div class="textTurnado" style="position:absolute; margin-left: 9%; width:80%; height:18px;">
             <div style="padding-bottom: 5px;"><strong> Beneficios esperados</strong></div>
-            <?= $datos->beneficios ?><br>
+            <?= $datos->beneficios ?><br><br>
         </div>
         <div class="textTurnado " style="position:absolute; margin-left: 9%; width:80%; height:18px; ">
             <div style="padding-bottom: 5px;"><strong>Lugar de realización del proyecto</strong></div>
-            <?= $datos->domicilio ?><br>
+            <?= $datos->domicilio ?><br><br>
         </div>
         <div class="textTurnado" style="position:absolute; margin-left: 9%; width:80%; height:18px;">
             <div style="padding-bottom: 5px;"><strong>Perfil requerido</strong></div>
-            <?= $licenciatura->dsc_licenciatura ?><br>
+            <?= $licenciatura->dsc_licenciatura ?><br><br>
         </div>
         <div class="textTurnado " style="position:absolute;margin-left: 9%; width:80%; height:18px; ">
             <div style="padding-bottom: 5px;"><strong>Conocimientos y/o habilidades</strong></div>
-            <?= $datos->conocimiento ?><br>
+            <?= $datos->conocimiento ?><br><br>
         </div>
         <div class="textTurnado " style="position:absolute;margin-left: 9%; width:80%; height:18px; ">
             <div style="padding-bottom: 5px;"><strong>Actividades a realizar<strong></div>
-            <?= $datos->actividad ?><br>
+            <?= $datos->actividad ?><br><br>
         </div>
         <div class="textTurnado" style="position:absolute; margin-left: 9%;width:80%; height:18px; ">
             <div style="padding-bottom: 5px;"><strong>Modalidad de prestación del servicio social
@@ -107,15 +107,14 @@
         </div>
         <div class="textList" style="position: absolute; margin-left: 9%; margin-top: 2%; width: 80%; height: 70px;">
             <span class="proxima textResumen">
-                Si te interesa participar en este proyecto da clic
+                Si te interesa participar sube tu cv
                 <a target="_blank"
-                    href="http://localhost/turnos/index.php/Login/index?doc=<?= $datos->id_dependencia ?>">aquí</a>
-                para registrarte.
+                    href="http://localhost/ssp/index.php/Login/index?doc=<?= $datos->id_dependencia ?>">aquí</a>.
             </span>
         </div>
       
-        <div style="position: absolute; margin-left: 40%; margin-top: 0.3%; width:150px; height:150px;">
-            <img src="<?= $filePath ?>" alt="Codigo QR" width="100px;" height="100px;" />
+        <div style="position: absolute; margin-left: 40%; margin-top: 0.3%; width:100px; height:100px;">
+            <img src="<?= $filePath ?>" alt="Codigo QR" width="70px;" height="70px;" />
         </div>
        
 

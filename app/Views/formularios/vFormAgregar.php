@@ -102,7 +102,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-6 position-relative" id="">
-                                    <label for="proyecto" class="form-label">PROYECTO</label><span style="color:red;">
+                                    <label for="proyecto" class="form-label">NOMBRE DEL PROYECTO</label><span
+                                        style="color:red;">
                                         *</span>
                                     <input type="text" autocomplete="off" class="form-control" id="proyecto"
                                         name="proyecto" placeholder="NOMBRE"
@@ -113,16 +114,40 @@
                                 <div class="mb-3 position-relative" id="">
                                     <label for="dias" class="form-label">DIAS POR SEMANA</label><span
                                         style="color:red;"> *</span>
-                                    <input type="text" autocomplete="off" class="form-control" id="dias" name="dias"
-                                        placeholder="DIAS" value="<?= ($edita == 1)?$practicante->dias:''?>">
+                                    <select class="form-control" id="dias" name="dias" data-placeholder="seleccione"
+                                        style="z-index:100;">
+                                        <option value="1"
+                                            <?= ($edita == 1 && $practicante->dias == 1) ? 'selected' : '' ?>>
+                                            1 DIA</option>
+                                        <option value="2"
+                                            <?= ($edita == 1 && $practicante->dias == 2) ? 'selected' : '' ?>>
+                                            2 DIAS</option>
+                                        <option value="3"
+                                            <?= ($edita == 1 && $practicante->dias == 3) ? 'selected' : '' ?>>
+                                            3 DIAS</option>
+                                        <option value="4"
+                                            <?= ($edita == 1 && $practicante->dias == 4) ? 'selected' : '' ?>>
+                                            4 DIAS</option>
+                                        <option value="4"
+                                            <?= ($edita == 1 && $practicante->dias == 4) ? 'selected' : '' ?>>
+                                            5 DIAS</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3 position-relative" id="">
-                                    <label for="hora" class="form-label">HORA POR SEMANA</label><span
+                                    <label for="hora" class="form-label">HORAS POR SEMANA</label><span
                                         style="color:red;"> *</span>
-                                    <input type="text" autocomplete="off" class="form-control" id="hora" name="hora"
-                                        placeholder="HORA" value="<?= ($edita == 1)?$practicante->hora:''?>">
+                                    <select class="form-control" id="hora" name="hora" data-placeholder="seleccione"
+                                        style="z-index:100;">
+                                        <?php for ($i = 1; $i <= 30; $i++): ?>
+                                        <option value="<?= $i ?>"
+                                            <?= ($edita == 1 && $practicante->hora == $i) ? 'selected' : '' ?>>
+                                            <?= $i ?> HORA<?= $i > 1 ? 'S' : '' ?>
+                                        </option>
+                                        <?php endfor; ?>
+                                    </select>
+
                                 </div>
                             </div>
 
@@ -149,7 +174,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-6 position-relative" id="">
-                                    <label for="actividad" class="form-label">ACTIVIDAD A REREALIZAR</label><span
+                                    <label for="actividad" class="form-label">ACTIVIDADES A REREALIZAR</label><span
                                         style="color:red;"> *</span>
                                     <textarea autocomplete="off" class="form-control" id="actividad" name="actividad"
                                         placeholder="ACTIVIDAD A REREALIZAR"><?= ($edita == 1)?$practicante->actividad:''?></textarea>
@@ -198,7 +223,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-6 position-relative" id="">
-                                    <label for="conocimiento" class="form-label">CONOCIMIENTO</label><span
+                                    <label for="conocimiento" class="form-label">CONOCIMIENTOS </label><span
                                         style="color:red;"> *</span>
                                     <textarea autocomplete="off" class="form-control" id="conocimiento"
                                         name="conocimiento"
@@ -207,11 +232,17 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-6 position-relative" id="">
-                                    <label for="numero_prac" class="form-label">NUMERO DE ESTUDIANTE</label><span
-                                        style="color:red;"> *</span>
-                                    <input type="number" autocomplete="off" class="form-control" id="numero_prac"
-                                        name="numero_prac" placeholder="PRACTICANTES"
-                                        value="<?= ($edita == 1)?$practicante->numero_prac:''?>">
+                                    <label for="numero_prac" class="form-label">CANTIDAD DE ESTUDIANTE REQUERIDOS EN EL
+                                        PROYECTO</label><span style="color:red;"> *</span>
+                                    <select class="form-control" id="numero_prac" name="numero_prac" data-placeholder="seleccione"
+                                        style="z-index:100;">
+                                        <?php for ($i = 1; $i <= 10; $i++): ?>
+                                        <option value="<?= $i ?>"
+                                            <?= ($edita == 1 && $practicante->numero_prac == $i) ? 'selected' : '' ?>>
+                                            <?= $i ?> ESTUDIANTE<?= $i > 1 ? 'S' : '' ?>
+                                        </option>
+                                        <?php endfor; ?>
+                                    </select>
                                 </div>
                             </div>
 
