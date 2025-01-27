@@ -136,6 +136,7 @@ class Login extends BaseController {
                 $session->set('logueado', 1);
                 $session->set('id_dependencia',$response->data[0]->id_dependencia);
                 $session->set('id_usuario',$response->data[0]->id_usuario);
+                $session->set('id_sexo',$response->data[0]->id_sexo);
                 $session->set('usuario',$response->data[0]->usuario);
                 $session->set('nombre_completo',$response->data[0]->nombre." ".$response->data[0]->primer_apellido." ".$response->data[0]->segundo_apellido);
                 $session->set('id_perfil',$response->data[0]->id_perfil);

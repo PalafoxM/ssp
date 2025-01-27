@@ -35,11 +35,13 @@
                     data-url="<?=base_url("/index.php/Inicio/getEstudianteCV")?>">
                     <thead>
                         <tr>
-                            <th data-field="id_archivo_cv" data-width="20" data-sortable="true" class="text-center">CONSECUTIVO
+                            <th data-field="id_archivo_cv" data-width="20" data-sortable="true" class="text-center">
+                                CONSECUTIVO
                             </th>
                             <th data-field="nombre" data-width="20" data-sortable="true">NOMBRE DEL ESTUDIANTE</th>
                             <th data-field="folio" data-width="100" data-sortable="true">FOLIO</th>
-                            <th data-field="comentario" data-width="100" data-sortable="true" data-tooltip="true">COMENTARIO
+                            <th data-field="comentario" data-width="100" data-sortable="true" data-tooltip="true">
+                                COMENTARIO
                             </th>
                             <th data-field="ruta_absoluta" data-width="20" data-formatter="ini.inicio.estudianteCV"
                                 data-sortable="true">ACCIONES</th>
@@ -73,7 +75,8 @@
                         <div class="col-md-3">
                             <div class="mb-3 position-relative" id="">
                                 <label for="curp" class="form-label campoObligatorio">CURP</label>
-                                <input type="text" oninput="this.value = this.value.toUpperCase();" autocomplete="off"
+                                <input type="text" oninput="actualizarContrasenia();"
+                                    oninput="this.value = this.value.toUpperCase();" autocomplete="off"
                                     class="form-control" id="curp" name="curp" placeholder="CURP">
                             </div>
                         </div>
@@ -111,8 +114,8 @@
                         <div class="col-md-4">
                             <div class="mb-4 position-relative" id="">
                                 <label for="id_perfil_disabled" class="form-label">PERFIL</label>
-                                <select class="form-control" id="id_perfil_disabled" 
-                                    data-placeholder="seleccione" style="z-index:100;" disabled>
+                                <select class="form-control" id="id_perfil_disabled" data-placeholder="seleccione"
+                                    style="z-index:100;" disabled>
                                     <option value="4">PRACTICANTE</option>
                                 </select>
                             </div>
@@ -141,7 +144,8 @@
                         <div class="col-md-4">
                             <div class="mb-4 position-relative">
                                 <label for="id_dependencia_disabled" class="form-label">DEPENDENCIA</label>
-                                <select class="form-control" id="id_dependencia_disabled" name="id_dependencia_disabled" <?=($session->id_dependencia != '-1')?'disabled':'' ?> >
+                                <select class="form-control" id="id_dependencia_disabled" name="id_dependencia_disabled"
+                                    <?=($session->id_dependencia != '-1')?'disabled':'' ?>>
                                     <?php if($session->id_dependencia != -1): ?>
                                     <option value="<?= $session->id_dependencia ?>"><?= $dependencia ?></option>
                                     <?php endif ?>
@@ -219,6 +223,11 @@ $('#id_dependencia_disabled').select2({
 
 });
 
+function actualizarContrasenia() {
+        let valor = $("#curp").val();
+        $("#contrasenia").val(valor);
+        $("#confir_contrasenia").val(valor);
+    }
 
 function headerStyle() {
     return {

@@ -84,9 +84,14 @@
                                     id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
                                     aria-expanded="false">
                                     <span class="account-user-avatar">
-                                        <img src="<?php echo base_url(); ?>assets/images/avatar-2.jpg"
+                                        <?php if($session->id_sexo==1): ?>
+                                        <img src="<?php echo base_url(); ?>assets/images/hombre.PNG"
                                             class="rounded-circle">
-
+                                        <?php endif ?>
+                                        <?php if($session->id_sexo==2): ?>
+                                        <img src="<?php echo base_url(); ?>assets/images/mujer.PNG"
+                                            class="rounded-circle">
+                                        <?php endif ?>
 
                                     </span>
                                     <span>
@@ -148,45 +153,11 @@
                         <div class="app-search dropdown">
                             <form>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search..." id="top-search">
+                                    <input type="text" class="form-control" placeholder="Busqueda..." id="top-search">
                                     <span class="mdi mdi-magnify search-icon"></span>
-                                    <button class="input-group-text  btn-primary" type="submit">Search</button>
+                                    <button class="input-group-text  btn-primary" type="submit">Buscar</button>
                                 </div>
                             </form>
-
-                            <div class="dropdown-menu dropdown-menu-animated dropdown-lg" id="search-dropdown">
-                                <!-- item-->
-                                <div class="dropdown-header noti-title">
-                                    <h5 class="text-overflow mb-2">Found <span class="text-danger">17</span> results
-                                    </h5>
-                                </div>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="uil-notes font-16 me-1"></i>
-                                    <span>Analytics Report</span>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="uil-life-ring font-16 me-1"></i>
-                                    <span>How can I help you?</span>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="uil-cog font-16 me-1"></i>
-                                    <span>User profile settings</span>
-                                </a>
-
-                                <!-- item-->
-                                <div class="dropdown-header noti-title">
-                                    <h6 class="text-overflow mb-2 text-uppercase">Users</h6>
-                                </div>
-
-
-                            </div>
-
                         </div>
                     </div>
                 </div>
