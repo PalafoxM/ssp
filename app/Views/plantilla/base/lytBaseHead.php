@@ -34,8 +34,6 @@
 
 </head>
 
-
-
 <body class="loading" data-layout="topnav"
     data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": true}'>
     <div class="wrapper">
@@ -191,7 +189,7 @@
                                         <a class="nav-link arrow-none"
                                             href="<?php echo base_url()?>index.php/Inicio/practicantes"
                                             id="topnav-components" aria-expanded="false">
-                                            <i class="uil-check me-1"></i>Lista de Proyectos
+                                            <i class="uil-check me-1"></i>Proyectos
                                         </a>
 
                                     </li>
@@ -201,12 +199,12 @@
                                         <a class="nav-link arrow-none"
                                             href="<?php echo base_url()?>index.php/Inicio/estudianteCV"
                                             id="topnav-components" aria-expanded="false">
-                                            <i class="uil-file me-1"></i>Lista Curriculum Vitae
+                                            <i class="uil-file me-1"></i>Curriculums
                                         </a>
                                     </li>
                                     <?php endif ?>
                                     <?php if($session->id_perfil == 4 ): ?>
-                                        
+
                                     <li class="nav-item">
                                         <a class="nav-link arrow-none"
                                             href="<?php echo base_url()?>index.php/Inicio/formulario_archivo"
@@ -229,7 +227,17 @@
                                         <a class="nav-link arrow-none"
                                             href="<?php echo base_url()?>index.php/Inicio/validarDocumento"
                                             id="topnav-components" aria-expanded="false">
-                                            <i class="dripicons-checklist me-1"></i>Validar Documentos
+                                            <i class="dripicons-checklist me-1"></i>Documentación expediente
+                                        </a>
+
+                                    </li>
+                                    <?php endif ?>
+                                    <?php if($session->id_perfil != 4): ?>
+                                    <li class="nav-item">
+                                        <a class="nav-link arrow-none"
+                                            href="<?php echo base_url()?>index.php/Inicio/estudianteResgistrado"
+                                            id="topnav-components" aria-expanded="false">
+                                            <i class="mdi mdi-account-multiple me-1"></i>Estudiantes registrados
                                         </a>
 
                                     </li>
@@ -239,7 +247,7 @@
                                         <a class="nav-link arrow-none"
                                             href="<?php echo base_url()?>index.php/Inicio/reportes"
                                             id="topnav-components" aria-expanded="false">
-                                            <i class="uil-file me-1"></i>Reportes Mensuales
+                                            <i class="mdi mdi-animation me-1"></i>Reportes de actividades mensuales
                                         </a>
 
                                     </li>
@@ -285,8 +293,9 @@
                                     <div class="mb-4 position-relative" id="">
                                         <label for="segundo_apellido2" class="form-label">SEGUNDO
                                             APELLIDO</label>
-                                        <input type="text" autocomplete="off" class="form-control" id="segundo_apellido2"
-                                            name="segundo_apellido2" placeholder="SEGUNDO APELLIDO" disabled>
+                                        <input type="text" autocomplete="off" class="form-control"
+                                            id="segundo_apellido2" name="segundo_apellido2"
+                                            placeholder="SEGUNDO APELLIDO" disabled>
                                     </div>
                                 </div>
 
@@ -334,6 +343,22 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
             <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Obtener la URL actual
+                const currentUrl = window.location.href;
+
+                // Seleccionar todos los enlaces del menú
+                const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+
+                // Recorrer los enlaces y comparar las URLs
+                navLinks.forEach(link => {
+                    if (link.href === currentUrl) {
+                        link.classList.add("active"); // Agregar clase "active" al enlace
+                        link.parentElement.classList.add("active"); // Agregar clase "active" al <li>
+                    }
+                });
+            });
+
             function cambio_contrasenia() {
 
                 $.ajax({
@@ -346,7 +371,7 @@
                     success: function(data) {
                         if (data) {
                             console.log(data);
-           
+
                             $('#editar2').val(1);
                             $('#nombre2').val(data.nombre);
                             $('#primer_apellido2').val(data.primer_apellido);
@@ -384,7 +409,7 @@
                             Swal.fire("Error", data.respuesta, "error");
                         } else {
                             // Mensaje de éxito
-                            Swal.fire("¡Hecho!", data.respuesta, "success");
+                            Swal.fire("Éxito", data.respuesta, "success");
                             window.location.href = `${base_url}index.php/Login/cerrar`;
                         }
                         $('#btn_guardar2').show();

@@ -53,7 +53,7 @@ ini.inicio = (function () {
             Swal.fire({
                 title: "<strong>Subir Nuevo Archivo</strong>",
                 icon: "info",
-                html: `<input type='file' id="fileinput" class="form-control" >`,
+                html: `<input type='file'id="fileinput" class="form-control" >`,
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
@@ -89,7 +89,7 @@ ini.inicio = (function () {
                                 success: function(response) {
                                     console.log(response);
                                     if (!response.error) {
-                                        Swal.fire("Genial", "El archivo se cargó correctamente.", "success");
+                                        Swal.fire("Éxito", "El archivo se cargó correctamente.", "success");
                                         $('#documentoPracticante').bootstrapTable('refresh');
                                         
                                     } else {
@@ -173,12 +173,173 @@ ini.inicio = (function () {
             "</div>";
            return Botones;
         },
+        formattMeses: function(value, row) {
+            // Validar si value es undefined, null o vacío
+            if (!value) return "";
+        
+            // Convertir value a número
+            value = parseInt(value);
+        
+            // Objeto de mapeo para los meses
+            const meses = {
+                1: { nombre: "ENERO", estilo: "background:#baddfd;color:#1D438A;" },
+                2: { nombre: "FEBRERO", estilo: "background:#baddfd;color:#1D438A;" },
+                3: { nombre: "MARZO", estilo: "background:#baddfd;color:#1D438A;" },
+                4: { nombre: "ABRIL", estilo: "background:#baddfd;color:#1D438A;" },
+                5: { nombre: "MAYO", estilo: "background:#baddfd;color:#1D438A;" },
+                6: { nombre: "JUNIO", estilo: "background:#baddfd;color:#1D438A;" },
+                7: { nombre: "JULIO", estilo: "background:#baddfd;color:#1D438A;" },
+                8: { nombre: "AGOSTO", estilo: "background:#baddfd;color:#1D438A;" },
+                9: { nombre: "SEPTIEMBRE", estilo: "background:#baddfd;color:#1D438A;" },
+                10: { nombre: "OCTUBRE", estilo: "background:#baddfd;color:#1D438A;" },
+                11: { nombre: "NOVIEMBRE", estilo: "background:#baddfd;color:#1D438A;" },
+                12: { nombre: "DICIEMBRE", estilo: "" }
+            };
+        
+            // Obtener el mes correspondiente
+            const mes = meses[value];
+        
+            // Si el mes no existe, retornar un mensaje de error
+            if (!mes) return '<span>Mes no válido</span>';
+        
+            // Retornar el span con el nombre y estilo del mes
+            return `<span style="${mes.estilo}" data-toggle="tooltip" title="${mes.nombre}">${mes.nombre}</span>`;
+        },
         reportesMensuales: function(value,row)
         {
             return `<a href=${base_url+row.ruta_relativa} target="_blank" title='Ver' 
                                 class='btn btn-info'>
                             <i class='mdi mdi-file-pdf'></i>
+                        </a>
+                        <a onclick="ini.inicio.editarReporte(${value});" target="_blank" title='Ver' 
+                                class='btn btn-warning'>
+                            <i class='mdi mdi-border-color'></i>
+                        </a>
+                        <a onclick="ini.inicio.eliminarReporte(${value});" target="_blank" title='Ver' 
+                                class='btn btn-danger'>
+                            <i class='mdi mdi-delete'></i>
                         </a>`;
+        },
+        eliminarReporte: function(id)
+        {
+            Swal.fire({
+                title: "Se eliminara el reporte",
+                text: "Esta seguro de eliminar",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: base_url + "index.php/Usuario/eliminarReporte",
+                        dataType: "json",
+                        data:{id_reporte:id},
+                        success: function(data) {
+                            if (data) {
+                                console.log(data);
+                                $('#tableReportes').bootstrapTable('refresh');
+                                Swal.fire({
+                                    title: "Éxito",
+                                    text: "Se elimino correctamente",
+                                    icon: "success"
+                                  });
+                            } else {
+                                Swal.fire("info", "No se encontraron datos del usuario.", "info");
+                            }
+                        },
+                        error: function() {
+                            Swal.fire("info", "No se encontraron datos del usuario.", "info");
+                        }
+                    });
+               
+                }
+              });
+        },
+        editarReporte: function(id_reporte){
+            Swal.fire({
+                title: "<strong>Subir Nuevo Reporte Mensual</strong>",
+                icon: "info",
+                html: `
+                    <select id="mes" class="form-control mb-3">
+                        <option value="">Seleccione un mes</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    <input type='file' id="reporte" class="form-control" accept=".pdf">
+                `,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "Guardar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let fileInput = $('#reporte')[0].files[0];
+                    let mesSeleccionado = $('#mes').val(); // Obtener el valor del mes seleccionado
+        
+                    if (!fileInput) {
+                        Swal.fire("Error", "Es requerido el archivo PDF", "error");
+                        return;
+                    }
+        
+                    if (!mesSeleccionado) {
+                        Swal.fire("Error", "Es requerido seleccionar un mes", "error");
+                        return;
+                    }
+        
+                    Swal.fire({
+                        title: "Atención",
+                        text: "Se enviará el reporte mensual, ¿Desea proceder?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Proceder"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let formData = new FormData();
+                            formData.append('file', fileInput);
+                            formData.append('id_reporte', id_reporte);
+                            formData.append('mes', mesSeleccionado); // Agregar el mes seleccionado al FormData
+        
+                            $.ajax({
+                                url: base_url + "index.php/Usuario/editarReporte",
+                                type: 'POST',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    console.log(response);
+                                    if (!response.error) {
+                                        Swal.fire("Éxito", response.respuesta, "success");
+                                        $('#tableReportes').bootstrapTable('refresh');
+                                    } else {
+                                        Swal.fire("Error", response.respuesta, "error");
+                                        console.log("Error: " + response.error);
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.log(error);
+                                    Swal.fire("Error", "Favor de llamar al Administrador", "error");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         },
         accionesPracticanteDocumento: function(value,row)
         {
@@ -190,7 +351,15 @@ ini.inicio = (function () {
                                 class='btn btn-info' 
                                 onclick='ini.inicio.getDocumento(${row.id_usuario})'>
                             <i class='mdi mdi-file-pdf'></i>
-                        </button>`;
+                        </button></div>`;
+  
+        return Botones;
+        },
+        accionesPracticanteDocumento2: function(value,row)
+        {
+            let Botones = `<div class='contenedor'>`;
+            
+           
             Botones += (row.visible == '1')? `
                         <button type='button' title='Subir reporte' 
                                 class='btn btn-warning' 
@@ -207,12 +376,28 @@ ini.inicio = (function () {
            Botones += `</div>`;
         return Botones;
         },
-        subirReporte: function(id)
-        {
+        subirReporte: function(id) {
             Swal.fire({
                 title: "<strong>Subir Reporte Mensual</strong>",
                 icon: "info",
-                html: `<input type='file' id="reporte" class="form-control" accept=".pdf" >`,
+                html: `
+                    <select id="mes" class="form-control mb-3">
+                        <option value="">Seleccione un mes</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    <input type='file' id="reporte" class="form-control" accept=".pdf">
+                `,
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
@@ -221,11 +406,18 @@ ini.inicio = (function () {
             }).then((result) => {
                 if (result.isConfirmed) {
                     let fileInput = $('#reporte')[0].files[0];
-
+                    let mesSeleccionado = $('#mes').val(); // Obtener el valor del mes seleccionado
+        
                     if (!fileInput) {
                         Swal.fire("Error", "Es requerido el archivo PDF", "error");
                         return;
                     }
+        
+                    if (!mesSeleccionado) {
+                        Swal.fire("Error", "Es requerido seleccionar un mes", "error");
+                        return;
+                    }
+        
                     Swal.fire({
                         title: "Atención",
                         text: "Se enviará el reporte mensual, ¿Desea proceder?",
@@ -239,6 +431,8 @@ ini.inicio = (function () {
                             let formData = new FormData();
                             formData.append('file', fileInput);
                             formData.append('id_practicante', id);
+                            formData.append('mes', mesSeleccionado); // Agregar el mes seleccionado al FormData
+        
                             $.ajax({
                                 url: base_url + "index.php/Usuario/reporteMensual",
                                 type: 'POST',
@@ -248,11 +442,9 @@ ini.inicio = (function () {
                                 success: function(response) {
                                     console.log(response);
                                     if (!response.error) {
-                                        Swal.fire("Genial", response.respuesta  , "success");
+                                        Swal.fire("Éxito", response.respuesta, "success");
                                         window.location.href = `${base_url}index.php/Inicio/reportes`;
-                                        
                                         $('#documentoPracticante').bootstrapTable('refresh');
-                                        
                                     } else {
                                         Swal.fire("Error", response.respuesta, "error");
                                         console.log("Error: " + response.error);
@@ -271,11 +463,20 @@ ini.inicio = (function () {
         accionesEstatusDocumento: function(value,row)
         {
             let Botones = `<div class='contenedor'>`;
-            if (row.visible == '1') {
-                Botones += '<span class="badge bg-success" title="ACTIVO">ACTIVO</span>';
-            }else{
-                Botones += '<span class="badge bg-danger" title="BAJA">BAJA</span>';
+            switch(value){
+                case 'VALIDADO':
+                    Botones += `<span class="badge bg-success" title="${value}">${value}</span>`;
+                    break;
+                case 'RECHAZADO':
+                    Botones += `<span class="badge bg-danger" title="${value}">${value}</span>`;
+                    break;
+                case 'PENDIENTE':
+                    Botones += `<span class="badge bg-info" title="${value}">${value}</span>`;
+                    break;
+
             }
+           
+            Botones += '</div>';
             return Botones;
         },
         eliminarDocumento: function(id)
@@ -300,7 +501,7 @@ ini.inicio = (function () {
                                 console.log(data);
                                 $('#tableUsuario').bootstrapTable('refresh');
                                 Swal.fire({
-                                    title: "Exito",
+                                    title: "Éxito",
                                     text: "Se elimino correctamente",
                                     icon: "success"
                                   });
@@ -346,17 +547,17 @@ ini.inicio = (function () {
                                 let validationIcon = '';
                                 if (doc.valido == 0) {
                                     validationIcon = `
-                                        <a data-bs-dismiss="modal" onclick="ini.inicio.validarDocumento(${doc.id_documento})" style="margin-left: 10px; cursor:pointer;" title="Pendiente de validación">
+                                        <a data-bs-dismiss="modal" onclick="ini.inicio.validarDocumento(${doc.id_documento}, ${id_usuario})" style="margin-left: 10px; cursor:pointer;" title="Pendiente de validación">
                                             <i class="mdi mdi-help" style="color: grey; font-size: 1.2rem;"></i>
                                         </a>`;
                                 } else if (doc.valido == 1) {
                                     validationIcon = `
-                                        <a data-bs-dismiss="modal" onclick="ini.inicio.validarDocumento(${doc.id_documento})" style="margin-left: 10px;" title="Documento válido">
+                                        <a data-bs-dismiss="modal" onclick="ini.inicio.validarDocumento(${doc.id_documento}, ${id_usuario})" style="margin-left: 10px;" title="Documento válido">
                                             <i class="mdi mdi-check" style="color: green; font-size: 1.2rem;cursor:pointer;"></i>
                                         </a>`;
                                 } else if (doc.valido == 2) {
                                     validationIcon = `
-                                        <a data-bs-dismiss="modal" onclick="ini.inicio.validarDocumento(${doc.id_documento})" style="margin-left: 10px;" title="Documento inválido">
+                                        <a data-bs-dismiss="modal" onclick="ini.inicio.validarDocumento(${doc.id_documento}, ${id_usuario})" style="margin-left: 10px;" title="Documento inválido">
                                             <i class="mdi mdi-close-thick" style="color: red; font-size: 1.2rem;cursor:pointer;"></i>
                                         </a>`;
                                 }
@@ -379,7 +580,7 @@ ini.inicio = (function () {
                 },
             });
         },
-        validarDocumento: function(id_documento){
+        validarDocumento: function(id_documento, id_usuario){
             var myModal = new bootstrap.Modal(document.getElementById('bs-example-modal-lg'));
             myModal.hide();
             Swal.fire({
@@ -392,11 +593,11 @@ ini.inicio = (function () {
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    ini.inicio.cambioEstatusDocumento(1, id_documento);
+                    ini.inicio.cambioEstatusDocumento(1, id_documento, id_usuario);
                   //Swal.fire("Saved!", "", "success");
                 } else if (result.isDenied) {
                     Swal.close(); // Cierra el primer modal
-                    ini.inicio.cambioEstatusDocumento(2, id_documento);
+                    ini.inicio.cambioEstatusDocumento(2, id_documento, id_usuario);
                
                 }
               });
@@ -414,13 +615,13 @@ ini.inicio = (function () {
 
         switch (row.valido) {
             case '1':
-                Botones += "<span title='Aprobado' style='color:green;'>Aprobado</span>";
+                Botones += "<span title='Aprobado' style='color:green;'>VALIDADO</span>";
                 break;
             case '2':
-                Botones += "<span title='Aprobado' style='color:red;'>Rechazado</span>";
+                Botones += "<span title='Aprobado' style='color:red;'>RECHAZADO</span>";
                 break;
             case '0':
-                Botones += "<span title='Aprobado' style='color:grey;'>Pendiente</span>";
+                Botones += "<span title='Aprobado' style='color:grey;'>PENDIENTE</span>";
                 break;
           
         }
@@ -428,7 +629,7 @@ ini.inicio = (function () {
         Botones += "</div>";
         return Botones;
         },
-        cambioEstatusDocumento: function(id, id_documento)
+        cambioEstatusDocumento: function(id, id_documento, id_usuario)
         {
          if(id == 2){
 
@@ -457,12 +658,16 @@ ini.inicio = (function () {
                     success: function(data) {
                         console.log(data);
                         if (data) {
-                            Swal.fire("¡Hecho!", "Se guardo el comentario correctamente.", "success")
+                            ini.inicio.getDocumento(id_usuario);
+                            $('#tableUsuario').bootstrapTable('refresh');
+                            var myModal = new bootstrap.Modal(document.getElementById('bs-example-modal-lg'));
+                            myModal.show();
+                           // Swal.fire("Éxito", "Se guardo el comentario correctamente.", "success")
                            
                         } else {
                             Swal.fire("Error", "Error al guardar comentario.", "error");
                         }
-                        $('#table').bootstrapTable('refresh');
+                       
                     },
                     error: function() {
                         Swal.fire("Error", "Error al guardar comentario.", "error")
@@ -482,8 +687,12 @@ ini.inicio = (function () {
                         Swal.fire("Atención", response.respuesta, "warning");
                         return false;
                     }
-                    Swal.fire("Correcto", "Registro exitoso", "success");
-                    $('#table').bootstrapTable('refresh');
+                  //  Swal.fire("Éxito", "Registro terminado", "success");
+                  ini.inicio.getDocumento(id_usuario);
+                  $('#tableUsuario').bootstrapTable('refresh');
+                  var myModal = new bootstrap.Modal(document.getElementById('bs-example-modal-lg'));
+                  myModal.show()
+                   
                        // window.location.href = `${base_url}index.php/Usuario`;
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -558,7 +767,7 @@ ini.inicio = (function () {
                       Swal.fire("Atención", response.respuesta, "warning");
                       return false;
                   }
-                  Swal.fire("Correcto", "Registro exitoso", "success");
+                  Swal.fire("Éxito", "Registro Guardado Correctamente", "success");
                   $('#table').bootstrapTable('refresh');
                      // window.location.href = `${base_url}index.php/Usuario`;
               },
@@ -569,7 +778,7 @@ ini.inicio = (function () {
         },
         comentario: function(id_archivo_cv) {
             Swal.fire({
-                title: "<strong>Agregue un comentario</strong>",
+                title: "<strong>Agregar Comentario</strong>",
                 icon: "info",
                 html: `<textarea id="comentarioInput" class="form-control" placeholder="Escriba su comentario aquí"></textarea>`,
                 showCloseButton: true,
@@ -663,7 +872,7 @@ ini.inicio = (function () {
                                 console.log(data);
                                 $('#table').bootstrapTable('refresh');
                                 Swal.fire({
-                                    title: "Exito",
+                                    title: "Éxito",
                                     text: "Se elimino correctamente",
                                     icon: "success"
                                   });
@@ -701,7 +910,7 @@ ini.inicio = (function () {
                                 console.log(data);
                                 $('#table').bootstrapTable('refresh');
                                 Swal.fire({
-                                    title: "Exito",
+                                    title: "Éxito",
                                     text: "Se elimino correctamente",
                                     icon: "success"
                                   });
@@ -750,7 +959,7 @@ ini.inicio = (function () {
                                 Swal.fire("Atención", response.respuesta, "warning");
                                 return false;
                             }
-                            Swal.fire("Correcto", "Registro exitoso", "success");
+                            Swal.fire("Éxito", "Registro Terminado", "success");
                                 window.location.href = `${base_url}index.php/Usuario`;
                         },
                         error: function (jqXHR, textStatus, errorThrown) {

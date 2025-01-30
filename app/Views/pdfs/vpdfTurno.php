@@ -111,12 +111,13 @@
                 <a target="_blank"
                     href="http://localhost/ssp/index.php/Login/index?doc=<?= $datos->id_dependencia ?>">aquí</a>.
             </span>
+            <div style="position: absolute; margin-left: 40%; margin-top: 0.3%; width:100px; height:100px;">
+                <img src="<?= $filePath ?>" alt="Codigo QR" width="70px;" height="70px;" />
+            </div>
         </div>
-      
-        <div style="position: absolute; margin-left: 40%; margin-top: 0.3%; width:100px; height:100px;">
-            <img src="<?= $filePath ?>" alt="Codigo QR" width="70px;" height="70px;" />
-        </div>
-       
+
+
+
 
     </div>
 </body>

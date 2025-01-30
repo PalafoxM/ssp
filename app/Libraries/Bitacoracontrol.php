@@ -32,7 +32,7 @@ class Bitacoracontrol {
     }
     
     /**
-     * Funcion que guarda en bitacora el desglose de un insert que ya se ejecuto y resulto exitoso.
+     * Funcion que guarda en bitacora el desglose de un insert que ya se ejecuto y resulto Éxitoso.
      * Desglosa cada campo en una fila de bitacora para tener todo el respaldo de lo que se guardo
      * @param array $arreglo El arreglo que contiene los datos que se insertaron
      * @param string $controladorCI El nombre del controlador de CodeIgniter que ejecuto la insercion
@@ -51,7 +51,7 @@ class Bitacoracontrol {
     }
     
     /**
-     * Funcion que guarda en bitacora el desglose de un update que ya se ejecuto y resulto exitoso.
+     * Funcion que guarda en bitacora el desglose de un update que ya se ejecuto y resulto Éxitoso.
      * Desglosa cada campo en una fila de bitacora para tener todo el respaldo de lo que se guardo
      * @param type $arregloNuevo El arreglo que contiene los datos que se actualizaron
      * @param type $arregloViejo El arreglo que contiene los datos antes de que se actualizaran

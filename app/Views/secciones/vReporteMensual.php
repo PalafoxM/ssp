@@ -29,20 +29,20 @@
                         </div>
                     </div><!-- end col-->
                 </div>
-                <table id="table" data-locale="es-MX" data-toolbar="#toolbar" data-toggle="table" data-search="true"
+                <table id="tableReportes" data-locale="es-MX" data-toolbar="#toolbar" data-toggle="table" data-search="true"
                     data-search-highlight="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]"
                     data-sortable="true" data-show-refresh="true" data-header-style="headerStyle"
                     data-url="<?=base_url("/index.php/Inicio/getReportesMensual")?>">
                     <thead>
                         <tr>
-                            <th data-field="id_reporte" data-width="20" data-sortable="true" class="text-center">CONSECUTIVO
+                            <th data-field="mes" data-formatter="ini.inicio.formattMeses" data-width="20" data-sortable="true" class="text-center">MES
                             </th>
-                            <th data-field="dsc_dependencias" data-width="20" data-sortable="true">DEPENDENCIA</th>
-                            <th data-field="nombre_completo" data-width="100" data-sortable="true">NOMBRE</th>
-                            <th data-field="curp" data-width="100" data-sortable="true" data-tooltip="true">CURP
+                            <th data-field="dsc_dependencias" data-width="20" data-sortable="true" class="text-center">DEPENDENCIA</th>
+                            <th data-field="nombre_completo" data-width="100" data-sortable="true" class="text-center">NOMBRE</th>
+                            <th data-field="curp" data-width="100" data-sortable="true" data-tooltip="true" class="text-center">CURP
                             </th>
-                            <th data-field="ruta_absoluta" data-width="20" data-formatter="ini.inicio.reportesMensuales"
-                                data-sortable="true">REPORTE</th>
+                            <th data-field="id_reporte" data-width="20" data-formatter="ini.inicio.reportesMensuales"
+                                data-sortable="true" class="text-center">ACCIONES</th>
                         </tr>
                     </thead>
                 </table>

@@ -61,7 +61,7 @@ jgob.repositorio = (function () {
                                 Swal.fire("Atención", response.respuesta, "warning");
                                 return false;
                             }                                               
-                            Toast.fire({icon: "success", title:"Comentario eliminado exitosamente"});
+                            Toast.fire({icon: "success", title:"Comentario eliminado Éxitosamente"});
                             $("#table").bootstrapTable('refresh');                     
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -108,7 +108,7 @@ jgob.repositorio = (function () {
                         return false;
                     }                          
                     $("#comentario").val("")                     
-                    Toast.fire({icon: "success", title:"Comentario guardado exitosamente"});               
+                    Toast.fire({icon: "success", title:"Comentario guardado Éxitosamente"});               
                     $("#table").bootstrapTable('refresh');                     
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -249,7 +249,7 @@ jgob.repositorio = (function () {
                                 Swal.fire("Atención", response.respuesta, "warning");
                                 return false;
                             }                                               
-                            Toast.fire({icon: "success", title:"Registro eliminado exitosamente"});
+                            Toast.fire({icon: "success", title:"Registro eliminado Éxitosamente"});
                             window.location.reload();                 
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -303,7 +303,7 @@ jgob.repositorio = (function () {
                         Swal.fire("Atención", response.respuesta, "warning");
                         return false;
                     }                                               
-                    Toast.fire({icon: "success", title:"Registro editado exitosamente"});
+                    Toast.fire({icon: "success", title:"Registro editado Éxitosamente"});
                     window.location.reload();                 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

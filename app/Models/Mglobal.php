@@ -58,7 +58,7 @@ class Mglobal extends Model {
             $response->query = $this->db->getLastQuery()->getQuery();
             $response->data = $query;
             $response->error = false;
-            $response->respuesta = empty($query) ? 'No se encontraron resultados que coincidan con la busqueda':'Consulta exitosa';
+            $response->respuesta = empty($query) ? 'No se encontraron resultados que coincidan con la busqueda':'Consulta Éxitosa';
             return $response;
         }
 
@@ -119,7 +119,7 @@ class Mglobal extends Model {
             return $response;    
         }
         $response->error = false;
-        $response->respuesta = 'Consulta exitosa';
+        $response->respuesta = 'Consulta Éxitosa';
         return $response;
     }
 

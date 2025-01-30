@@ -158,12 +158,77 @@ class Inicio extends BaseController {
     {
         $session = \Config\Services::session();
         $principal = new Mglobal;
-        
-
-        $dataDB = ( $session->get('id_perfil') == 1 || $session->get('id_perfil') == '2')?array('tabla' => 'usuario', 'where' => ['id_perfil' => 4]):
-        array('tabla' => 'usuario', 'where' => ['id_dependencia' =>  $session->id_dependencia,'id_perfil' => 4]);  
+    
+        $dataDB = ($session->get('id_perfil') == 1 || $session->get('id_perfil') == '2') 
+            ? ['tabla' => 'vw_usuario', 'where' => ['id_perfil' => 4]]
+            : ['tabla' => 'vw_usuario', 'where' => ['id_dependencia' =>  $session->id_dependencia, 'id_perfil' => 4]];
+    
+        $response = $principal->getTabla($dataDB);
+    
+        if (isset($response->data) && !empty($response->data)) {
+            foreach ($response->data as $key => $r) {
+                $doc = $principal->getTabla(['tabla' => 'documento', 'where' => ['id_usuario' => $r->id_usuario]]);
+                if (isset($doc->data) && !empty($doc->data)) {
+                    $estadoDocumentacion = "VALIDADO"; // Asumimos validado inicialmente
+    
+                    foreach ($doc->data as $d) {
+                        if ($d->valido == '2') {
+                            $estadoDocumentacion = "RECHAZADO";
+                            break;
+                        } elseif ($d->valido == '0' && $estadoDocumentacion != "RECHAZADO") {
+                            $estadoDocumentacion = "PENDIENTE";
+                        }
+                    }
+                    $response->data[$key]->documentacion = $estadoDocumentacion;
+                } else {
+                    $response->data[$key]->documentacion = "PENDIENTE";
+                }
+            }
+    
+            // Filtrar solo los practicantes con documentación "VALIDADO"
+            $response->data = array_values(array_filter($response->data, function ($practicante) {
+                return $practicante->documentacion === "VALIDADO";
+            }));
+        }
+    
+        return $this->respond($response->data);
+    }    
+    public function getPracticantesDocumento2()
+    {
+        $session = \Config\Services::session();
+        $principal = new Mglobal;
+    
+        $dataDB = ($session->get('id_perfil') == 1 || $session->get('id_perfil') == '2') 
+            ? array('tabla' => 'vw_usuario', 'where' => ['id_perfil' => 4])
+            : array('tabla' => 'vw_usuario', 'where' => ['id_dependencia' => $session->id_dependencia, 'id_perfil' => 4]);  
+    
         $response = $principal->getTabla($dataDB); 
-         return $this->respond($response->data);
+    
+        if (isset($response->data) && !empty($response->data)) {
+            $i = 0;
+            foreach ($response->data as $r) {
+                $doc = $principal->getTabla(['tabla' => 'documento', 'where' => ['id_usuario' => $r->id_usuario]]);
+                if (isset($doc->data) && !empty($doc->data)) {
+                    $estadoDocumentacion = "VALIDADO"; // Asumimos que todo está validado inicialmente
+    
+                    foreach ($doc->data as $d) {
+                        if ($d->valido == '2') {
+                            $estadoDocumentacion = "RECHAZADO";
+                            break; // Si hay al menos un documento rechazado, el estado general es "RECHAZADO"
+                        } elseif ($d->valido == '0' && $estadoDocumentacion != "RECHAZADO") {
+                            $estadoDocumentacion = "PENDIENTE"; // Si hay al menos un documento pendiente, el estado general es "PENDIENTE"
+                        }
+                    }
+    
+                    $response->data[$i]->documentacion = $estadoDocumentacion;
+                } else {
+                    $response->data[$i]->documentacion = "PENDIENTE"; // Si no hay documentos, se considera pendiente
+                }
+                $i++;
+            }
+        }
+    
+        return $this->respond($response->data);
     }
     public function getPracticantes()
     {
@@ -230,6 +295,24 @@ class Inicio extends BaseController {
         $data['scripts'] = array('principal','inicio');
         $data['edita']   = 0;
         $data['contentView'] = 'secciones/vPracticantesDocumento';                
+        $this->_renderView($data);
+    }
+    public function estudianteResgistrado()
+    {
+        $session = \Config\Services::session();
+        $principal = new Mglobal;
+        if($session->id_perfil == '1' || $session->id_perfil == '2' ){
+            $usuario = $principal->getTabla(['tabla' => 'usuario', 'where' =>['visible' => 1,'id_perfil' => 4]]);
+            $data['usuario'] = $usuario->data; 
+        }                      
+        if($session->id_perfil == 3){
+            $usuario = $principal->getTabla(['tabla' => 'usuario', 'where' =>['visible' => 1, 'id_dependencia' =>  $session->id_dependencia, 'id_perfil' => 4]]);
+            $data['usuario'] = $usuario->data; 
+        }   
+     
+        $data['scripts'] = array('principal','inicio');
+        $data['edita']   = 0;
+        $data['contentView'] = 'secciones/vEstudianteResgistrado';                
         $this->_renderView($data);
     }
     public function estudianteCV()

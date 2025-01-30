@@ -116,7 +116,7 @@ function uploadCSV() {
                 success: function(response) {
                     console.log(response);
                     if (!response.error) {
-                        Swal.fire("Carga correcta", "Se te contactara en 5 dias habiles, via correo electronico", "success");
+                        Swal.fire("Carga correcta", "Te pedimos que estés atento al correo electrónico que registraste en tu curriculum para darte noticias del proceso.", "success");
                     } else {
                         Swal.fire("Error", "Hubo un problema al procesar el archivo.", "error");
                         console.log("Error: " + response.error);

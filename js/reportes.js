@@ -139,7 +139,7 @@ ini.reportes = (function () {
                             Swal.fire("Atención", response.respuesta, "warning");
                             return false;
                         }
-                        Swal.fire("Correcto", "Registro exitoso", "success");
+                        Swal.fire("Correcto", "Registro Éxitoso", "success");
                         window.location.href = `${base_url}index.php/Opciones`;
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -182,7 +182,7 @@ ini.reportes = (function () {
                                 Swal.fire("Atención", response.respuesta, "warning");
                                 return false;
                             }
-                            Swal.fire("Correcto", "Registro eliminado con exito", "success");
+                            Swal.fire("Correcto", "Registro eliminado con Éxito", "success");
                             window.location.href = `${base_url}index.php/opciones`;
                         },
                         error: function (jqXHR, textStatus, errorThrown) {

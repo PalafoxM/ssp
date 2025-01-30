@@ -258,16 +258,16 @@ class Usuario extends BaseController {
         
         foreach ($data as $d) {
             var_dump($d); // Verifica el array procesado
-            var_dump($d['NOMBRE']);
-            var_dump((int)$d['USUARIO_ID']); // Convertir el valor a entero
-            if (isset($d['USUARIO_ID']) && !empty($d['USUARIO_ID'])) {
+            var_dump($d['NOMBRE COMPLETO PRACTICANTE']);
+            var_dump((int)$d['ID']); // Convertir el valor a entero
+            if (isset($d['ID']) && !empty($d['ID'])) {
                 $datos = [
                     'secuencial' => $d['SECUENCIAL'],
                 ];
                 $dataConfig = [
                     "tabla"        => "usuario",
                     "editar"       => true,
-                    "idEditar"     => ["id_usuario" => (int)$d['USUARIO_ID']]
+                    "idEditar"     => ["id_usuario" => (int)$d['ID']]
                 ];
                 $dataBitacora = ['id_user' => 7, 'script' => 'Agregar.php/guardaArchivo'];
                 $result = $this->globals->saveTabla($datos, $dataConfig, $dataBitacora);
@@ -282,6 +282,76 @@ class Usuario extends BaseController {
         
         return $response;
     }
+    public function eliminarReporte(){
+        $session = \Config\Services::session();
+        $response = new \stdClass();
+        $globals = new Mglobal;
+        $response->error = true;
+        $response->respuesta = 'Error| Error al eliminar Reporte';
+        $id_reporte     = $this->request->getPost('id_reporte');  
+        
+         $dataConfig = [
+             "tabla"        => "reportes",
+             "editar"       => true,
+             'idEditar'     =>['id_reporte' => $id_reporte]
+         ];
+         $dataBitacora = ['id_user' => $session->id_usuario, 'script' => 'Agregar.php/guardaArchivo'];
+    
+         $result = $globals->saveTabla(['visible'=>0], $dataConfig, $dataBitacora);
+         if(!$result->error){
+             $response->error     = false;
+             $response->respuesta = $result->respuesta;
+         }
+         
+        return $this->respond($response);
+    }
+    public function editarReporte(){
+        $session = \Config\Services::session();
+        $response = new \stdClass();
+        $globals = new Mglobal;
+        $response->error = true;
+        $response->respuesta = 'Error| Error al subir Reporte';
+                $file           = $this->request->getFile('file');
+                $id_reporte     = $this->request->getPost('id_reporte');
+                $mes            = $this->request->getPost('mes');
+   
+                if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
+                    $response->error = true;
+                    $response->respuesta = 'El archivo debe ser un PDF válido';
+                    return $this->response->setJSON($response);
+                }
+        
+                // Guardar archivo
+                $newName = $file->getRandomName(); // Genera un nombre único
+                $originalName = $file->getClientName();
+                $size = $file->getSize();
+                $mimeType = $file->getMimeType();
+    
+                $datos = [
+                    'tamanio'       => $size,
+                    'tipo'          => $mimeType,
+                    'mes'           => $mes,
+                    'ruta_absoluta' => WRITEPATH . 'assets/pdf/practicante/' . $newName,
+                    'ruta_relativa' => 'assets/pdf/practicante/' . $newName,
+                   
+                ];
+        
+                $dataConfig = [
+                    "tabla"        => "reportes",
+                    "editar"       => true,
+                    'idEditar'     =>['id_reporte' => $id_reporte]
+                ];
+                $dataBitacora = ['id_user' => 7, 'script' => 'Agregar.php/guardaArchivo'];
+           
+                $result = $globals->saveTabla($datos, $dataConfig, $dataBitacora);
+                if(!$result->error){
+                    $response->error     = false;
+                    $response->respuesta = $result->respuesta;
+                }
+                $file->move(FCPATH . 'assets/pdf/practicante/', $newName); 
+                
+        return $this->respond($response);
+    }
     public function reporteMensual()
     {
         $session = \Config\Services::session();
@@ -293,6 +363,7 @@ class Usuario extends BaseController {
             
                 $file           = $this->request->getFile('file');
                 $id_practicante   = $this->request->getPost('id_practicante');
+                $mes   = $this->request->getPost('mes');
                 // Validar tipo de archivo
               
                 if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
@@ -308,9 +379,10 @@ class Usuario extends BaseController {
                 $mimeType = $file->getMimeType();
     
                 $datos = [
-                    'tamanio' => $size,
-                    'tipo' => $mimeType,
-                    'id_usuario' => $id_practicante,
+                    'tamanio'       => $size,
+                    'tipo'          => $mimeType,
+                    'id_usuario'    => $id_practicante,
+                    'mes'           => $mes,
                     'ruta_absoluta' => WRITEPATH . 'assets/pdf/practicante/' . $newName,
                     'ruta_relativa' => 'assets/pdf/practicante/' . $newName,
                    
@@ -396,7 +468,9 @@ class Usuario extends BaseController {
             }
         }
     
-        return $this->response->setStatusCode(403)->setBody('Acceso denegado.');
+        $response->error = true;
+        $response->respuesta = 'No tienes los permisos necesarios para descargar el ZIP';
+        return $this->respond($response);
     }
     
     

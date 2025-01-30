@@ -32,7 +32,7 @@ jgob.junta = (function () {
                         Swal.fire("Atención", response.respuesta, "warning");
                         return false;
                     }
-                    Swal.fire("Correcto", "Registro exitoso", "success");
+                    Swal.fire("Correcto", "Registro Éxitoso", "success");
                     window.location.href = base_url+"/index.php/Junta/index/"+response.listado;
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -93,7 +93,7 @@ jgob.junta = (function () {
                         Swal.fire("Atención", response.respuesta, "warning");
                         return false;
                     }
-                    Swal.fire("Correcto", "Registro exitoso", "success");
+                    Swal.fire("Correcto", "Registro Éxitoso", "success");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("error(s):" + XMLHttpRequest);
@@ -266,7 +266,7 @@ jgob.junta = (function () {
                                 Swal.fire("Atención", response.respuesta, "warning");
                                 return false;
                             }                                               
-                            Toast.fire({icon: "success", title:"Comentario eliminado exitosamente"});
+                            Toast.fire({icon: "success", title:"Comentario eliminado Éxitosamente"});
                             $("#table").bootstrapTable('refresh');                     
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -374,7 +374,7 @@ jgob.junta = (function () {
                                 Swal.fire("Atención", response.respuesta, "warning");
                                 return false;
                             }                                               
-                            Toast.fire({icon: "success", title:"Asistente eliminado exitosamente"});
+                            Toast.fire({icon: "success", title:"Asistente eliminado Éxitosamente"});
                             $("#tbl_asistente").bootstrapTable("destroy");
                             $("#tbl_asistente").bootstrapTable({
                                 url: $("#tbl_asistente")[0].dataset.link+"/"+$("#btn_agregar_asistente")[0].dataset.encode,

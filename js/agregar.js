@@ -25,7 +25,7 @@ st.agregar = (function () {
                         if(response.respuesta.error){
                             Swal.fire("error", "Solicite apoyo al area de sistemas");
                         }
-                        Swal.fire("success", "Se guardo con exito");
+                        Swal.fire("success", "Se guardo con Éxito");
                         $("#formAgregarTurno")[0].reset();
                         $('#asunto, #nombre_turno, #cpp, #indicacion, #firma_turno').val(null).trigger('change');
                         var pdfUrl = base_url + "index.php/Inicio/pdfTurno?id_turno=" + response.respuesta.id_turno;

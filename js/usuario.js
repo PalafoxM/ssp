@@ -157,7 +157,7 @@ jgob.usuario = (function () {
                         Swal.fire("Atención", response.respuesta, "warning");
                         return false;
                     }
-                    Swal.fire("Correcto", "Registro exitoso", "success");
+                    Swal.fire("Correcto", "Registro Éxitoso", "success");
 
                     window.location.href = `${base_url}/index.php/Usuario`;
                 },

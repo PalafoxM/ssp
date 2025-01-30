@@ -68,6 +68,10 @@ class Principal extends BaseController {
             $response->respuesta = "El campo de contraseña es requerido";
             return $this->respond($response);
         }
+        if( empty($data['correo']) ){
+            $response->respuesta = "El campo de correo es requerido";
+            return $this->respond($response);
+        }
         if( empty($data['nombre']) ){
             $response->respuesta = "El campo de nombre es requerido";
             return $this->respond($response);
@@ -318,13 +322,13 @@ class Principal extends BaseController {
             $size = $file->getSize();
             $mimeType = $file->getMimeType();
     
-            $file->move(FCPATH . 'assets/pdf/practicante/', $newName);
+            $file->move(FCPATH . 'assets/pdf/practicante/', $fieldName.'_'.$newName);
     
             $datos = [
                 'id_usuario' => $session->id_usuario,
                 'nombre' => $fieldName,
-                'ruta_absoluta' => FCPATH . 'assets/pdf/practicante/' . $newName,
-                'ruta_relativa' => 'assets/pdf/practicante/' . $newName,
+                'ruta_absoluta' => FCPATH . 'assets/pdf/practicante/' . $fieldName.'_'.$newName,
+                'ruta_relativa' => 'assets/pdf/practicante/' . $fieldName.'_'.$newName,
                 'tipo' => $mimeType,
                 'tamanio' => $size,
             ];

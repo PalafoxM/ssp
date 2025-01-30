@@ -71,7 +71,7 @@ saeg.principal = (function () {
                     dataType: 'json',
                     success: function (response) {
                         if(response.error == false){
-                            Swal.fire("Exitó", response.respuesta, "success");
+                            Swal.fire("Éxito", response.respuesta, "success");
                             window.location.href = base_url + "index.php/Inicio"               
                         }else{
                             Swal.fire("Error", response.respuesta , "error"); 
@@ -100,7 +100,7 @@ saeg.principal = (function () {
                     dataType: 'json',
                     success: function (response) {
                         if(response.error == false){
-                            Swal.fire("Exitó", response.respuesta, "success");
+                            Swal.fire("Éxito", response.respuesta, "success");
                             window.location.href = base_url + "index.php/Inicio/practicantes"
                             
                         }else{
