@@ -43,14 +43,13 @@
                 data-header-style="headerStyle" data-url="<?=base_url("/index.php/Inicio/getPracticantes")?>">
                 <thead>
                     <tr>
-                        <th data-field="id_practicante" data-width="10" data-sortable="true" class="text-center">
-                            CONSECUTIVO
-                        </th>
                         <th data-field="folio" data-width="30" data-sortable="true">FOLIO</th>
                         <th data-field="proyecto" data-width="30" data-sortable="true">NOMBRE DEL PROYECTO</th>
 
                         <th data-field="numero_prac" data-width="10" data-sortable="true" data-tooltip="true">NÚMERO DE
                             ESTUDIANTES
+                        </th>
+                        <th data-field="oficina" data-width="10" data-sortable="true" data-tooltip="true">ÁREA
                         </th>
 
                         <th data-field="id_practicante" data-width="20"
