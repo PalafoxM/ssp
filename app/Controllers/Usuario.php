@@ -305,6 +305,111 @@ class Usuario extends BaseController {
          
         return $this->respond($response);
     }
+    public function subirReporte()
+    {
+        $session = \Config\Services::session();
+        $response = new \stdClass();
+        $globals = new Mglobal;
+        $response->error = true;
+        $response->respuesta = 'Error| Error al subir Reporte';
+        if ($this->request->getFile('file')) {
+            $file = $this->request->getFile('file');
+                if ($file->getClientMimeType() !== 'text/csv' && strtolower($file->getExtension()) !== 'csv') {
+                    $response->error = true;
+                    $response->respuesta = 'El archivo debe ser de formato CSV.';
+                    return $this->respond($response);
+                }
+                $filePath = $_FILES['file']['tmp_name'];
+               
+            $data = [];
+            if (($handle = fopen($filePath, "r")) !== false) {
+                $header = fgetcsv($handle, 1000, ","); // Lee la primera fila como encabezado
+               
+                while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+                    $encodedRow = array_map('utf8_encode', $row); // Codifica los valores a UTF-8
+                    $courseData = array_combine($header, $encodedRow); // Combina encabezado y valores
+
+                    $data[] = $courseData;
+                }
+                
+                fclose($handle);
+            }
+            $processResponse = $this->procesarDatosProyecto($data);
+            if($processResponse->error){
+                $response->error = true;
+                $response->respuesta = $processResponse->respuesta;
+                return $this->respond($response);
+            }
+         
+        }
+    }
+    public function procesarDatosProyecto($data)
+    {
+        $response = new \stdClass();
+        $session = \Config\Services::session();
+        $this->globals = new Mglobal();
+        $response->error = true;
+        $response->respuesta = 'Error| Error al guardar el registro';
+        $dataClean = [];
+        $dataTrash = [];
+        $emailsSeen = []; // Lista para verificar correos duplicados en el CSV
+        $curpSeen = []; 
+
+        foreach ($data as &$d) {
+            // Normaliza las claves eliminando el BOM
+            $d = array_combine(
+                array_map(function ($key) {
+                    return preg_replace('/^\xEF\xBB\xBF/', '', $key);
+                }, array_keys($d)),
+                $d
+            );
+        }
+        unset($d); // Evitar referencias no deseadas
+        
+        foreach ($data as $d) {
+
+            if (isset($d['folio']) && !empty($d['folio'])) {
+                $datos = [
+                    'folio'          => $d['folio'],
+                    'id_dependencia' => (int)$d['id_dependencia'],
+                    'nombre'         => $d['nombre'],
+                    'correo'         => $d['correo'],
+                    'numero_prac'    => (int)$d['numero_prac'],
+                    'modalidad'      => (int)$d['modalidad'],
+                    'conocimiento'   => $d['conocimiento'],
+                    'licenciatura'   => (int)$d['licenciatura'],
+                    'campus'         => (int)$d['campus'],
+                    'oficina'        => $d['oficina'],
+                    'domicilio'      => $d['domicilio'],
+                    'telefono'       => $d['telefono'],
+                    'proyecto'       => $d['proyecto'],
+                    'dias'           => $d['dias'],
+                    'hora'           => $d['hora'],
+                    'puesto'         => $d['puesto'],
+                    'descripcion'    => $d['descripcion'],
+                    'beneficios'     => $d['beneficios'],
+                    'actividad'      => $d['actividad'],
+                    'usu_reg'        => $session->id_usuario,
+                    'fec_reg'        => date('Y-m-d H:i:s')
+                ];
+                $dataConfig = [
+                    "tabla"        => "practicante",
+                    "editar"       => false,
+                    "idEditar"     => ["id_usuario" => (int)$session->id_usuario]
+                ];
+                $dataBitacora = ['id_user' => 7, 'script' => 'Agregar.php/guardaArchivo'];
+                $result = $this->globals->saveTabla($datos, $dataConfig, $dataBitacora);
+                if(!$result->error){
+                    $response->error     = false;
+                    $response->respuesta = 'Registro guardado correctamente';
+                }
+        
+            }
+        }
+        
+        
+        return $response;
+    }
     public function editarReporte(){
         $session = \Config\Services::session();
         $response = new \stdClass();

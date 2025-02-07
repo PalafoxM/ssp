@@ -88,6 +88,70 @@ saeg.principal = (function () {
                 });
             });
         },
+        cargaMasiva: function(){
+      
+            Swal.fire({
+                title: "<strong>Subir Archivo CSV</strong>",
+                icon: "info",
+                html: ` <input type='file' id="reporte" class="form-control" accept=".csv">`,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "Guardar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let fileInput = $('#reporte')[0].files[0];
+
+                    if (!fileInput) {
+                        Swal.fire("Error", "Es requerido el archivo CSV", "error");
+                        return;
+                    }
+        
+                    Swal.fire({
+                        title: "Atención",
+                        text: "Se cargará masivamente, ¿Desea proceder?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Proceder"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $("#btn_caragMasiva").hide();
+                            $("#btn_load").show();
+                            let formData = new FormData();
+                            formData.append('file', fileInput);
+                            $.ajax({
+                                url: base_url + "index.php/Usuario/subirReporte",
+                                type: 'POST',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    console.log(response);
+                                    if (!response.error) {
+                                        Swal.fire("Éxito", response.respuesta, "success");
+                                        $('#tableProyectos').bootstrapTable('refresh');
+                                    } else {
+                                        Swal.fire("Error", response.respuesta, "error");
+                                        console.log("Error: " + response.error);
+                                    }
+                                },
+                                complete: function(){
+                                    $("#btn_caragMasiva").show();
+                                    $("#btn_load").hide();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.log(error);
+                                    Swal.fire("Error", "Favor de llamar al Administrador", "error");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        },
         formPracticante: function(){
             $("#formParticipante").submit(function (e) {
                 e.preventDefault();         

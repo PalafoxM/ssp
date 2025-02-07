@@ -57,7 +57,7 @@
         <img src="<?php echo $dataImagen ?>" alt="Encabezado" />
 
         <div style="position:absolute; margin-left: 9%; margin-top:5.3%;width:60%; height:18px">
-            <small class="proxima fecha"><strong>Folio</strong> </small> <?= $datos->folio ?><br><br>
+            <small class="proxima fecha"><strong>Folio: </strong> </small> <?= $datos->folio ?><br><br>
         </div>
         <div class="textTurnado" style="position:absolute; margin-left: 9%; width:80%; height:18px;">
             <div style="padding-bottom: 5px;"><strong>Nombre del proyecto</strong></div>
@@ -77,7 +77,7 @@
         </div>
         <div class="textTurnado" style="position:absolute; margin-left: 9%; width:80%; height:18px;">
             <div style="padding-bottom: 5px;"><strong>Perfil requerido</strong></div>
-            <?= $licenciatura->dsc_licenciatura ?><br><br>
+            <?= strtolower($licenciatura->dsc_licenciatura) ?><br><br>
         </div>
         <div class="textTurnado " style="position:absolute;margin-left: 9%; width:80%; height:18px; ">
             <div style="padding-bottom: 5px;"><strong>Conocimientos y/o habilidades</strong></div>
@@ -94,18 +94,18 @@
                     switch($datos->modalidad )
                     {
                         case 1:
-                            echo 'PRESENCIAL';
+                            echo 'Presencial';
                             break;
                         case 2:
-                            echo 'VIRTUAL';
+                            echo 'Virtual';
                             break;
                         case 3:
-                            echo 'HIBRIDO';
+                            echo 'híbrido';
                             break;
                     }
                     ?><br>
         </div>
-        <div class="textList" style="position: absolute; margin-left: 9%; margin-top: 2%; width: 80%; height: 70px;">
+       <!--  <div class="textList" style="position: absolute; margin-left: 9%; margin-top: 2%; width: 80%; height: 70px;">
             <span class="proxima textResumen">
                 Si te interesa participar sube tu cv
                 <a target="_blank"
@@ -113,6 +113,16 @@
             </span>
             <div style="position: absolute; margin-left: 40%; margin-top: 0.3%; width:100px; height:100px;">
                 <img src="<?= $filePath ?>" alt="Codigo QR" width="70px;" height="70px;" />
+            </div>
+        </div> -->
+        <div class="textList" style="position: absolute; margin-left: 9%; margin-top: 2%; width: 80%; height: 70px;">
+            <span class="proxima textResumen">
+                Si te interesa participar sube tu cv
+                <a target="_blank"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLScLsTcb4cVrJBwJKWu9X6LF8a4k0Ya6J1x6mrF2-tPjEi_QEg/closedform">aquí</a>.
+            </span>
+            <div style="position: absolute; margin-left: 40%; margin-top: 0.3%; width:100px; height:100px;">
+                <img src="<?= base_url('uploads/qr_codes/qrcode_generado.png'); ?>" alt="Codigo QR" width="70px;" height="70px;" />
             </div>
         </div>
 

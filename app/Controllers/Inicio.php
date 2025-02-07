@@ -408,6 +408,7 @@ class Inicio extends BaseController {
         ->labelAlignment(new LabelAlignmentCenter())
         ->build();
 
+        //$filePath = FCPATH . 'uploads/qr_codes/qrcode_generado.png'; // Ruta donde guardar el archivo
         $filePath = FCPATH . 'uploads/qr_codes/qr_code_' .$session->id_dependencia . '.png'; // Ruta donde guardar el archivo
         $result->saveToFile($filePath);
         $data['filePath'] = $filePath;
